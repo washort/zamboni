@@ -122,7 +122,8 @@ class UserProfile(amo.models.OnChangeMixin, amo.models.ModelBase):
                                                         editable=False)
 
     user = models.ForeignKey(DjangoUser, null=True, editable=False, blank=True)
-
+    payment_details = models.ForeignKey(PaymentDetails, null=True, editable=True,
+                                        blank=True)
     class Meta:
         db_table = 'users'
 
