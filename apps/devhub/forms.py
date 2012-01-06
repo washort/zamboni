@@ -994,8 +994,11 @@ class PremiumForm(happyforms.Form):
         self.extra = kw.pop('extra')
         self.request = kw.pop('request')
         self.addon = self.extra['addon']
+        paypal_id = self.addon.paypal_id
+        if not paypal_id:
+            paypal_id = self.extra['amo_user'].payment_details.paypal_id
         kw['initial'] = {
-            'paypal_id': self.addon.paypal_id,
+            'paypal_id': paypal_id,
             'support_email': self.addon.support_email,
             'do_upsell': 0,
         }

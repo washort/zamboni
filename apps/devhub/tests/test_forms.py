@@ -15,7 +15,7 @@ from addons.models import Addon, Charity
 from devhub import forms
 from files.models import FileUpload
 from market.models import AddonPremium
-from users.models import UserProfile
+from users.models import UserProfile, PaymentDetails
 from versions.models import ApplicationsVersions
 
 from nose.tools import eq_
@@ -173,3 +173,25 @@ class TestPremiumForm(amo.tests.TestCase):
         form = self.complete({}, ['paypal_id', 'support_email'])
         assert not form.is_valid()
         eq_(['price'], form.errors.keys())
+
+    def test_use_default_paypal_id(self):
+        pid = "some@id.com"
+        addon = Addon.objects.get(pk=3615)
+        addon.update(paypal_id='')
+        user = UserProfile.objects.get(pk=999)
+        pd = PaymentDetails.objects.create(paypal_id=pid)
+        user.payment_details = pd
+        user.save()
+        form = self.complete({}, [])
+        eq_(form.initial['paypal_id'], pid)
+
+    def test_set_default_paypal_id(self):
+        pid = "some@id.com"
+        addon = Addon.objects.get(pk=3615)
+        addon.update(paypal_id='')
+        user = UserProfile.objects.get(pk=999)
+        pd = PaymentDetails.objects.create(paypal_id=pid)
+        user.payment_details = pd
+        user.save()
+        form = self.complete({}, [])
+        eq_(form.initial['paypal_id'], pid)

@@ -79,6 +79,12 @@ class UserEmailField(forms.EmailField):
                 'data-src': lazy_reverse('users.ajax')}
 
 
+class PaymentDetails(amo.models.ModelBase):
+        paypal_id = models.CharField(max_length=255, blank=True)
+        paypal_permissions_token = models.CharField(max_length=255,
+                                                    blank=True)
+
+
 class UserProfile(amo.models.OnChangeMixin, amo.models.ModelBase):
     # nickname, firstname, & lastname are deprecated.
     nickname = models.CharField(max_length=255, default='', null=True,
@@ -122,8 +128,8 @@ class UserProfile(amo.models.OnChangeMixin, amo.models.ModelBase):
                                                         editable=False)
 
     user = models.ForeignKey(DjangoUser, null=True, editable=False, blank=True)
-    payment_details = models.ForeignKey(PaymentDetails, null=True, editable=True,
-                                        blank=True)
+    payment_details = models.ForeignKey(PaymentDetails, null=True, blank=True)
+
     class Meta:
         db_table = 'users'
 
