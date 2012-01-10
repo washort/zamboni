@@ -80,9 +80,12 @@ class UserEmailField(forms.EmailField):
 
 
 class PaymentDetails(amo.models.ModelBase):
-        paypal_id = models.CharField(max_length=255, blank=True)
-        paypal_permissions_token = models.CharField(max_length=255,
-                                                    blank=True)
+    class Meta:
+        db_table = 'users_payment_details'
+
+    paypal_id = models.CharField(max_length=255, blank=False)
+    paypal_permissions_token = models.CharField(max_length=255,
+                                                blank=True)
 
 
 class UserProfile(amo.models.OnChangeMixin, amo.models.ModelBase):

@@ -14,7 +14,7 @@ from applications.models import AppVersion
 from addons.models import Addon, Charity
 from devhub import forms
 from files.models import FileUpload
-from market.models import AddonPremium
+from market.models import AddonPremium, Price
 from users.models import UserProfile, PaymentDetails
 from versions.models import ApplicationsVersions
 
@@ -176,22 +176,36 @@ class TestPremiumForm(amo.tests.TestCase):
 
     def test_use_default_paypal_id(self):
         pid = "some@id.com"
+        tok = "fake-paypal-token"
+        price = Price.objects.all()[0]
         addon = Addon.objects.get(pk=3615)
         addon.update(paypal_id='')
         user = UserProfile.objects.get(pk=999)
-        pd = PaymentDetails.objects.create(paypal_id=pid)
+        pd = PaymentDetails.objects.create(paypal_id=pid,
+                                           paypal_permissions_token=tok)
         user.payment_details = pd
         user.save()
-        form = self.complete({}, [])
+        form = self.complete({'do_upsell': 0,
+                              'support_email': 'support@example.com',
+                              'price': 1}, [])
         eq_(form.initial['paypal_id'], pid)
+        form._show_token_msg = lambda msg: None
+        form.data['paypal_id'] = pid
+        assert form.is_valid()
+        form.save()
+        ap = AddonPremium.objects.get(addon=addon)
+        eq_(ap.paypal_permissions_token, tok)
 
     def test_set_default_paypal_id(self):
         pid = "some@id.com"
         addon = Addon.objects.get(pk=3615)
         addon.update(paypal_id='')
+        form = self.complete({'paypal_id': pid,
+                              'do_upsell': 0,
+                              'support_email': 'support@example.com'},
+                             ['price'])
+        form._show_token_msg = lambda msg: None
+        assert form.is_valid()
+        form.save()
         user = UserProfile.objects.get(pk=999)
-        pd = PaymentDetails.objects.create(paypal_id=pid)
-        user.payment_details = pd
-        user.save()
-        form = self.complete({}, [])
-        eq_(form.initial['paypal_id'], pid)
+        eq_(user.payment_details.paypal_id, pid)

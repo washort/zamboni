@@ -38,6 +38,7 @@ from translations.widgets import TranslationTextarea, TranslationTextInput
 from translations.fields import TransTextarea, TransField
 from translations.models import delete_translation, Translation
 from translations.forms import TranslationFormMixin
+from users.models import PaymentDetails
 from versions.models import License, Version, ApplicationsVersions
 from webapps.models import Webapp
 from . import tasks
@@ -995,7 +996,7 @@ class PremiumForm(happyforms.Form):
         self.request = kw.pop('request')
         self.addon = self.extra['addon']
         paypal_id = self.addon.paypal_id
-        if not paypal_id:
+        if self.extra['amo_user'].payment_details and not paypal_id:
             paypal_id = self.extra['amo_user'].payment_details.paypal_id
         kw['initial'] = {
             'paypal_id': paypal_id,
@@ -1058,14 +1059,30 @@ class PremiumForm(happyforms.Form):
             self.addon.paypal_id = paypal_id
             self.addon.save()
         # Check if third-party refund token is properly set up.
+        user = self.extra['amo_user']
+        users_token = (user.payment_details
+                       and user.payment_details.paypal_id == paypal_id
+                       and user.payment_details.paypal_permissions_token)
         no_token = (not self.addon.premium or
                     not self.addon.premium.has_permissions_token())
         invalid_token = (self.addon.premium and
                          not self.addon.premium.has_valid_permissions_token())
         if no_token or invalid_token:
-            # L10n: We require PayPal users to have a third-party token set up.
-            self._show_token_msg(loc('PayPal third-party refund token has not '
-                                     'been set up or has recently expired.'))
+            if users_token:
+                ap, created = (AddonPremium.objects
+                               .safer_get_or_create(addon=self.addon))
+                ap.paypal_permissions_token = user.payment_details.paypal_permissions_token
+                ap.save()
+                if created:
+                    self.addon.addonpremium = ap
+                    del self.addon._premium
+                    self.addon.save()
+            else:
+                # L10n: We require PayPal users to have a third-party
+                # token set up.
+                self._show_token_msg(
+                    loc('PayPal third-party refund token has not '
+                        'been set up or has recently expired.'))
         return self.cleaned_data
 
     def clean_text(self):
@@ -1083,6 +1100,11 @@ class PremiumForm(happyforms.Form):
             self.addon.paypal_id = self.cleaned_data['paypal_id']
             self.addon.support_email = self.cleaned_data['support_email']
             self.addon.save()
+            user = self.extra['amo_user']
+            if not user.payment_details:
+                user.payment_details = PaymentDetails.objects.create(
+                    paypal_id=self.addon.paypal_id)
+            user.save()
 
         if 'price' in self.cleaned_data:
             premium = self.addon.premium
