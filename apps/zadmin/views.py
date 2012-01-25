@@ -723,7 +723,7 @@ def addon_manage(request, addon):
 
         if 'outstanding' in form.changed_data:
             log.info('Addon "%s" changed to%s outstanding' % (addon.slug,
-                    '' if form.cleaned_data['outstanding'] else ' not'))
+                     '' if form.cleaned_data['outstanding'] else ' not'))
             form.save()
 
         for form in formset:
