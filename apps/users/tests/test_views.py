@@ -427,7 +427,6 @@ class TestEmailChange(UserViewBase):
         u = User.objects.get(id=self.user.id).get_profile()
         self.assertEqual(u.email, 'nobody@mozilla.org')
 
-
 class TestLogin(UserViewBase):
     fixtures = ['users/test_backends', 'base/addon_3615']
 
@@ -588,6 +587,13 @@ class TestLogin(UserViewBase):
         admingroup = Group.objects.create(rules='Admin:EditAnyUser')
         GroupUser.objects.create(group=admingroup, user=p)
 
+    def _browserid_login(self, email, http_request):
+        http_request.return_value = (200, json.dumps({'status': 'okay',
+                                                      'email': email}))
+        return self.client.post(reverse('users.browserid_login'),
+                                data=dict(assertion='fake-assertion',
+                                          audience='fakeamo.org'))
+
     @patch.object(waffle, 'switch_is_active', lambda x: True)
     @patch('httplib2.Http.request')
     def test_browserid_restricted_login(self, http_request):
@@ -597,12 +603,8 @@ class TestLogin(UserViewBase):
         will display a message about the restriction.
         """
         email = 'admin@mozilla.com'
-        http_request.return_value = (200, json.dumps({'status': 'okay',
-                                          'email': email}))
         self._make_admin_user(email)
-        res = self.client.post(reverse('users.browserid_login'),
-                               data=dict(assertion='fake-assertion',
-                                         audience='fakeamo.org'))
+        res = self._browserid_login(email, http_request)
         eq_(res.status_code, 400)
 
     @patch.object(waffle, 'switch_is_active', lambda x: True)
@@ -613,15 +615,28 @@ class TestLogin(UserViewBase):
         new account.
         """
         email = 'newuser@example.com'
-        http_request.return_value = (200, json.dumps({'status': 'okay',
-                                                      'email': email}))
-        res = self.client.post(reverse('users.browserid_login'),
-                               data=dict(assertion='fake-assertion',
-                                         audience='fakeamo.org'))
+        res = self._browserid_login(email, http_request)
         eq_(res.status_code, 200)
         profiles = UserProfile.objects.filter(email=email)
         eq_(len(profiles), 1)
         eq_(profiles[0].username, 'newuser')
+
+    @patch.object(waffle, 'switch_is_active', lambda x: True)
+    @patch.object(settings, 'APP_PREVIEW', True)
+    @patch('httplib2.Http.request')
+    def test_browserid_mark_as_market(self, http_request):
+        email = 'newuser@example.com'
+        self._browserid_login(email, http_request)
+        profiles = UserProfile.objects.filter(email=email)
+        assert 'market' in profiles[0].notes
+
+    @patch.object(waffle, 'switch_is_active', lambda x: True)
+    @patch('httplib2.Http.request')
+    def test_browserid_no_mark_as_market(self, http_request):
+        email = 'newuser@example.com'
+        self._browserid_login(email, http_request)
+        profiles = UserProfile.objects.filter(email=email)
+        assert not profiles[0].notes
 
     @patch.object(settings, 'REGISTER_USER_LIMIT', 1)
     @patch.object(waffle, 'switch_is_active', lambda x: True)
