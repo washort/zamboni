@@ -474,6 +474,11 @@ class TestEditBasic(TestEdit):
             eq_(pq(r.content)('#l10n-menu').attr('data-default'), 'fr',
                 'l10n menu not visible for %s' % url)
 
+    def test_refresh(self):
+        url = reverse('mkt.developers.apps.refresh_manifest', args=[self.webapp.app_slug])
+        r = self.client.post(url)
+        eq_(r.status_code, 204)
+
 
 class TestEditMedia(TestEdit):
 
