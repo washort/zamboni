@@ -29,7 +29,7 @@ from amo.helpers import absolutify, urlparams
 from amo.utils import escape_all
 from amo.urlresolvers import reverse
 from addons import forms as addon_forms
-from addons.decorators import can_become_premium
+from addons.decorators import can_become_premium, addon_view
 from addons.models import Addon, AddonUser
 from addons.views import BaseFilter
 from devhub.models import AppLog
@@ -46,6 +46,7 @@ from stats.models import Contribution
 from translations.models import delete_translation
 from users.models import UserProfile
 from users.views import _login
+from zadmin.decorators import admin_required
 
 from mkt.developers.decorators import dev_required
 from mkt.developers.forms import (AppFormBasic, AppFormDetails, AppFormMedia,
@@ -694,6 +695,13 @@ def upload(request, addon_slug=None, is_standalone=False):
         return redirect('mkt.developers.standalone_upload_detail', fu.pk)
     else:
         return redirect('mkt.developers.upload_detail', fu.pk, 'json')
+
+
+@dev_required
+def refresh_manifest(request, addon_id, addon, webapp=False):
+    log.info('Manifest %s refreshed for %s' % (addon.manifest_url, addon))
+    tasks._fetch_manifest(addon.manifest_url)
+    return http.HttpResponse(status=204)
 
 
 @login_required
