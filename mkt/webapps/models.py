@@ -23,6 +23,7 @@ from addons.models import (Addon, AddonDeviceType, update_name_table,
 from files.models import FileUpload, Platform
 from versions.models import Version
 
+from mkt.constants import ratingsbodies
 
 log = commonware.log.getLogger('z.addons')
 
@@ -328,3 +329,19 @@ def add_uuid(sender, **kw):
             install.uuid = ('%s-%s' % (install.pk, str(uuid.uuid4())))
             install.premium_type = install.addon.premium_type
             install.save()
+
+
+class ContentRating(amo.models.ModelBase):
+    """
+    Ratings body information about an app.
+    """
+    addon = models.ForeignKey('addons.Addon', related_name='ratings')
+    ratings_body = models.PositiveIntegerField(
+        choices=[(k, rb.name) for k, rb in ratingsbodies.RATINGS_BODIES.items()],
+        null=False)
+    rating = models.PositiveIntegerField(null=False)
+
+    def __unicode__(self):
+        rb = ratingsbodies.RATINGS_BODIES[self.ratings_body]
+        return '%s - %s' % (rb.name,
+                            rb.ratings[self.rating].name)
