@@ -18,8 +18,8 @@ from tower import ugettext as _, strip_whitespace
 
 import amo
 from amo import utils, urlresolvers
-from translations.query import order_by_translation
-from translations.helpers import truncate
+from gelato.translations.query import order_by_translation
+from gelato.translations.helpers import truncate
 
 # Yanking filters from Django.
 register.filter(defaultfilters.slugify)

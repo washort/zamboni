@@ -20,7 +20,7 @@ from applications.models import Application, AppVersion
 from files import utils
 from files.models import File, Platform, cleanup_file
 from tower import ugettext as _
-from translations.fields import (TranslatedField, PurifiedField,
+from gelato.translations.fields import (TranslatedField, PurifiedField,
                                  LinkifiedField)
 from users.models import UserProfile
 

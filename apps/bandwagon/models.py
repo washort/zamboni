@@ -22,7 +22,7 @@ from amo.urlresolvers import reverse
 from addons.models import Addon, AddonRecommendation
 from applications.models import Application
 from stats.models import CollectionShareCountTotal
-from translations.fields import TranslatedField, LinkifiedField
+from gelato.translations.fields import TranslatedField, LinkifiedField
 from users.models import UserProfile
 from versions import compare
 

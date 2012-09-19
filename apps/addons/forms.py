@@ -26,10 +26,10 @@ from addons.widgets import IconWidgetRenderer, CategoriesSelectMultiple
 from applications.models import Application
 from devhub import tasks as devhub_tasks
 from tags.models import Tag
-from translations.fields import TransField, TransTextarea
-from translations.forms import TranslationFormMixin
-from translations.models import Translation
-from translations.widgets import TranslationTextInput
+from gelato.translations.fields import TransField, TransTextarea
+from gelato.translations.forms import TranslationFormMixin
+from gelato.translations.models import Translation
+from gelato.translations.widgets import TranslationTextInput
 from versions.models import Version
 
 log = commonware.log.getLogger('z.addons')

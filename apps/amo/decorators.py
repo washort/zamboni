@@ -11,6 +11,7 @@ from . import models as context
 from .urlresolvers import reverse
 from .utils import JSONEncoder
 
+from gelato.models.base import skip_cache as skip_cache_contextmgr
 
 task_log = commonware.log.getLogger('z.task')
 
@@ -144,7 +145,7 @@ json_view.error = lambda s: http.HttpResponseBadRequest(
 def skip_cache(f):
     @functools.wraps(f)
     def wrapper(*args, **kw):
-        with context.skip_cache():
+        with skip_cache_contextmgr():
             return f(*args, **kw)
     return wrapper
 

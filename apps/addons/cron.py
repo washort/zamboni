@@ -26,7 +26,7 @@ from addons.models import Addon, FrozenAddon, AppSupport
 from addons.utils import ReverseNameLookup, FeaturedManager, CreaturedManager
 from files.models import File
 from stats.models import UpdateCount
-from translations.models import Translation
+from gelato.translations.models import Translation
 
 log = logging.getLogger('z.cron')
 task_log = logging.getLogger('z.task')

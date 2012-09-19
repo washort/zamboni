@@ -26,8 +26,8 @@ import amo
 import amo.models
 from access.models import Group, GroupUser
 from amo.urlresolvers import reverse
-from translations.fields import PurifiedField
-from translations.query import order_by_translation
+from gelato.translations.fields import PurifiedField
+from gelato.translations.query import order_by_translation
 
 log = commonware.log.getLogger('z.users')
 

@@ -4,7 +4,7 @@ from django.db import connection, models
 from django.dispatch import receiver
 from django.utils import translation
 
-from translations.fields import TranslatedField
+from gelato.translations.fields import TranslatedField
 
 import amo
 import amo.models

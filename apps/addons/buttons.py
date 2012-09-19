@@ -11,7 +11,7 @@ from amo.decorators import no_login_required
 from amo.helpers import urlparams
 from amo.urlresolvers import reverse
 from addons.models import Addon
-from translations.models import Translation
+from gelato.translations.models import Translation
 
 
 def _install_button(context, addon, version=None, show_eula=True,

@@ -8,6 +8,7 @@ from amo.tests import TestCase
 from amo import models as context
 from addons.models import Addon
 
+from gelato.models import base
 
 class ManualOrderTest(TestCase):
     fixtures = ('base/apps', 'base/addon_3615', 'base/addon_5299_gcal',
@@ -23,13 +24,13 @@ class ManualOrderTest(TestCase):
 
 
 def test_skip_cache():
-    eq_(getattr(context._locals, 'skip_cache', False), False)
-    with context.skip_cache():
-        eq_(context._locals.skip_cache, True)
-        with context.skip_cache():
-            eq_(context._locals.skip_cache, True)
-        eq_(context._locals.skip_cache, True)
-    eq_(context._locals.skip_cache, False)
+    eq_(getattr(base._locals, 'skip_cache', False), False)
+    with base.skip_cache():
+        eq_(base._locals.skip_cache, True)
+        with base.skip_cache():
+            eq_(base._locals.skip_cache, True)
+        eq_(base._locals.skip_cache, True)
+    eq_(base._locals.skip_cache, False)
 
 
 def test_use_master():
@@ -47,8 +48,8 @@ class TestModelBase(TestCase):
     fixtures = ['base/addon_3615']
 
     def setUp(self):
-        self.saved_cb = amo.models._on_change_callbacks.copy()
-        amo.models._on_change_callbacks.clear()
+        self.saved_cb = base._on_change_callbacks.copy()
+        base._on_change_callbacks.clear()
         self.cb = Mock()
         Addon.on_change(self.cb)
 

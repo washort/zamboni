@@ -13,8 +13,8 @@ from apps.users.models import UserNotification
 from files.models import FileUpload
 from files.utils import parse_addon
 from market.models import AddonPremium, Price
-from translations.widgets import TransInput, TransTextarea
-from translations.fields import TransField
+from gelato.translations.widgets import TransInput, TransTextarea
+from gelato.translations.fields import TransField
 
 from mkt.developers.forms import verify_app_domain
 from mkt.site.forms import AddonChoiceField, APP_PUBLIC_CHOICES

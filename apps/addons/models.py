@@ -38,9 +38,9 @@ from market.models import AddonPremium, Price
 from reviews.models import Review
 import sharing.utils as sharing
 from stats.models import AddonShareCountTotal
-from translations.fields import (TranslatedField, PurifiedField,
+from gelato.translations.fields import (TranslatedField, PurifiedField,
                                  LinkifiedField, Translation)
-from translations.query import order_by_translation
+from gelato.translations.query import order_by_translation
 from users.models import UserProfile, UserForeignKey
 from users.utils import find_users
 from versions.compare import version_int

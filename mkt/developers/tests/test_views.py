@@ -38,7 +38,7 @@ from mkt.webapps.models import Webapp
 from paypal import PaypalError
 from paypal.check import Check
 from stats.models import Contribution
-from translations.models import Translation
+from gelato.translations.models import Translation
 from users.models import UserProfile
 
 

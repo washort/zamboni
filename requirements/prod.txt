@@ -29,6 +29,7 @@ statsd==1.0.0
 
 
 ## Not on pypi.
+-e git://github.com/washort/gelato.models.git@45158e40b3240939fcaa40327b8d4626e4932d25#egg=gelato.models
 -e git://github.com/mattbasta/addon-packager.git@8e7b8e80e6ab57e2cafaa06e2430a68a6b74f5e2#egg=addon-packager
 -e git://github.com/mozilla/amo-validator.git@d7ee7bb0fc9298c03ad3a4675c84896721c89bb2#egg=amo-validator
 -e git://github.com/mozilla/app-validator.git@6e508c23cec77752c4560a035b13c43d0a8e3576#egg=app-validator

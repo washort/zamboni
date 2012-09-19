@@ -7,7 +7,7 @@ from nose.tools import eq_
 import amo
 from mkt.ratings.feeds import RatingsRss
 from reviews.tests.test_feeds import FeedTest
-from translations.models import Translation
+from gelato.translations.models import Translation
 
 
 class RatingsFeedTest(FeedTest):

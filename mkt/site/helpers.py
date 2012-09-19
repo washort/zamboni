@@ -12,7 +12,7 @@ from access import acl
 from amo.helpers import urlparams
 from amo.urlresolvers import reverse, get_outgoing_url
 from amo.utils import JSONEncoder
-from translations.helpers import truncate
+from gelato.translations.helpers import truncate
 
 
 @jinja2.contextfunction

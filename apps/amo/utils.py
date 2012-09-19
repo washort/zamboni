@@ -37,24 +37,24 @@ from django.utils.encoding import smart_str, smart_unicode
 
 import bleach
 import elasticutils.contrib.django as elasticutils
-import html5lib
 import jinja2
 import pyes.exceptions as pyes
 import pytz
 from babel import Locale
 from easy_thumbnails import processors
-from html5lib.serializer.htmlserializer import HTMLSerializer
 from jingo import env
 from PIL import Image, ImageFile, PngImagePlugin
 
 import amo.search
 from amo import ADDON_ICON_SIZES
 from amo.urlresolvers import get_outgoing_url, reverse
-from translations.models import Translation
+from gelato.translations.models import Translation
 from users.models import UserNotification
 from users.utils import UnsubscribeCode
 
 from . import logger_log as log
+
+from gelato.models.utils import clean_nl
 
 metlog = settings.METLOG
 
@@ -354,48 +354,6 @@ def clear_messages(request):
     """
     for message in messages.get_messages(request):
         pass
-
-
-def clean_nl(string):
-    """
-    This will clean up newlines so that nl2br can properly be called on the
-    cleaned text.
-    """
-
-    html_blocks = ['blockquote', 'ol', 'li', 'ul']
-
-    if not string:
-        return string
-
-    def parse_html(tree):
-        prev_tag = ''
-        for i, node in enumerate(tree.childNodes):
-            if node.type == 4:  # Text node
-                value = node.value
-
-                # Strip new lines directly inside block level elements.
-                if node.parent.name in html_blocks:
-                    value = value.strip('\n')
-
-                # Remove the first new line after a block level element.
-                if (prev_tag in html_blocks and value.startswith('\n')):
-                    value = value[1:]
-
-                tree.childNodes[i].value = value
-            else:
-                tree.insertBefore(parse_html(node), node)
-                tree.removeChild(node)
-
-            prev_tag = node.name
-        return tree
-
-    parse = parse_html(html5lib.parseFragment(string))
-
-    walker = html5lib.treewalkers.getTreeWalker('simpletree')
-    stream = walker(parse)
-    serializer = HTMLSerializer(quote_attr_values=True,
-                                omit_optional_tags=False)
-    return serializer.render(stream)
 
 
 # From: http://bit.ly/eTqloE

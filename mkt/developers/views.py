@@ -47,7 +47,7 @@ from paypal import PaypalError
 from paypal.check import Check
 from paypal.decorators import handle_paypal_error
 from stats.models import Contribution
-from translations.models import delete_translation
+from gelato.translations.models import delete_translation
 from users.models import UserProfile
 from users.views import _login
 from versions.models import Version

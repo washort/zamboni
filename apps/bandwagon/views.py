@@ -22,7 +22,7 @@ from addons.models import Addon
 from addons.views import BaseFilter
 from api.utils import addon_to_dict
 from tags.models import Tag
-from translations.query import order_by_translation
+from gelato.translations.query import order_by_translation
 from users.models import UserProfile
 from .models import (Collection, CollectionAddon, CollectionWatcher,
                      CollectionVote, SPECIAL_SLUGS)

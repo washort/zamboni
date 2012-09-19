@@ -34,10 +34,10 @@ from applications.models import Application, AppVersion
 from files.models import File, FileUpload, Platform
 from files.utils import parse_addon, VERSION_RE
 from market.models import AddonPremium, Price
-from translations.widgets import TranslationTextarea, TranslationTextInput
-from translations.fields import TransTextarea, TransField
-from translations.models import delete_translation, Translation
-from translations.forms import TranslationFormMixin
+from gelato.translations.widgets import TranslationTextarea, TranslationTextInput
+from gelato.translations.fields import TransTextarea, TransField
+from gelato.translations.models import delete_translation, Translation
+from gelato.translations.forms import TranslationFormMixin
 from versions.models import License, Version, ApplicationsVersions
 from mkt.webapps.models import Webapp
 from . import tasks

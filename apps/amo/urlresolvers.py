@@ -1,18 +1,15 @@
 #-*- coding: utf-8 -*-
-import hashlib
-import hmac
 import urllib
 from threading import local
-from urlparse import urlparse, urlsplit, urlunsplit
+from urlparse import urlsplit, urlunsplit
 
 from django.conf import settings
 from django.core import urlresolvers
-from django.utils import encoding
 from django.utils.translation.trans_real import parse_accept_lang_header
 
-import jinja2
-
 import amo
+
+from gelato.models.urlresolvers import get_outgoing_url
 
 # Get a pointer to Django's reverse because we're going to hijack it after we
 # define our own.
@@ -161,29 +158,6 @@ class Prefixer(object):
         url_parts.append(path)
 
         return '/'.join(url_parts)
-
-
-def get_outgoing_url(url):
-    """
-    Bounce a URL off an outgoing URL redirector, such as outgoing.mozilla.org.
-    """
-    if not settings.REDIRECT_URL:
-        return url
-
-    url_netloc = urlparse(url).netloc
-
-    # No double-escaping, and some domain names are excluded.
-    if (url_netloc == urlparse(settings.REDIRECT_URL).netloc
-        or url_netloc in settings.REDIRECT_URL_WHITELIST):
-        return url
-
-    url = encoding.smart_str(jinja2.utils.Markup(url).unescape())
-    sig = hmac.new(settings.REDIRECT_SECRET_KEY,
-                   msg=url, digestmod=hashlib.sha256).hexdigest()
-    # Let '&=' through so query params aren't escaped.  We probably shouldn't
-    # bother to quote the query part at all.
-    return '/'.join([settings.REDIRECT_URL.rstrip('/'), sig,
-                     urllib.quote(url, safe='/&=')])
 
 
 def url_fix(s, charset='utf-8'):

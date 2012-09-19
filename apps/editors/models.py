@@ -17,7 +17,7 @@ from amo.urlresolvers import reverse
 from amo.utils import cache_ns_key, send_mail
 from addons.models import Addon
 from editors.sql_model import RawSQLModel
-from translations.fields import TranslatedField
+from gelato.translations.fields import TranslatedField
 from users.models import UserProfile
 from versions.models import version_uploaded
 

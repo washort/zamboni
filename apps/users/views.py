@@ -49,7 +49,7 @@ from bandwagon.models import Collection
 from market.models import PreApprovalUser
 import paypal
 from stats.models import Contribution
-from translations.query import order_by_translation
+from gelato.translations.query import order_by_translation
 from users.models import UserNotification
 import users.notifications as notifications
 

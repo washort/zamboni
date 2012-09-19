@@ -4,7 +4,7 @@ import jinja2
 
 import amo
 from addons.models import AddonCategory, Category
-from translations.query import order_by_translation
+from gelato.translations.query import order_by_translation
 
 
 #TODO: This is pretty much a copy of addons/helpers.py (duplicate code)

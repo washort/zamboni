@@ -3,7 +3,7 @@ from django.db import models
 import caching.base
 
 import amo.models
-from translations.fields import PurifiedField
+from gelato.translations.fields import PurifiedField
 
 
 class L10nEventlog(caching.base.CachingMixin, models.Model):

@@ -18,7 +18,7 @@ from bandwagon.models import Collection
 from mkt.webapps.models import Webapp
 from reviews.models import Review
 from tags.models import Tag
-from translations.fields import TranslatedField
+from gelato.translations.fields import TranslatedField
 from users.helpers import user_link
 from users.models import UserProfile
 from versions.models import Version

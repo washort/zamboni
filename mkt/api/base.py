@@ -7,7 +7,7 @@ from tastypie.bundle import Bundle
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource
 
-from translations.fields import PurifiedField, TranslatedField
+from gelato.translations.fields import PurifiedField, TranslatedField
 
 
 class MarketplaceResource(ModelResource):

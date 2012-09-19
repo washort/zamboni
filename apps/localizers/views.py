@@ -14,7 +14,7 @@ from addons.models import Category
 from amo.decorators import json_view, login_required, post_required, write
 from amo.urlresolvers import reverse
 from amo.utils import no_translation
-from translations.models import Translation
+from gelato.translations.models import Translation
 
 from .decorators import locale_switcher, valid_locale
 from .forms import CategoryFormSet

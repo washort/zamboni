@@ -4,7 +4,7 @@ from nose.tools import eq_
 
 import amo.tests
 from reviews import feeds
-from translations.models import Translation
+from gelato.translations.models import Translation
 
 
 class FeedTest(amo.tests.TestCase):

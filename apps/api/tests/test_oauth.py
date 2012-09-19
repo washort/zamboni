@@ -48,7 +48,7 @@ from files.models import File
 from perf.models import (Performance, PerformanceAppVersions,
                          PerformanceOSVersion)
 from test_utils import RequestFactory
-from translations.models import Translation
+from gelato.translations.models import Translation
 from versions.models import AppVersion, Version
 
 

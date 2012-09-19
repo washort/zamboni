@@ -10,7 +10,7 @@ from tower import ugettext as _, ugettext_lazy as _lazy
 import amo
 from amo.utils import slugify, slug_validator
 from happyforms import Form, ModelForm
-from translations.widgets import TranslationTextInput, TranslationTextarea
+from gelato.translations.widgets import TranslationTextInput, TranslationTextarea
 from users.models import UserProfile
 from .models import Collection, CollectionUser
 from . import tasks

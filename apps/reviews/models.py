@@ -12,7 +12,7 @@ from tower import ugettext_lazy as _
 import amo.models
 from amo.helpers import shared_url
 from amo.urlresolvers import reverse
-from translations.fields import TranslatedField
+from gelato.translations.fields import TranslatedField
 from users.models import UserProfile
 
 log = logging.getLogger('z.review')

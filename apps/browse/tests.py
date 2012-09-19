@@ -28,7 +28,7 @@ from applications.models import Application
 from bandwagon.models import Collection, CollectionAddon, FeaturedCollection
 from browse import feeds
 from browse.views import locale_display_name, AddonFilter, ThemeFilter
-from translations.models import Translation
+from gelato.translations.models import Translation
 from users.models import UserProfile
 from versions.models import Version
 

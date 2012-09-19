@@ -12,7 +12,7 @@ import waffle
 
 import amo
 from amo.utils import sorted_groupby, memoize
-from translations.models import Translation
+from gelato.translations.models import Translation
 
 safe_key = lambda x: hashlib.md5(smart_str(x).lower().strip()).hexdigest()
 

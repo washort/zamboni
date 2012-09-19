@@ -24,10 +24,10 @@ from addons.widgets import CategoriesSelectMultiple
 from amo.utils import raise_required, remove_icons
 from lib.video import tasks as vtasks
 from market.models import AddonPremium, Price, PriceCurrency
-from translations.fields import TransField
-from translations.forms import TranslationFormMixin
-from translations.models import Translation
-from translations.widgets import TransInput, TransTextarea
+from gelato.translations.fields import TransField
+from gelato.translations.forms import TranslationFormMixin
+from gelato.translations.models import Translation
+from gelato.translations.widgets import TransInput, TransTextarea
 
 import mkt
 from mkt.constants import APP_IMAGE_SIZES

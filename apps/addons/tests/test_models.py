@@ -39,7 +39,7 @@ from files.models import File, Platform
 from files.tests.test_models import TestLanguagePack, UploadTest
 from market.models import AddonPaymentData, AddonPremium, Price
 from reviews.models import Review
-from translations.models import TranslationSequence, Translation
+from gelato.translations.models import TranslationSequence, Translation
 from users.models import UserProfile
 from versions.models import ApplicationsVersions, Version
 from versions.compare import version_int

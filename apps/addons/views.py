@@ -42,7 +42,7 @@ from reviews.models import Review, GroupedRating
 from session_csrf import anonymous_csrf, anonymous_csrf_exempt
 from sharing.views import share as share_redirect
 from stats.models import Contribution
-from translations.query import order_by_translation
+from gelato.translations.query import order_by_translation
 from versions.models import Version
 from .forms import ContributionForm
 from .models import Addon, Persona, FrozenAddon

@@ -17,7 +17,7 @@ from amo.urlresolvers import reverse
 from addons.models import Addon, AddonCategory, Category, FrozenAddon
 from addons.utils import get_featured_ids, get_creatured_ids
 from addons.views import BaseFilter, ESBaseFilter
-from translations.query import order_by_translation
+from gelato.translations.query import order_by_translation
 
 
 languages = dict((lang.lower(), val)

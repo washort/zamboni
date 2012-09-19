@@ -44,7 +44,7 @@ from files.tests.test_models import UploadTest as BaseUploadTest
 from market.models import AddonPremium, Price, Refund
 from reviews.models import Review
 from stats.models import Contribution
-from translations.models import Translation
+from gelato.translations.models import Translation
 from users.models import UserProfile
 from versions.models import ApplicationsVersions, License, Version
 

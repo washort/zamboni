@@ -19,7 +19,7 @@ from devhub.models import ActivityLog
 from editors import helpers
 from editors.models import ReviewerScore
 from files.models import File
-from translations.models import Translation
+from gelato.translations.models import Translation
 from users.models import UserProfile
 from versions.models import Version
 
