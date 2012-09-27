@@ -44,7 +44,7 @@ EXTENSIONS = ('.xpi', '.jar', '.xml', '.webapp', '.json')
 class File(amo.models.OnChangeMixin, amo.models.ModelBase):
     STATUS_CHOICES = amo.STATUS_CHOICES.items()
 
-    version = models.ForeignKey('versions.Version', related_name='files')
+    version = models.ForeignKey('versions.VersionBase', related_name='files')
     platform = models.ForeignKey('Platform', default=amo.PLATFORM_ALL.id)
     filename = models.CharField(max_length=255, default='')
     size = models.PositiveIntegerField(default=0)  # In bytes.

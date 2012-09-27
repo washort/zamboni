@@ -30,7 +30,7 @@ import gelato.models.versions
 log = commonware.log.getLogger('z.versions')
 
 
-class Version(gelato.models.versions.Version):
+class Version(gelato.models.versions.VersionBase):
     class Meta:
         proxy = True
     def __init__(self, *args, **kwargs):

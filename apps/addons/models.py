@@ -1446,7 +1446,7 @@ class Persona(caching.CachingMixin, models.Model):
 
 
 class AddonCategory(caching.CachingMixin, models.Model):
-    addon = models.ForeignKey(Addon)
+    addon = models.ForeignKey(gelato.models.addons.AddonBase)
     category = models.ForeignKey('Category')
     feature = models.BooleanField(default=False)
     feature_locales = models.CharField(max_length=255, default='', null=True)
@@ -1511,7 +1511,7 @@ class AddonType(amo.models.ModelBase):
 
 
 class AddonUser(caching.CachingMixin, models.Model):
-    addon = models.ForeignKey(Addon)
+    addon = models.ForeignKey(gelato.models.addons.AddonBase)
     user = UserForeignKey()
     role = models.SmallIntegerField(default=amo.AUTHOR_ROLE_OWNER,
                                     choices=amo.AUTHOR_CHOICES)
@@ -1533,8 +1533,10 @@ class AddonUser(caching.CachingMixin, models.Model):
 
 
 class AddonDependency(models.Model):
-    addon = models.ForeignKey(Addon, related_name='addons_dependencies')
-    dependent_addon = models.ForeignKey(Addon, related_name='dependent_on')
+    addon = models.ForeignKey(gelato.models.addons.AddonBase,
+                              related_name='addons_dependencies')
+    dependent_addon = models.ForeignKey(gelato.models.addons.AddonBase,
+                                        related_name='dependent_on')
 
     class Meta:
         db_table = 'addons_dependencies'
@@ -1564,7 +1566,7 @@ class Category(amo.models.ModelBase):
         help_text='Category weight used in sort ordering')
     misc = models.BooleanField(default=False)
 
-    addons = models.ManyToManyField(Addon, through='AddonCategory')
+    addons = models.ManyToManyField(gelato.models.addons.AddonBase, through='AddonCategory')
 
     class Meta:
         db_table = 'categories'
