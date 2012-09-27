@@ -20,33 +20,19 @@ from applications.models import Application, AppVersion
 from files import utils
 from files.models import File, Platform, cleanup_file
 from tower import ugettext as _
-from gelato.translations.fields import (TranslatedField, PurifiedField,
-                                 LinkifiedField)
+from gelato.translations.fields import TranslatedField, LinkifiedField
 from users.models import UserProfile
 
 from .compare import version_dict, version_int
 
+import gelato.models.versions
+
 log = commonware.log.getLogger('z.versions')
 
 
-class Version(amo.models.ModelBase):
-    addon = models.ForeignKey('addons.Addon', related_name='versions')
-    license = models.ForeignKey('License', null=True)
-    releasenotes = PurifiedField()
-    approvalnotes = models.TextField(default='', null=True)
-    version = models.CharField(max_length=255, default='0.1')
-    version_int = models.BigIntegerField(null=True, editable=False)
-
-    nomination = models.DateTimeField(null=True)
-    reviewed = models.DateTimeField(null=True)
-
-    has_info_request = models.BooleanField(default=False)
-    has_editor_comment = models.BooleanField(default=False)
-
-    class Meta(amo.models.ModelBase.Meta):
-        db_table = 'versions'
-        ordering = ['-created', '-modified']
-
+class Version(gelato.models.versions.Version):
+    class Meta:
+        proxy = True
     def __init__(self, *args, **kwargs):
         super(Version, self).__init__(*args, **kwargs)
         self.__dict__.update(version_dict(self.version or ''))

@@ -39,6 +39,7 @@ from lib.crypto import packaged
 import mkt
 from mkt.constants import APP_IMAGE_SIZES
 
+import gelato.models.addons
 
 log = commonware.log.getLogger('z.addons')
 
@@ -606,7 +607,7 @@ class Webapp(Addon):
 
 
 # Pull all translated_fields from Addon over to Webapp.
-Webapp._meta.translated_fields = Addon._meta.translated_fields
+Webapp._meta.translated_fields = gelato.models.addons.AddonBase._meta.translated_fields
 
 
 models.signals.post_save.connect(update_search_index, sender=Webapp,
