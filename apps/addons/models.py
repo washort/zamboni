@@ -1218,6 +1218,8 @@ class Addon(gelato.models.addons.AddonBase):
     def sign_if_packaged(self, version_pk, reviewer=False):
         raise NotImplementedError('Not available for add-ons.')
 
+#XXX (ashort) blatant hack, unsure if this can be improved at all
+Addon._meta.translated_fields = gelato.models.addons.AddonBase._meta.translated_fields
 
 class AddonDeviceType(amo.models.ModelBase):
     addon = models.ForeignKey(Addon)
