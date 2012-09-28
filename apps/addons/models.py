@@ -1305,7 +1305,7 @@ def watch_disabled(old_attr={}, new_attr={}, instance=None, sender=None, **kw):
 
 class Persona(caching.CachingMixin, models.Model):
     """Personas-specific additions to the add-on model."""
-    addon = models.OneToOneField(Addon)
+    addon = models.OneToOneField(gelato.models.addons.AddonBase)
     persona_id = models.PositiveIntegerField(db_index=True)
     # name: deprecated in favor of Addon model's name field
     # description: deprecated, ditto
