@@ -154,6 +154,16 @@ class Addon(gelato.models.addons.AddonBase):
     class Meta:
         proxy = True
 
+    @property
+    def versions(self):
+        class VersionsRelatedManager(Addon._versions.related_manager_cls):
+
+            def get_query_set(self):
+                return caching.CachingQuerySet(Version, using=self._db)
+        vs = self._versions
+        vs.__class__ = VersionsRelatedManager
+        return vs
+
     @use_master
     def clean_slug(self, slug_field='slug'):
         if self.status == amo.STATUS_DELETED:
@@ -568,7 +578,12 @@ class Addon(gelato.models.addons.AddonBase):
                 self.update_version()
         except ObjectDoesNotExist:
             return
-        return self._current_version
+        v = self._current_version
+        if v:
+            v.__class__ = Version
+        return v
+
+
 
     @amo.cached_property
     def binary(self):
@@ -988,36 +1003,36 @@ class Addon(gelato.models.addons.AddonBase):
         """
         Get the queries used to calculate addon.last_updated.
         """
-        status_change = Max('versions__files__datestatuschanged')
+        status_change = Max('_versions__files__datestatuschanged')
         public = (Addon.uncached.filter(status=amo.STATUS_PUBLIC,
-            versions__files__status=amo.STATUS_PUBLIC)
+            _versions__files__status=amo.STATUS_PUBLIC)
             .exclude(type__in=(amo.ADDON_PERSONA, amo.ADDON_WEBAPP))
             .values('id').annotate(last_updated=status_change))
 
         lite = (Addon.uncached.filter(status__in=amo.LISTED_STATUSES,
-                                      versions__files__status=amo.STATUS_LITE)
+                                      _versions__files__status=amo.STATUS_LITE)
                 .exclude(type=amo.ADDON_WEBAPP)
                 .values('id').annotate(last_updated=status_change))
 
         stati = amo.LISTED_STATUSES + (amo.STATUS_PUBLIC,)
         exp = (Addon.uncached.exclude(status__in=stati)
-               .filter(versions__files__status__in=amo.VALID_STATUSES)
+               .filter(_versions__files__status__in=amo.VALID_STATUSES)
                .exclude(type=amo.ADDON_WEBAPP)
                .values('id')
-               .annotate(last_updated=Max('versions__files__created')))
+               .annotate(last_updated=Max('_versions__files__created')))
 
         listed = (Addon.uncached.filter(status=amo.STATUS_LISTED)
                   .values('id')
-                  .annotate(last_updated=Max('versions__created')))
+                  .annotate(last_updated=Max('_versions__created')))
 
         personas = (Addon.uncached.filter(type=amo.ADDON_PERSONA)
                     .extra(select={'last_updated': 'created'}))
         webapps = (
             Addon.uncached.filter(type=amo.ADDON_WEBAPP,
                                   status=amo.STATUS_PUBLIC,
-                                  versions__files__status=amo.STATUS_PUBLIC)
+                                  _versions__files__status=amo.STATUS_PUBLIC)
                           .values('id')
-                          .annotate(last_updated=Max('versions__created')))
+                          .annotate(last_updated=Max('_versions__created')))
 
         return dict(public=public, exp=exp, listed=listed, personas=personas,
                     lite=lite, webapps=webapps)
@@ -1220,6 +1235,7 @@ class Addon(gelato.models.addons.AddonBase):
 
 #XXX (ashort) blatant hack, unsure if this can be improved at all
 Addon._meta.translated_fields = gelato.models.addons.AddonBase._meta.translated_fields
+
 
 class AddonDeviceType(amo.models.ModelBase):
     addon = models.ForeignKey(Addon)
@@ -1919,4 +1935,4 @@ models.signals.post_delete.connect(update_incompatible_versions,
 # webapps.models imports addons.models to get Addon, so we need to keep the
 # Webapp import down here.
 
-from mkt.webapps.models import Webapp
+#from mkt.webapps.models import Webapp
