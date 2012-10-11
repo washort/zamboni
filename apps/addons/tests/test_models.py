@@ -1495,8 +1495,9 @@ class TestAddonDependencies(amo.tests.TestCase):
             AddonDependency(addon=a,
                 dependent_addon=Addon.objects.get(id=dependent_id)).save()
 
-        eq_(sorted([a.id for a in a.dependencies.all()]), sorted(ids))
-        eq_(list(a.dependencies.all()), a.all_dependencies)
+        eq_(sorted([x.id for x in a.dependencies.all()]), sorted(ids))
+        x.__class__ = Addon
+        eq_(list(x.dependencies.all()), x.all_dependencies)
 
     def test_unique_dependencies(self):
         a = Addon.objects.get(id=5299)

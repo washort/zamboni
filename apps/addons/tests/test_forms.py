@@ -13,7 +13,8 @@ import amo.tests
 from amo.tests.test_helpers import get_image_path
 from amo.utils import rm_local_tmp_dir
 from addons import forms, cron
-from addons.models import Addon, AddonDeviceType, Category, Webapp
+from addons.models import Addon, AddonDeviceType, Category
+from mkt.webapps.models import Webapp
 from constants.applications import DEVICE_TYPES
 from files.helpers import copyfileobj
 from tags.models import Tag, AddonTag
