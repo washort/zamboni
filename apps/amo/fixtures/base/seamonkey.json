@@ -40,7 +40,7 @@
     },
     {
         "pk": 6076,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "_current_version": 98485,
             "slug": "better-gmail-6076",
@@ -89,7 +89,7 @@
     },
     {
         "pk": 98485,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 13,
             "created": "2010-03-04 22:02:04",
@@ -109,7 +109,7 @@
     },
     {
         "pk": 49431,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": null,
             "created": "2008-07-05 13:24:40",

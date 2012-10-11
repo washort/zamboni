@@ -44,7 +44,7 @@
     },
     {
         "pk": 11730,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "a11730",
             "dev_agreement": 1,
@@ -107,7 +107,7 @@
     },
     {
         "pk": 68776,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 6,
             "created": "2009-05-21 05:37:15",
@@ -136,7 +136,7 @@
     },
     {
         "pk": 120,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 6,
             "created": "2008-05-21 05:37:15",

@@ -29,7 +29,7 @@
     },
     {
         "pk": 15679,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "15679",
             "_current_version": 15679,
@@ -153,7 +153,7 @@
     },
     {
         "pk": 6912,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "6912",
             "dev_agreement": 1,
@@ -197,7 +197,7 @@
     },
     {
         "pk": 7661,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "7661",
             "dev_agreement": 1,
@@ -242,7 +242,7 @@
     },
     {
         "pk": 2464,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "2464",
             "dev_agreement": 1,
@@ -287,7 +287,7 @@
     },
     {
         "pk": 3481,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "3481",
             "dev_agreement": 1,
@@ -454,7 +454,7 @@
     },
     {
         "pk": 11870,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "11870",
             "dev_agreement": 1,
@@ -513,7 +513,7 @@
     },
     {
         "pk": 15679,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "created": "2010-01-14 11:39:40",
             "modified": "2010-01-14 11:40:45",
@@ -523,7 +523,7 @@
     },
     {
         "pk": 91189,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 345,
             "created": "2010-01-14 11:39:40",
@@ -536,7 +536,7 @@
     },
     {
         "pk": 90952,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 13,
             "created": "2010-01-12 20:50:20",
@@ -559,7 +559,7 @@
     },
     {
         "pk": 88798,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 60,
             "created": "2009-12-24 18:30:07",
@@ -582,7 +582,7 @@
     },
     {
         "pk": 68019,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 6,
             "created": "2009-05-08 05:26:21",

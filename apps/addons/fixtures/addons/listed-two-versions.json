@@ -9,7 +9,7 @@
     },
     {
         "pk": 2795,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "dev_agreement": 0,
             "eula": null,
@@ -62,7 +62,7 @@
     },
     {
         "pk": 87598,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 5,
             "created": "2009-12-13 23:10:16",
@@ -75,7 +75,7 @@
     },
     {
         "pk": 87599,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 5,
             "created": "2009-12-13 23:10:16",

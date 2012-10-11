@@ -65,7 +65,7 @@
     },
     {
         "pk": 94363,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": null,
             "created": "2010-02-03 17:53:51",

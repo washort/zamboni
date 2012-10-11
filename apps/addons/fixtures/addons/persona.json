@@ -72,7 +72,7 @@
     },
     {
         "pk": 15663,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "created": "2010-01-14 11:39:40",
             "modified": "2010-01-14 11:40:45",
@@ -82,7 +82,7 @@
     },
     {
         "pk": 15663,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "a15663",
             "_current_version": 15663,

@@ -1,7 +1,7 @@
 [
   {
     "pk": 123456,
-    "model": "versions.version",
+    "model": "versions.versionbase",
     "fields": {
       "license": 5,
       "created": "2011-08-17 13:32:40",

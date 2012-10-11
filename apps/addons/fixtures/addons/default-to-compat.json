@@ -120,7 +120,7 @@
     },
     {
         "pk": 337203,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "dev_agreement": false,
             "eula": null,
@@ -199,7 +199,7 @@
     },
     {
         "pk": 1268881,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "has_info_request": false,
             "license": null,
@@ -227,7 +227,7 @@
     },
     {
         "pk": 1268882,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "has_info_request": false,
             "license": null,
@@ -255,7 +255,7 @@
     },
     {
         "pk": 1268883,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "has_info_request": false,
             "license": null,
@@ -283,7 +283,7 @@
     },
     {
         "pk": 1268884,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "has_info_request": false,
             "license": null,

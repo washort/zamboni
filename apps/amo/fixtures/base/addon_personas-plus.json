@@ -151,7 +151,7 @@
     },
     {
         "pk": 10900,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "dev_agreement": true,
             "last_updated": "2010-09-11 09:59:14",
@@ -215,7 +215,7 @@
     },
     {
         "pk": 117388,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 97,
             "created": "2010-09-11 09:59:33",

@@ -37,7 +37,7 @@
     },
     {
         "pk": 5579,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "cooliris",
             "dev_agreement": true,
@@ -98,7 +98,7 @@
     },
     {
         "pk": 90119,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 329,
             "created": "2010-01-06 18:16:40",

@@ -9,7 +9,7 @@
     },
     {
         "pk": 3723,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "3723",
             "_current_version": 89774,
@@ -85,7 +85,7 @@
     },
     {
         "pk": 89774,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 5,
             "created": "2010-03-24 16:33:19",

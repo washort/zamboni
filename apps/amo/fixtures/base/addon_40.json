@@ -13,7 +13,7 @@
     },
     {
         "pk": 40,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "40",
             "dev_agreement": false,
@@ -67,7 +67,7 @@
     },
     {
         "pk": 42,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": null,
             "created": "2004-06-12 02:52:33",

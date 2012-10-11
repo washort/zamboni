@@ -1,7 +1,7 @@
 [
     {
         "pk": 1001,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "1001",
             "_current_version": 1001,
@@ -99,7 +99,7 @@
     },
     {
         "pk": 1002,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "1002",
             "dev_agreement": 0,
@@ -150,7 +150,7 @@
     },
     {
         "pk": 1003,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "1003",
             "_current_version": 1003,
@@ -225,7 +225,7 @@
     },
     {
         "pk": 1001,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": null,
             "created": "2006-10-23 12:57:41",
@@ -237,7 +237,7 @@
     },
     {
         "pk": 1003,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": null,
             "created": "2006-10-23 12:57:41",

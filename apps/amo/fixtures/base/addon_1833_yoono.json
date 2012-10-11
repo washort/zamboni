@@ -25,7 +25,7 @@
     },
     {
         "pk": 1833,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "yoono-1833",
             "dev_agreement": true,
@@ -82,7 +82,7 @@
     },
     {
         "pk": 101235,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 180,
             "created": "2010-03-25 14:25:14",

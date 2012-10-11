@@ -33,7 +33,7 @@
     },
     {
         "pk": 4594,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "a4594",
             "dev_agreement": false,
@@ -95,7 +95,7 @@
     },
     {
         "pk": 42352,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 312,
             "created": "2008-03-26 21:51:24",
