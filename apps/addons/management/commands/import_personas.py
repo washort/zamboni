@@ -7,7 +7,7 @@ from django.db import transaction
 
 import MySQLdb as mysql
 
-from addons.models import Persona, AddonUser
+from addons.models import Persona, AddonUser, Addon
 from bandwagon.models import CollectionAddon
 from users.models import UserProfile
 
@@ -118,6 +118,7 @@ class Command(BaseCommand):
                 self.log('Not found fav. %s for user %s' %
                          (fav[0], user['username']))
                 continue
+            addon.__class__ = Addon
             CollectionAddon.objects.create(addon=addon,
                     collection=profile.favorites_collection())
             self.log('Adding fav. %s for user %s' % (addon, user['username']))

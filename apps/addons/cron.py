@@ -82,9 +82,9 @@ def fast_current_version():
     t = datetime.now() - timedelta(minutes=5)
     qs = Addon.objects.values_list('id')
     q1 = qs.filter(status=amo.STATUS_PUBLIC,
-                   versions__files__datestatuschanged__gte=t)
+                   _versions__files__datestatuschanged__gte=t)
     q2 = qs.filter(status__in=amo.UNREVIEWED_STATUSES,
-                   versions__files__created__gte=t)
+                   _versions__files__created__gte=t)
     addons = set(q1) | set(q2)
     if addons:
         _update_addons_current_version(addons)
@@ -256,9 +256,9 @@ def update_addon_appsupport():
     newish = (Q(last_updated__gte=F('appsupport__created')) |
               Q(appsupport__created__isnull=True))
     # Search providers don't list supported apps.
-    has_app = Q(versions__apps__isnull=False) | Q(type=amo.ADDON_SEARCH)
+    has_app = Q(_versions__apps__isnull=False) | Q(type=amo.ADDON_SEARCH)
     has_file = (Q(status=amo.STATUS_LISTED) |
-                Q(versions__files__status__in=amo.VALID_STATUSES))
+                Q(_versions__files__status__in=amo.VALID_STATUSES))
     good = Q(has_app, has_file) | Q(type=amo.ADDON_PERSONA)
     ids = (Addon.objects.valid().distinct()
            .filter(newish, good).values_list('id', flat=True))

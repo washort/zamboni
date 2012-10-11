@@ -9,14 +9,11 @@ import django.dispatch
 import jinja2
 
 import commonware.log
-import caching.base
-import waffle
 
 import amo
 import amo.models
 import amo.utils
 from amo.urlresolvers import reverse
-from applications.models import Application, AppVersion
 from files import utils
 from files.models import File, Platform, cleanup_file
 from tower import ugettext as _
@@ -25,12 +22,12 @@ from users.models import UserProfile
 
 from .compare import version_dict, version_int
 
-import gelato.models.versions
+from gelato.models.versions import VersionBase, ApplicationsVersions
 
 log = commonware.log.getLogger('z.versions')
 
 
-class Version(gelato.models.versions.VersionBase):
+class Version(VersionBase):
     class Meta:
         proxy = True
     def __init__(self, *args, **kwargs):
@@ -510,27 +507,3 @@ class VersionComment(amo.models.ModelBase):
 
     class Meta(amo.models.ModelBase.Meta):
         db_table = 'versioncomments'
-
-
-class ApplicationsVersions(caching.base.CachingMixin, models.Model):
-
-    application = models.ForeignKey(Application)
-    version = models.ForeignKey(Version, related_name='apps')
-    min = models.ForeignKey(AppVersion, db_column='min',
-        related_name='min_set')
-    max = models.ForeignKey(AppVersion, db_column='max',
-        related_name='max_set')
-
-    objects = caching.base.CachingManager()
-
-    class Meta:
-        db_table = u'applications_versions'
-        unique_together = (("application", "version"),)
-
-    def __unicode__(self):
-        if (waffle.switch_is_active('d2c-buttons') and
-            self.version.is_compatible[0] and
-            self.version.is_compatible_app(amo.APP_IDS[self.application.id])):
-            return _(u'{app} {min} and later').format(app=self.application,
-                                                      min=self.min)
-        return u'%s %s - %s' % (self.application, self.min, self.max)

@@ -606,6 +606,8 @@ class Addon(gelato.models.addons.AddonBase):
         """Returns the backup version."""
         if not self._current_version:
             return
+        if self._backup_version:
+            self._backup_version.__class__ = Version
         return self._backup_version
 
     def get_icon_dir(self):
