@@ -30,7 +30,7 @@
     },
     {
         "pk": 0,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "0",
             "guid": "0",
@@ -47,7 +47,7 @@
     },
     {
         "pk": 1,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "1",
             "guid": "1",
@@ -64,7 +64,7 @@
     },
     {
         "pk": 2,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "2",
             "guid": "2",
@@ -81,7 +81,7 @@
     },
     {
         "pk": 3,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "3",
             "guid": "3",
@@ -98,7 +98,7 @@
     },
     {
         "pk": 1,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "addon": 1,
             "license": 1,
@@ -108,7 +108,7 @@
     },
     {
         "pk": 39083,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "addon": 1,
             "license": 1,
@@ -118,7 +118,7 @@
     },
     {
         "pk": 2,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "addon": 2,
             "license": 1,

@@ -293,19 +293,6 @@
         }
     },
     {
-        "pk": 104904,
-        "model": "versions.versionbase",
-        "fields": {
-            "license": 13,
-            "created": "2010-04-25 20:08:37",
-            "releasenotes": 1054175,
-            "approvalnotes": "",
-            "modified": "2010-04-27 14:23:48",
-            "version": "2.9.4",
-            "addon": 4664
-        }
-    },
-    {
         "pk": 77049,
         "model": "versions.applicationsversions",
         "fields": {

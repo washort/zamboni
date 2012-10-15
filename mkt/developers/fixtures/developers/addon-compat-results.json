@@ -76,7 +76,7 @@
     },
     {
         "pk": 285287,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "dev_agreement": false,
             "eula": null,
@@ -146,7 +146,7 @@
     },
     {
         "pk": 457235,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 1702,
             "created": "2011-05-06 09:30:50",

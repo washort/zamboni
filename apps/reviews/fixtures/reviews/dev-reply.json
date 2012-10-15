@@ -149,7 +149,7 @@
     },
     {
         "pk": 1865,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "a1865",
             "app_slug": "a1865",
@@ -216,7 +216,7 @@
     },
     {
         "pk": 105387,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 5,
             "created": "2010-04-30 01:01:33",
@@ -229,7 +229,7 @@
     },
     {
         "pk": 90149,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": 5,
             "created": "2010-01-07 00:16:35",

@@ -64,7 +64,7 @@
     },
     {
         "pk": 11399,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "11399",
             "dev_agreement": 0,
@@ -113,7 +113,7 @@
     },
     {
         "pk": 66081,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "license": null,
             "created": "2009-04-08 16:14:34",

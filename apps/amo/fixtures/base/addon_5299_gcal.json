@@ -32,7 +32,7 @@
     },
     {
         "pk": 5299,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "better-gcal-5299",
             "dev_agreement": true,

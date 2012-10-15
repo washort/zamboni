@@ -20,7 +20,7 @@
     },
     {
         "pk": 59,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "a59",
             "dev_agreement": 1,

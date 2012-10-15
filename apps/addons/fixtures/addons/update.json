@@ -1,7 +1,7 @@
 [
   {
     "pk": 1865,
-    "model": "addons.addon",
+    "model": "addons.addonbase",
     "fields": {
       "dev_agreement": true,
       "eula": null,

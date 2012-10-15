@@ -1,7 +1,7 @@
 [
     {
         "pk": 116367,
-        "model": "versions.version",
+        "model": "versions.versionbase",
         "fields": {
             "created": "2010-08-27 21:15:27",
             "modified": "2010-08-27 21:15:27",
@@ -52,7 +52,7 @@
     },
     {
         "pk": 222197,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "dev_agreement": true,
             "last_updated": "2010-08-27 21:15:32",

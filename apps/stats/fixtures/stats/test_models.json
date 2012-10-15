@@ -32,7 +32,7 @@
     },
     {
         "pk": 4,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "4",
             "type": 1,
@@ -46,7 +46,7 @@
     },
     {
         "pk": 5,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "5",
             "type": 1,

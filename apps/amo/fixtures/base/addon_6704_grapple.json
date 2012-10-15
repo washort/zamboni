@@ -13,7 +13,7 @@
     },
     {
         "pk": 6704,
-        "model": "addons.addon",
+        "model": "addons.addonbase",
         "fields": {
             "slug": "6704",
             "dev_agreement": true,
