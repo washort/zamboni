@@ -154,6 +154,10 @@ class Addon(gelato.models.addons.AddonBase):
     class Meta:
         proxy = True
 
+    def save(self, **kw):
+        self.clean_slug()
+        super(Addon, self).save(**kw)
+
     @property
     def versions(self):
         class VersionsRelatedManager(Addon._versions.related_manager_cls):
@@ -263,12 +267,17 @@ class Addon(gelato.models.addons.AddonBase):
         data = parse_addon(upload)
         fields = cls._meta.get_all_field_names()
         addon = Addon(**dict((k, v) for k, v in data.items() if k in fields))
+        #XXX(ashort) fix it so that translations get saved properly
+        if addon.name:
+            addon.name.save()
         addon.status = amo.STATUS_NULL
         locale_is_set = (addon.default_locale and
                          addon.default_locale != settings.LANGUAGE_CODE)
         if not locale_is_set:
             addon.default_locale = to_language(translation.get_language())
         if addon.is_webapp():
+            from mkt.webapps.models import Webapp
+            addon.__class__ = Webapp
             addon.manifest_url = upload.name
             addon.app_domain = addon.domain_from_url(addon.manifest_url)
             addon.is_packaged = is_packaged
@@ -578,10 +587,7 @@ class Addon(gelato.models.addons.AddonBase):
                 self.update_version()
         except ObjectDoesNotExist:
             return
-        v = self._current_version
-        if v:
-            v.__class__ = Version
-        return v
+        return amo.upgrade(self._current_version)
 
 
 
@@ -606,9 +612,7 @@ class Addon(gelato.models.addons.AddonBase):
         """Returns the backup version."""
         if not self._current_version:
             return
-        if self._backup_version:
-            self._backup_version.__class__ = Version
-        return self._backup_version
+        return amo.upgrade(self._backup_version)
 
     def get_icon_dir(self):
         return os.path.join(settings.ADDON_ICONS_PATH,
@@ -1176,7 +1180,7 @@ class Addon(gelato.models.addons.AddonBase):
     @property
     def all_dependencies(self):
         """Return all the add-ons this add-on depends on."""
-        return list(self.dependencies.all()[:3])
+        return [amo.upgrade(addon) for addon in self.dependencies.all()[:3]]
 
     def get_watermark_hash(self, user):
         """
@@ -1932,9 +1936,3 @@ models.signals.post_save.connect(update_incompatible_versions,
 models.signals.post_delete.connect(update_incompatible_versions,
                                    sender=CompatOverrideRange,
                                    dispatch_uid='cor_update_incompatible')
-
-
-# webapps.models imports addons.models to get Addon, so we need to keep the
-# Webapp import down here.
-
-#from mkt.webapps.models import Webapp

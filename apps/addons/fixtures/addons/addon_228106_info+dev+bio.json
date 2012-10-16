@@ -110,7 +110,7 @@
     },
     {
         "pk": 228106,
-        "modelbase": "addons.addonbase",
+        "model": "addons.addonbase",
         "fields": {
             "dev_agreement": true,
             "eula": null,

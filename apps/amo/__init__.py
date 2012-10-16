@@ -99,3 +99,17 @@ def get_admin_search_types():
     types = get_addon_search_types()
     types.append(ADDON_PLUGIN)
     return types
+
+
+def upgrade(obj):
+    from gelato.models.addons import AddonBase
+    from gelato.models.versions import VersionBase
+    from addons.models import Addon
+    from versions.models import Version
+    if obj is None:
+        return obj
+    obj.__class__  = {AddonBase: Addon,
+                      VersionBase: Version
+                      }.get(obj.__class__,
+                            obj.__class__)
+    return obj

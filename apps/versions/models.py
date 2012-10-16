@@ -380,8 +380,9 @@ class Version(VersionBase):
 def update_status(sender, instance, **kw):
     if not kw.get('raw'):
         try:
-            instance.addon.update_status(using='default')
-            instance.addon.update_version()
+            a = amo.upgrade(instance.addon)
+            a.update_status(using='default')
+            a.update_version()
         except models.ObjectDoesNotExist:
             pass
 
@@ -442,8 +443,9 @@ def clear_compatversion_cache_on_delete(sender, instance, **kw):
         return
 
     if not kw.get('raw'):
-        instance.addon.invalidate_d2c_versions()
+        amo.upgrade(instance.addon).invalidate_d2c_versions()
 
+Version._meta.translated_fields = VersionBase._meta.translated_fields
 
 version_uploaded = django.dispatch.Signal()
 models.signals.post_save.connect(update_status, sender=Version,

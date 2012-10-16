@@ -267,7 +267,7 @@ class File(amo.models.OnChangeMixin, amo.models.ModelBase):
                              m.group('suffix'))
 
     def latest_xpi_url(self):
-        addon = self.version.addon
+        addon = amo.upgrade(self.version.addon)
         kw = {'addon_id': addon.pk}
         if self.platform_id != amo.PLATFORM_ALL.id:
             kw['platform'] = self.platform_id
@@ -288,7 +288,7 @@ class File(amo.models.OnChangeMixin, amo.models.ModelBase):
 
     @property
     def mirror_file_path(self):
-        if self.version.addon.is_premium():
+        if amo.upgrade(self.version.addon).is_premium():
             return
         return os.path.join(settings.MIRROR_STAGE_PATH,
                             str(self.version.addon_id), self.filename)
@@ -513,7 +513,7 @@ def cache_localepicker(sender, instance, **kw):
 def update_status(sender, instance, **kw):
     if not kw.get('raw'):
         try:
-            instance.version.addon.update_status(using='default')
+            amo.upgrade(instance.version.addon).update_status(using='default')
         except models.ObjectDoesNotExist:
             pass
 
@@ -570,7 +570,7 @@ def clear_d2c_version(old_attr, new_attr, instance, sender, **kw):
             do_clear = True
 
     if do_clear:
-        instance.version.addon.invalidate_d2c_versions()
+        amo.upgrade(instance.version.addon).invalidate_d2c_versions()
 
 
 # TODO(davedash): Get rid of this table once /editors is on zamboni
