@@ -281,7 +281,7 @@ def update_incompatible_appversions(data, **kw):
                         app_ranges.extend(range.apps)
 
         for app_range in app_ranges:
-            IncompatibleVersions.objects.create(version=version,
+            IncompatibleVersions.objects.create(version=amo.upgrade(version),
                                                 app_id=app_range.app.id,
                                                 min_app_version=app_range.min,
                                                 max_app_version=app_range.max)
