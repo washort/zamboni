@@ -160,12 +160,8 @@ class Addon(gelato.models.addons.AddonBase):
 
     @property
     def versions(self):
-        class VersionsRelatedManager(Addon._versions.related_manager_cls):
-
-            def get_query_set(self):
-                return caching.CachingQuerySet(Version, using=self._db)
         vs = self._versions
-        vs.__class__ = VersionsRelatedManager
+        vs.model = Version
         return vs
 
     @use_master
