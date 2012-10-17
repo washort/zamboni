@@ -14,10 +14,12 @@ django-nose==1.1
 django-quieter-formset==0.3
 django-statsd-mozilla==0.3.7
 django-tastypie==0.9.11
+raven==2.0.6
 easy-thumbnails==1.1
 gunicorn==0.14.6
 metlog-py==0.9.7
 metlog-cef==0.1
+metlog-raven==0.3
 cef==0.3
 moz_inapp_pay==1.0.2
 oauth2==1.5.211
@@ -27,8 +29,8 @@ receipts==0.2.3
 requests==0.14.0
 statsd==1.0.0
 
--e git://github.com/andymckay/gelato.constants.git@007fbd30bedbf678a70a542b5b764a40d1351f4b
--e git://github.com/washort/gelato.models.git@817f5246f201f3b9b08814dababcce51ebc94bf0
+-e git://github.com/andymckay/gelato.constants.git@007fbd30bedbf678a70a542b5b764a40d1351f4b#egg=gelato.constants
+-e git://github.com/washort/gelato.models.git@817f5246f201f3b9b08814dababcce51ebc94bf0#egg=gelato.models
 
 ## Not on pypi.
 -e git://github.com/mattbasta/addon-packager.git@8e7b8e80e6ab57e2cafaa06e2430a68a6b74f5e2#egg=addon-packager
