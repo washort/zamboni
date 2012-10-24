@@ -1159,19 +1159,6 @@ class Addon(gelato.models.addons.AddonBase):
             return (not self.is_premium() or self.has_purchased(user) or
                     self.is_refunded(user))
 
-    @property
-    def premium(self):
-        """
-        Returns the premium object which will be gotten by the transformer,
-        if its not there, try and get it. Will return None if there's nothing
-        there.
-        """
-        if not hasattr(self, '_premium'):
-            try:
-                self._premium = self.addonpremium
-            except AddonPremium.DoesNotExist:
-                self._premium = None
-        return self._premium
 
     @property
     def all_dependencies(self):
@@ -1719,13 +1706,7 @@ class AppSupport(amo.models.ModelBase):
         unique_together = ('addon', 'app')
 
 
-class Charity(amo.models.ModelBase):
-    name = models.CharField(max_length=255)
-    url = models.URLField(verify_exists=False)
-    paypal = models.CharField(max_length=255)
-
-    class Meta:
-        db_table = 'charities'
+class Charity(gelato.models.addons.Charity):
 
     @property
     def outgoing_url(self):
@@ -1733,6 +1714,9 @@ class Charity(amo.models.ModelBase):
             return self.url
         return get_outgoing_url(unicode(self.url))
 
+
+    class Meta:
+        proxy = True
 
 class BlacklistedSlug(amo.models.ModelBase):
     name = models.CharField(max_length=255, unique=True, default='')

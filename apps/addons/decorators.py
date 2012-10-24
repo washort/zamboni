@@ -26,6 +26,7 @@ def addon_view(f, qs=Addon.objects.all):
                     url += '?' + request.GET.urlencode()
                 return http.HttpResponsePermanentRedirect(url)
         elif addon_id:
+            import pdb; pdb.set_trace()
             addon = get(slug=addon_id)
         elif app_slug:
             addon = get(app_slug=app_slug)
