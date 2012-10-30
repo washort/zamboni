@@ -22,7 +22,8 @@ from users.models import UserProfile
 
 from .compare import version_dict, version_int
 
-from gelato.models.versions import VersionBase, ApplicationsVersions
+from gelato.models.versions import (VersionBase, ApplicationsVersions, License,
+                                    LicenseManager)
 
 log = commonware.log.getLogger('z.versions')
 
@@ -467,35 +468,6 @@ models.signals.post_save.connect(clear_compatversion_cache_on_save,
 models.signals.post_delete.connect(clear_compatversion_cache_on_delete,
                                    sender=Version,
                                    dispatch_uid='clear_compatversion_cache_del')
-
-
-class LicenseManager(amo.models.ManagerBase):
-
-    def builtins(self):
-        return self.filter(builtin__gt=0).order_by('builtin')
-
-
-class License(amo.models.ModelBase):
-    OTHER = 0
-
-    name = TranslatedField(db_column='name')
-    url = models.URLField(null=True, verify_exists=False)
-    builtin = models.PositiveIntegerField(default=OTHER)
-    text = LinkifiedField()
-    on_form = models.BooleanField(default=False,
-        help_text='Is this a license choice in the devhub?')
-    some_rights = models.BooleanField(default=False,
-        help_text='Show "Some Rights Reserved" instead of the license name?')
-    icons = models.CharField(max_length=255, null=True,
-        help_text='Space-separated list of icon identifiers.')
-
-    objects = LicenseManager()
-
-    class Meta:
-        db_table = 'licenses'
-
-    def __unicode__(self):
-        return unicode(self.name)
 
 
 class VersionComment(amo.models.ModelBase):

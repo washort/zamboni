@@ -29,7 +29,7 @@ import amo.models
 from amo.decorators import use_master
 from amo.helpers import absolutify, shared_url
 from amo.utils import (cache_ns_key, chunked, JSONEncoder, send_mail, slugify,
-                       sorted_groupby, to_language, urlparams)
+                       to_language, urlparams)
 from amo.urlresolvers import get_outgoing_url, reverse
 from compat.models import CompatReport
 from files.models import File
@@ -47,6 +47,9 @@ from versions.models import Version
 from . import query, signals
 
 import gelato.models.addons
+from gelato.models.utils import sorted_groupby
+from gelato.models.addons import (Category, AddonCategoryBase,
+                                  AddonUser, AddonDependency)
 
 log = commonware.log.getLogger('z.addons')
 
@@ -1452,23 +1455,9 @@ class Persona(caching.CachingMixin, models.Model):
         return self.addon.listed_authors
 
 
-class AddonCategory(caching.CachingMixin, models.Model):
-    addon = models.ForeignKey(gelato.models.addons.AddonBase)
-    category = models.ForeignKey('Category')
-    feature = models.BooleanField(default=False)
-    feature_locales = models.CharField(max_length=255, default='', null=True)
-
-    objects = caching.CachingManager()
-
+class AddonCategory(AddonCategoryBase):
     class Meta:
-        db_table = 'addons_categories'
-        unique_together = ('addon', 'category')
-
-    def flush_urls(self):
-        urls = ['*/addon/%d/' % self.addon_id,
-                '*%s' % self.category.get_url_path(), ]
-        return urls
-
+        proxy = True
     @classmethod
     def creatured_random(cls, category, lang):
         return get_creatured_ids(category, lang)
@@ -1517,39 +1506,6 @@ class AddonType(amo.models.ModelBase):
         return reverse('browse.%s' % type)
 
 
-class AddonUser(caching.CachingMixin, models.Model):
-    addon = models.ForeignKey(gelato.models.addons.AddonBase)
-    user = UserForeignKey()
-    role = models.SmallIntegerField(default=amo.AUTHOR_ROLE_OWNER,
-                                    choices=amo.AUTHOR_CHOICES)
-    listed = models.BooleanField(_(u'Listed'), default=True)
-    position = models.IntegerField(default=0)
-
-    objects = caching.CachingManager()
-
-    def __init__(self, *args, **kwargs):
-        super(AddonUser, self).__init__(*args, **kwargs)
-        self._original_role = self.role
-        self._original_user_id = self.user_id
-
-    class Meta:
-        db_table = 'addons_users'
-
-    def flush_urls(self):
-        return self.addon.flush_urls() + self.user.flush_urls()
-
-
-class AddonDependency(models.Model):
-    addon = models.ForeignKey(gelato.models.addons.AddonBase,
-                              related_name='addons_dependencies')
-    dependent_addon = models.ForeignKey(gelato.models.addons.AddonBase,
-                                        related_name='dependent_on')
-
-    class Meta:
-        db_table = 'addons_dependencies'
-        unique_together = ('addon', 'dependent_addon')
-
-
 class BlacklistedGuid(amo.models.ModelBase):
     guid = models.CharField(max_length=255, unique=True)
     comments = models.TextField(default='', blank=True)
@@ -1559,51 +1515,6 @@ class BlacklistedGuid(amo.models.ModelBase):
 
     def __unicode__(self):
         return self.guid
-
-
-class Category(amo.models.ModelBase):
-    name = TranslatedField()
-    slug = models.SlugField(max_length=50, help_text='Used in Category URLs.')
-    type = models.PositiveIntegerField(db_column='addontype_id',
-                                       choices=do_dictsort(amo.ADDON_TYPE))
-    application = models.ForeignKey('applications.Application', null=True,
-                                    blank=True)
-    count = models.IntegerField('Addon count', default=0)
-    weight = models.IntegerField(default=0,
-        help_text='Category weight used in sort ordering')
-    misc = models.BooleanField(default=False)
-
-    addons = models.ManyToManyField(gelato.models.addons.AddonBase, through='AddonCategory')
-
-    class Meta:
-        db_table = 'categories'
-        verbose_name_plural = 'Categories'
-
-    def __unicode__(self):
-        return unicode(self.name)
-
-    def flush_urls(self):
-        urls = ['*%s' % self.get_url_path(), ]
-        return urls
-
-    def get_url_path(self):
-        try:
-            type = amo.ADDON_SLUGS[self.type]
-        except KeyError:
-            type = amo.ADDON_SLUGS[amo.ADDON_EXTENSION]
-        if settings.MARKETPLACE and self.type == amo.ADDON_PERSONA:
-            #TODO: (davor) this is a temp stub. Return category URL when done.
-            return reverse('themes.browse', args=[self.slug])
-        return reverse('browse.%s' % type, args=[self.slug])
-
-    @staticmethod
-    def transformer(addons):
-        qs = (Category.uncached.filter(addons__in=addons)
-              .extra(select={'addon_id': 'addons_categories.addon_id'}))
-        cats = dict((addon_id, list(cs))
-                    for addon_id, cs in sorted_groupby(qs, 'addon_id'))
-        for addon in addons:
-            addon.all_categories = cats.get(addon.id, [])
 
 
 class Feature(amo.models.ModelBase):

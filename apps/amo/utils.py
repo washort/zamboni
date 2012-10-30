@@ -54,7 +54,7 @@ from users.utils import UnsubscribeCode
 
 from . import logger_log as log
 
-from gelato.models.utils import clean_nl
+from gelato.models.utils import clean_nl, sorted_groupby
 
 metlog = settings.METLOG
 
@@ -98,17 +98,6 @@ def epoch(t):
 def _append_tz(t):
     tz = pytz.timezone(settings.TIME_ZONE)
     return tz.localize(t)
-
-
-def sorted_groupby(seq, key):
-    """
-    Given a sequence, we sort it and group it by a key.
-
-    key should be a string (used with attrgetter) or a function.
-    """
-    if not hasattr(key, '__call__'):
-        key = operator.attrgetter(key)
-    return itertools.groupby(sorted(seq, key=key), key=key)
 
 
 def paginate(request, queryset, per_page=20, count=None):
