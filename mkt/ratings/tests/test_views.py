@@ -2,6 +2,8 @@ import mock
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
+from django.db import connection
+
 import amo
 import amo.tests
 from access.models import Group, GroupUser
@@ -109,16 +111,24 @@ class TestCreate(ReviewTest):
                      'url https://example.com/foo/bar', 'host example.org',
                      'quote example%2eorg', 'IDNA www.xn--ie7ccp.xxx']:
             self.client.post(self.add, {'body': body, 'rating': 2})
-            ff = Review.objects.filter(addon=self.webapp)
-            rf = ReviewFlag.objects.filter(review=ff[0])
-            eq_(ff[0].flag, True)
-            eq_(ff[0].editorreview, True)
-            eq_(rf[0].note, 'URLs')
-            rf.delete()
-            # Clear the flags so we can test review revision flagging
-            ff[0].flag = False
-            ff[0].editorreview = False
-            ff[0].save()
+            cur = connection.cursor()
+            cur.execute(
+                """select rmf.flag_notes, r.flag, r.editorreview
+                   from reviews_moderation_flags as rmf, reviews as r
+                   where rmf.review_id = r.id and r.is_latest = 1
+                         and r.addon_id = %s and r.user_id = %s""",
+                (self.webapp.pk, self.user.pk))
+            eq_(cur.fetchone(), ('URLs', True, True))
+            cur.execute(
+                """delete rmf from reviews_moderation_flags as rmf, reviews as r
+                  where rmf.review_id = r.id and r.is_latest = 1
+                        and r.addon_id = %s and r.user_id = %s""",
+                (self.webapp.pk, self.user.pk))
+            cur.execute(
+                """update reviews as r set flag = 0, editorreview = 0
+                   where r.is_latest = 1 and r.addon_id = %s
+                         and r.user_id = %s""",
+                (self.webapp.pk, self.user.pk))
 
     def test_review_success(self):
         Review.objects.all().delete()
