@@ -22,6 +22,11 @@ class ReviewTest(amo.tests.TestCase):
     fixtures = ['base/users', 'webapps/337141-steamcube']
 
     def setUp(self):
+        if not hasattr(self, 'ara_mock'):
+            # This task runs in a post-save signal and is kind of
+            # slow. Only a few tests depend on it -- they are in
+            # SlowTestCreate.
+            self.ara_mock = mock.patch('reviews.tasks.addon_review_aggregates').__enter__()
         self.webapp = self.get_webapp()
         self.dev = UserProfile.objects.get(pk=31337)
         self.admin = UserProfile.objects.get(username='admin')
@@ -41,6 +46,11 @@ class ReviewTest(amo.tests.TestCase):
             user=self.dev,
             ip_address='0.0.0.0',
         )
+
+
+    def tearDown(self):
+        if self.ara_mock is not None:
+            self.ara_mock.__exit__()
 
     def get_webapp(self):
         return Webapp.objects.get(id=337141)
@@ -130,71 +140,6 @@ class TestCreate(ReviewTest):
                          and r.user_id = %s""",
                 (self.webapp.pk, self.user.pk))
 
-    def test_review_success(self):
-        Review.objects.all().delete()
-
-        qs = self.webapp.reviews
-        old_cnt = qs.count()
-        log_count = ActivityLog.objects.count()
-
-        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
-        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
-                             status_code=302)
-        eq_(qs.count(), old_cnt + 1)
-        eq_(ActivityLog.objects.count(), log_count + 1,
-            'Expected ADD_REVIEW entry')
-        eq_(self.get_webapp().total_reviews, 1)
-        eq_(Review.objects.all()[0].version, None)
-
-    def test_packaged_app_review_success(self):
-        self.webapp.update(is_packaged=True)
-
-        Review.objects.all().delete()
-
-        qs = self.webapp.reviews
-        old_cnt = qs.count()
-        log_count = ActivityLog.objects.count()
-
-        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
-        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
-                             status_code=302)
-        eq_(qs.count(), old_cnt + 1)
-        eq_(ActivityLog.objects.count(), log_count + 1,
-            'Expected ADD_REVIEW entry')
-        eq_(self.get_webapp().total_reviews, 1)
-        eq_(Review.objects.all()[0].version, self.webapp.current_version)
-
-    def test_review_success_edit(self):
-        qs = self.webapp.reviews
-        old_cnt = qs.count()
-        log_count = ActivityLog.objects.count()
-
-        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
-        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
-                             status_code=302)
-        eq_(qs.count(), old_cnt)
-        eq_(ActivityLog.objects.count(), log_count + 1,
-            'Expected EDIT_REVIEW entry')
-        eq_(self.get_webapp().total_reviews, 1)
-        eq_(Review.objects.all()[0].version, None)
-
-    def test_packaged_app_review_success_edit(self):
-        self.webapp.update(is_packaged=True)
-        Review.objects.all().update(version=self.webapp.current_version)
-
-        qs = self.webapp.reviews
-        old_cnt = qs.count()
-        log_count = ActivityLog.objects.count()
-
-        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
-        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
-                             status_code=302)
-        eq_(qs.count(), old_cnt)
-        eq_(ActivityLog.objects.count(), log_count + 1,
-            'Expected EDIT_REVIEW entry')
-        eq_(self.get_webapp().total_reviews, 1)
-        eq_(Review.objects.all()[0].version, self.webapp.current_version)
-
     def test_review_edit_review_initial(self):
         # Existing review? Then edit that review.
         r = self.client.get(self.add_mobile)
@@ -210,32 +155,6 @@ class TestCreate(ReviewTest):
         self.review.delete()
         r = self.client.get(self.add_mobile)
         eq_(pq(r.content)('textarea[name=body]').html(), None)
-
-    def test_packaged_app_review_next_version(self):
-        self.webapp.update(is_packaged=True)
-        old_version = self.webapp.current_version
-        Review.objects.all().update(version=old_version)
-
-        # Add a new version.
-        amo.tests.version_factory(addon=self.webapp)
-        self.webapp.update(_current_version=self.webapp.versions.latest())
-        assert not self.get_webapp().current_version == old_version, (
-            u'Expected versions to be different.')
-
-        # Test adding a review on this new version.
-        qs = self.webapp.reviews
-        old_cnt = qs.count()
-        log_count = ActivityLog.objects.count()
-
-        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
-        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
-                             status_code=302)
-        eq_(qs.count(), old_cnt + 1)
-        eq_(ActivityLog.objects.count(), log_count + 1,
-            'Expected EDIT_REVIEW entry')
-        eq_(self.get_webapp().total_reviews, 1)
-        eq_(Review.objects.valid().filter(is_latest=True)[0].version,
-            self.webapp.current_version)
 
     def test_review_success_dup(self):
         Review.objects.create(
@@ -411,20 +330,6 @@ class TestCreate(ReviewTest):
         r = self.client.get(self.add)
         eq_(r.status_code, 200)
 
-    def test_review_link_plural(self):
-        # We have reviews.
-        self.webapp.update(total_reviews=2)
-        r = self.client.get(self.detail)
-        eq_(pq(r.content)('.average-rating').text(),
-            '2 reviews Rated 4 out of 5 stars')
-
-    def test_review_link_singular(self):
-        # We have one review.
-        self.webapp.update(total_reviews=1)
-        r = self.client.get(self.detail)
-        eq_(pq(r.content)('.average-rating').text(),
-            '1 review Rated 4 out of 5 stars')
-
     def test_support_link(self):
         # Test no link if no support url or contribution.
         r = self.client.get(self.add_mobile)
@@ -499,6 +404,123 @@ class TestCreate(ReviewTest):
         self.client.post(self.add, {'body': 'x', 'rating': 4},
                          HTTP_USER_AGENT='test-agent-2')
         eq_(Review.objects.order_by('-created')[0].client_data, client_data)
+
+
+class SlowTestCreate(ReviewTest):
+    def setUp(self):
+        #Block creation of mock for addon_review_aggregates.
+        self.ara_mock = None
+        super(SlowTestCreate, self).setUp()
+        self.add = self.webapp.get_ratings_url('add')
+        self.add_mobile = self.add + '?mobile=true'
+        self.user = self.regular
+        self.log_in_regular()
+        self.detail = self.webapp.get_detail_url()
+
+    def test_review_success_edit(self):
+        qs = self.webapp.reviews
+        old_cnt = qs.count()
+        log_count = ActivityLog.objects.count()
+
+        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
+        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
+                             status_code=302)
+        eq_(qs.count(), old_cnt)
+        eq_(ActivityLog.objects.count(), log_count + 1,
+            'Expected EDIT_REVIEW entry')
+        eq_(self.get_webapp().total_reviews, 1)
+        eq_(Review.objects.all()[0].version, None)
+
+    def test_review_success(self):
+        Review.objects.all().delete()
+
+        qs = self.webapp.reviews
+        old_cnt = qs.count()
+        log_count = ActivityLog.objects.count()
+
+        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
+        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
+                             status_code=302)
+        eq_(qs.count(), old_cnt + 1)
+        eq_(ActivityLog.objects.count(), log_count + 1,
+            'Expected ADD_REVIEW entry')
+        eq_(self.get_webapp().total_reviews, 1)
+        eq_(Review.objects.all()[0].version, None)
+
+    def test_packaged_app_review_success(self):
+        self.webapp.update(is_packaged=True)
+
+        Review.objects.all().delete()
+
+        qs = self.webapp.reviews
+        old_cnt = qs.count()
+        log_count = ActivityLog.objects.count()
+
+        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
+        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
+                             status_code=302)
+        eq_(qs.count(), old_cnt + 1)
+        eq_(ActivityLog.objects.count(), log_count + 1,
+            'Expected ADD_REVIEW entry')
+        eq_(self.get_webapp().total_reviews, 1)
+        eq_(Review.objects.all()[0].version, self.webapp.current_version)
+
+    def test_packaged_app_review_success_edit(self):
+        self.webapp.update(is_packaged=True)
+        Review.objects.all().update(version=self.webapp.current_version)
+
+        qs = self.webapp.reviews
+        old_cnt = qs.count()
+        log_count = ActivityLog.objects.count()
+
+        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
+        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
+                             status_code=302)
+        eq_(qs.count(), old_cnt)
+        eq_(ActivityLog.objects.count(), log_count + 1,
+            'Expected EDIT_REVIEW entry')
+        eq_(self.get_webapp().total_reviews, 1)
+        eq_(Review.objects.all()[0].version, self.webapp.current_version)
+
+    def test_packaged_app_review_next_version(self):
+        self.webapp.update(is_packaged=True)
+        old_version = self.webapp.current_version
+        Review.objects.all().update(version=old_version)
+
+        # Add a new version.
+        amo.tests.version_factory(addon=self.webapp)
+        self.webapp.update(_current_version=self.webapp.versions.latest())
+        assert not self.get_webapp().current_version == old_version, (
+            u'Expected versions to be different.')
+
+        # Test adding a review on this new version.
+        qs = self.webapp.reviews
+        old_cnt = qs.count()
+        log_count = ActivityLog.objects.count()
+
+        r = self.client.post(self.add, {'body': 'xx', 'rating': 1})
+        self.assertRedirects(r, self.webapp.get_ratings_url('list'),
+                             status_code=302)
+        eq_(qs.count(), old_cnt + 1)
+        eq_(ActivityLog.objects.count(), log_count + 1,
+            'Expected EDIT_REVIEW entry')
+        eq_(self.get_webapp().total_reviews, 1)
+        eq_(Review.objects.valid().filter(is_latest=True)[0].version,
+            self.webapp.current_version)
+
+    def test_review_link_plural(self):
+        # We have reviews.
+        self.webapp.update(total_reviews=2)
+        r = self.client.get(self.detail)
+        eq_(pq(r.content)('.average-rating').text(),
+            '2 reviews Rated 4 out of 5 stars')
+
+    def test_review_link_singular(self):
+        # We have one review.
+        self.webapp.update(total_reviews=1)
+        r = self.client.get(self.detail)
+        eq_(pq(r.content)('.average-rating').text(),
+            '1 review Rated 4 out of 5 stars')
 
 
 class TestListing(ReviewTest):
