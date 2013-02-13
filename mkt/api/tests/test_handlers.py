@@ -12,6 +12,7 @@ from addons.models import Addon, AddonUser, Category, Preview
 import amo
 from amo.tests import AMOPaths
 from files.models import FileUpload
+from reviews.models import Review
 from mkt.api.tests.test_oauth import BaseOAuth, OAuthClient
 from mkt.constants import APP_IMAGE_SIZES
 from mkt.site.fixtures import fixture
@@ -686,3 +687,41 @@ class TestPreviewHandler(BaseOAuth, AMOPaths):
                         {'resource_name': 'preview', 'pk': 123})
         res = self.client.get(self.get_url)
         eq_(res.status_code, 404)
+
+
+@patch.object(settings, 'SITE_URL', 'http://api/')
+class TestRatingHandler(BaseOAuth, AMOPaths):
+    fixtures = fixture('user_2519', 'webapp_337141')
+
+    def setUp(self):
+        super(TestRatingHandler, self).setUp()
+        self.app = Webapp.objects.get(pk=337141)
+        self.user = UserProfile.objects.get(pk=2519)
+
+    def test_get(self):
+        AddonUser.objects.create(user=self.user, addon=self.app)
+        res = self.client.get(('api_dispatch_list',
+                               {'resource_name': 'rating'},
+                               {'addon': self.app.pk}))
+        data = json.loads(res.content)
+        eq_(data['meta']['average'], self.app.average_rating)
+        eq_(data['meta']['slug'], self.app.app_slug)
+        assert not data['user']['can_rate']
+        assert not data['user']['has_rated']
+
+    def test_non_owner(self):
+        res = self.client.get(('api_dispatch_list',
+                               {'resource_name': 'rating'},
+                               {'addon': self.app.pk}))
+        data = json.loads(res.content)
+        assert data['user']['can_rate']
+        assert not data['user']['has_rated']
+
+    def test_already_rated(self):
+        Review.objects.create(addon=self.app, user=self.user, body="yes")
+        res = self.client.get(('api_dispatch_list',
+                               {'resource_name': 'rating'},
+                               {'addon': self.app.pk}))
+        data = json.loads(res.content)
+        assert data['user']['can_rate']
+        assert data['user']['has_rated']
