@@ -1,4 +1,5 @@
 import base64
+import collections
 import json
 import os
 import tempfile
@@ -7,18 +8,18 @@ from django.conf import settings
 
 from mock import patch
 from nose.tools import eq_
+import waffle
 
 from addons.models import Addon, AddonUser, Category, Preview
 import amo
-from amo.tests import AMOPaths
+from amo.tests import AMOPaths, TestCase
 from files.models import FileUpload
 from reviews.models import Review
-from mkt.api.tests.test_oauth import BaseOAuth, OAuthClient
+from mkt.api.tests.test_oauth import BaseOAuth, OAuthClient, get_absolute_url
 from mkt.constants import APP_IMAGE_SIZES
 from mkt.site.fixtures import fixture
 from mkt.webapps.models import ImageAsset, Webapp
 from users.models import UserProfile
-
 
 class ValidationHandler(BaseOAuth):
     fixtures = fixture('user_2519', 'user_admin')
@@ -786,3 +787,30 @@ class TestRatingHandler(BaseOAuth, AMOPaths):
                                {'app': self.app.pk}))
         data = json.loads(res.content)
         eq_(data['objects'][0]['replies'][0]['body'], "no")
+
+
+class TestLoginHandler(TestCase):
+    @patch.object(waffle, 'switch_is_active', lambda x: True)
+    @patch('requests.post')
+    def test_login_success(self, http_request):
+        FakeResponse = collections.namedtuple("FakeResponse",
+                                              "status_code content")
+        http_request.return_value = FakeResponse(200, json.dumps(
+                {'status': 'okay',
+                 'email': 'cvan@mozilla.com'}))
+        res = self.client.post('/api/apps/user/login',
+                               dict(assertion='fake-assertion',
+                                    audience='fakeamo.org'))
+        eq_(res.status_code, 200)
+
+    @patch.object(waffle, 'switch_is_active', lambda x: True)
+    @patch('requests.post')
+    def test_login_failure(self, http_request):
+        FakeResponse = collections.namedtuple("FakeResponse",
+                                              "status_code content")
+        http_request.return_value = FakeResponse(200, json.dumps(
+                {'status': 'busted'}))
+        res = self.client.post('/api/apps/user/login',
+                               dict(assertion='fake-assertion',
+                                    audience='fakeamo.org'))
+        eq_(res.status_code, 401)

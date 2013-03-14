@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+from django.conf.urls import url
 from django.db import transaction
 
 from celery_tasktree import TaskTree
@@ -19,18 +21,21 @@ from amo.utils import no_translation
 from constants.applications import DEVICE_TYPES
 from files.models import FileUpload, Platform
 from lib.metrics import record_action
+from reviews.models import Review
+from users.views import browserid_login
 from mkt.api.authentication import (AppOwnerAuthorization,
                                     OptionalAuthentication,
                                     OwnerAuthorization,
                                     MarketplaceAuthentication)
-from mkt.api.base import MarketplaceModelResource
+from mkt.api.base import (MarketplaceResource, MarketplaceModelResource,
+                          CORSResource)
 from mkt.api.forms import (CategoryForm, DeviceTypeForm, NewPackagedForm,
                            PreviewArgsForm, PreviewJSONForm, StatusForm,
                            UploadForm)
 from mkt.developers import tasks
 from mkt.developers.forms import NewManifestForm, PreviewForm
 from mkt.submit.forms import AppDetailsBasicForm
-from reviews.models import Review
+
 
 log = commonware.log.getLogger('z.api')
 
@@ -98,7 +103,7 @@ class ValidationResource(MarketplaceModelResource):
         return bundle
 
 
-class AppResource(MarketplaceModelResource):
+class AppResource(CORSResource, MarketplaceModelResource):
     previews = fields.ToManyField('mkt.api.resources.PreviewResource',
                                   'previews', readonly=True)
 
@@ -404,3 +409,31 @@ class RatingResource(MarketplaceModelResource):
             data['user'] = {'can_rate': not addon.has_author(request.user),
                             'has_rated': existing_review}
         return data
+
+
+class LoginResource(CORSResource, MarketplaceResource):
+    class Meta:
+        resource_name = 'user'
+        always_return_data = True
+        allowed_methods = ['post']
+        authorization = Authorization()
+
+    def base_urls(self):
+        return [url(r"^user/login$", self.wrap_view('dispatch_list'),
+                    name="api_dispatch_list")]
+
+    def post_list(self, request, **kwargs):
+        r = browserid_login(
+            request, browserid_audience=lambda r: settings.FIREPLACE_URL)
+        if r.status_code == 200:
+            email = request.user.email
+            return self.create_response(
+                request,
+                {'error': None,
+                 'settings': {
+                        'display_name': email.split('@')[0],
+                        'email': email,
+                        'region': 'usa',
+                        }
+                 })
+        return r
