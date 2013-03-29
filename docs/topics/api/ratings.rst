@@ -169,3 +169,20 @@ The following validation is performed on the request:
   - They are the original review author.
   - They are an editor that is not an author of the app.
   - They are in a group with Users:Edit or Addons:Edit privileges
+
+
+Flagging as spam
+================
+
+.. http:post:: /api/apps/rating_flag
+
+    Flag a rating as spam.
+
+    **Request**:
+
+    .. sourcecode:: http
+
+        POST /api/apps/rating_flag
+
+        {'review': '/api/apps/rating/<ID>'}
+

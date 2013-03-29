@@ -16,7 +16,7 @@ from mkt.api.base import MarketplaceModelResource
 from mkt.api.resources import AppResource, UserResource
 from mkt.ratings.forms import ReviewForm
 from mkt.webapps.models import Webapp
-from reviews.models import Review
+from reviews.models import Review, ReviewFlag
 
 log = commonware.log.getLogger('z.api')
 
@@ -33,7 +33,6 @@ class RatingResource(MarketplaceModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'put', 'delete']
         always_return_data = True
-        # TODO figure out authentication/authorization soon.
         authentication = (OAuthAuthentication(), SharedSecretAuthentication())
         authorization = Authorization()
         fields = ['rating', 'body']
@@ -148,3 +147,21 @@ class RatingResource(MarketplaceModelResource):
             data['user'] = {'can_rate': not addon.has_author(request.user),
                             'has_rated': existing_review}
         return data
+
+
+class RatingFlagResource(MarketplaceModelResource):
+    review = fields.ToOneField(RatingResource, 'review')
+
+    class Meta:
+        queryset = ReviewFlag.objects.all()
+        resource_name = 'rating_flag'
+        list_allowed_methods = ['post']
+        detail_allowed_methods = []
+        authentication = OAuthAuthentication()
+        authorization = Authorization()
+        fields = ['review', 'flag', 'note']
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        return MarketplaceModelResource.obj_create(
+            self, bundle, request=request, user=request.amo_user,
+            flag=ReviewFlag.OTHER, note='URLs')

@@ -5,7 +5,7 @@ from tastypie.api import Api
 from mkt.api.resources import (AppResource, CategoryResource,
                                FeaturedHomeResource, PreviewResource,
                                StatusResource, ValidationResource)
-from mkt.ratings.resources import RatingResource
+from mkt.ratings.resources import RatingResource, RatingFlagResource
 from mkt.search.api import SearchResource
 
 
@@ -17,6 +17,7 @@ api.register(FeaturedHomeResource())
 api.register(PreviewResource())
 api.register(SearchResource())
 api.register(StatusResource())
+api.register(RatingFlagResource())
 api.register(RatingResource())
 
 urlpatterns = patterns('',
