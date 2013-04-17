@@ -122,13 +122,16 @@ class OAuthServer(oauth1.Server):
 @csrf_view_exempt
 def access_request(request):
     oa = OAuthServer()
-    valid, oauth_request = oa.verify_access_token_request(
-        request.build_absolute_uri(),
-        request.method,
-        request.body,
-        {'Authorization': request.META.get('HTTP_AUTHORIZATION'),
-         'Content-Type':  request.META.get('CONTENT_TYPE')
-         })
+    try:
+        valid, oauth_request = oa.verify_access_token_request(
+            request.build_absolute_uri(),
+            request.method,
+            request.body,
+            {'Authorization': request.META.get('HTTP_AUTHORIZATION'),
+             'Content-Type':  request.META.get('CONTENT_TYPE')
+             })
+    except ValueError:
+        valid = False
     if valid:
         req_t = Token.objects.get(
             token_type=REQUEST_TOKEN,
@@ -151,13 +154,16 @@ def access_request(request):
 @csrf_view_exempt
 def token_request(request):
     oa = OAuthServer()
-    valid, oauth_request = oa.verify_request_token_request(
-        request.build_absolute_uri(),
-        request.method,
-        request.body,
-        {'Authorization': request.META.get('HTTP_AUTHORIZATION'),
-         'Content-Type':  request.META.get('CONTENT_TYPE')
-         })
+    try:
+        valid, oauth_request = oa.verify_request_token_request(
+            request.build_absolute_uri(),
+            request.method,
+            request.body,
+            {'Authorization': request.META.get('HTTP_AUTHORIZATION'),
+             'Content-Type':  request.META.get('CONTENT_TYPE')
+             })
+    except ValueError:
+        valid = False
     if valid:
         consumer = Access.objects.get(key=oauth_request.client_key)
         t = Token.generate_new(token_type=REQUEST_TOKEN, creds=consumer)
@@ -200,3 +206,6 @@ def authorize(request):
         elif 'deny' in request.POST:
             t.delete()
             return HttpResponse(status=200)
+    else:
+        log.error('Invalid OAuth request for user access authorization')
+        return HttpResponse(status=401)
