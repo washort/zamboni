@@ -1,5 +1,6 @@
 from tower import ugettext as _
 
+MINIMUM_PRICE_TIER_FOR_NON_CARRIER_BILLING = 10
 
 PENDING = 'PENDING'
 COMPLETED = 'OK'
