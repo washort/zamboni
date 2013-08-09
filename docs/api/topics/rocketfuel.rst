@@ -40,7 +40,7 @@ Create
 
     Create a collection.
 
-    .. note:: Authentication is required.
+    .. note:: Authentication and the 'Apps:Publisher' permission are required.
 
     **Request**:
 
@@ -76,7 +76,7 @@ Update
 
     Update a collection.
 
-    .. note:: Authentication is required.
+    .. note:: Authentication and the 'Apps:Publisher' permission are required.
 
     **Request**:
 
@@ -111,7 +111,7 @@ Add Apps
 
     Add an application to a single collection.
 
-    .. note:: Authentication is required.
+    .. note:: Authentication and the 'Apps:Publisher' permission are required.
 
     **Request**:
 
@@ -134,7 +134,7 @@ Remove Apps
 
     Remove an application from a single collection.
 
-    .. note:: Authentication is required.
+    .. note:: Authentication and the 'Apps:Publisher' permission are required.
 
     **Request**:
 
@@ -157,7 +157,8 @@ Reorder Apps
 
     Reorder applications in a collection.
 
-    .. note:: Authentication is required.
+
+    .. note:: Authentication and the 'Apps:Publisher' permission are required.
 
     **Request**:
 
@@ -178,3 +179,22 @@ Reorder Apps
     :status 400: all apps in the collection not represented in response body.
         For convenience, a list of all apps in the collection will be included
         in the response.
+
+Image
+-----
+
+.. http:get:: /api/v1/rocketfuel/collections/(int:id)/image/
+
+    Get the image for a collection.
+
+    .. note:: Authentication is optional.
+
+
+.. http:put:: /api/v1/rocketfuel/collections/(int:id)/image/
+
+    Set the image for a collection.
+
+    .. note:: Authentication and the 'Apps:Publisher' permission are required.
+
+    :param image: A base64 encoded image.
+    :type image: string

@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
+import os
+import uuid
+
 from rest_framework import serializers
 from tower import ugettext_lazy as _
+
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.files.base import File
+from django.core.files.storage import default_storage as storage
 
 from mkt.api.fields import TranslationSerializerField
 from mkt.webapps.utils import app_to_dict
@@ -50,3 +58,27 @@ class CollectionSerializer(serializers.ModelSerializer):
                 u'collection for the same category/carrier/region combination.'
             )
         return instance
+
+
+class DataURLImageField(serializers.CharField):
+    def from_native(self, data):
+        if not data.startswith('data:'):
+            raise ValidationError('Not a data URI.')
+        metadata, encoded = data.rsplit(',', 1)
+        parts = metadata.rsplit(';', 1)
+        if parts[-1] == 'base64':
+            content = encoded.decode('base64')
+            tmp_dst = os.path.join(settings.TMP_PATH, 'icon', uuid.uuid4().hex)
+            with storage.open(tmp_dst, 'wb') as f:
+                f.write(content)
+            tmp = File(storage.open(tmp_dst))
+            return serializers.ImageField().from_native(tmp)
+        else:
+            raise ValidationError('Not a base64 data URI.')
+
+    def to_native(self, value):
+        return value.name
+
+
+class CollectionImageSerializer(serializers.Serializer):
+    image = DataURLImageField()
