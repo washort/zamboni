@@ -463,7 +463,6 @@ def _login(request, template=None, data=None, dont_redirect=False):
                     signature='AUTHFAIL',
                     msg='The username was invalid')
             pass
-
     partial_form = partial(forms.AuthenticationForm, use_recaptcha=limited)
     r = auth.views.login(request, template_name=template,
                          redirect_field_name='to',
@@ -481,11 +480,15 @@ def _login(request, template=None, data=None, dont_redirect=False):
             request = _clean_next_url(request)
             r = http.HttpResponseRedirect(request.GET['to'])
 
+        #We look up UserProfile directly by email address instead of
+        #calling get_profile because we may have more than one
+        #UserProfile pointing at a django user record.
+        user = UserProfile.objects.get(email=request.user.email)
+
+
         # Succsesful log in according to django.  Now we do our checks.  I do
         # the checks here instead of the form's clean() because I want to use
         # the messages framework and it's not available in the request there.
-        user = request.user.get_profile()
-
         if user.deleted:
             logout(request)
             log.warning(u'Attempt to log in with deleted account (%s)' % user)
