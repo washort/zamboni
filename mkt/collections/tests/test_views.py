@@ -1234,6 +1234,7 @@ class TestCollectionImageViewSet(RestOAuth):
         res = self.client.put(self.url, 'data:image/gif;base64,' + IMAGE_DATA)
         eq_(res.status_code, 204)
         assert os.path.exists(self.collection.image_path())
+        ok_(Collection.objects.get(pk=self.collection.pk).has_image)
         im = Image.open(self.collection.image_path())
         im.verify()
         assert im.format == 'PNG'

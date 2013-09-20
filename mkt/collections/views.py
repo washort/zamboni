@@ -198,4 +198,5 @@ class CollectionImageViewSet(CORSMixin, viewsets.ViewSet,
         i = Image.open(img)
         with storage.open(obj.image_path(), 'wb') as f:
             i.save(f, 'png')
+        obj.update(has_image=True)
         return Response(status=204)
