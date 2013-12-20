@@ -754,7 +754,8 @@ class TestCompareLink(amo.tests.TestCase):
 
 
 class TestGetPosition(amo.tests.TestCase):
-    fixtures = ['webapps/337141-steamcube']
+
+    fixtures = fixture('webapp_337141')
 
     def setUp(self):
         # Add a public, reviewed app for measure.

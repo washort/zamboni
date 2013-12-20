@@ -12,7 +12,7 @@ import amo
 import amo.tests
 
 from mkt.webapps.models import Webapp
-
+from mkt.site.fixtures import fixture
 
 
 class TestPackagedManifest(amo.tests.TestCase):
