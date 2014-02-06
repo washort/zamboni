@@ -51,6 +51,9 @@ class CollectionFilterSet(FilterSet):
         queryset=Category.objects.filter(type=amo.ADDON_WEBAPP),
         sluggable_to_field_name='slug',)
 
+    # Why is this here?
+    cat.field
+
     class Meta:
         model = Collection
         # All fields are provided above, but django-filter needs Meta.field to

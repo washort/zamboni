@@ -11,6 +11,7 @@ from amo.urlresolvers import reverse
 from editors.models import RereviewQueue
 from users.models import UserProfile
 
+from mkt.site.fixtures import fixture
 
 class TestGenerateError(amo.tests.TestCase):
     fixtures = ['base/users']
@@ -102,11 +103,11 @@ class TestAddonAdmin(amo.tests.TestCase):
         doc = pq(res.content)
         rows = doc('#result_list tbody tr')
         eq_(rows.length, 1)
-        eq_(rows.find('a').attr('href'), '337141/')
+        eq_(rows.find('a').attr('href'), '/admin/models/addons/addon/337141/')
 
 
 class TestManifestRevalidation(amo.tests.TestCase):
-    fixtures = ['webapps/337141-steamcube', 'base/users']
+    fixtures = fixture('webapp_337141') + ['base/users']
 
     def setUp(self):
         self.url = reverse('zadmin.manifest_revalidation')
@@ -116,7 +117,7 @@ class TestManifestRevalidation(amo.tests.TestCase):
         response = self.client.post(self.url)
         eq_(response.status_code, 200)
         self.assertTrue('Manifest revalidation queued' in response.content)
-        eq_(RereviewQueue.objects.count(), current_count + 1)
+        eq_(len(RereviewQueue.objects.all()), current_count + 1)
 
     def test_revalidation_by_reviewers(self):
         # Sr Reviewers users should be able to use the feature.

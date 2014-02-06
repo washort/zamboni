@@ -1316,7 +1316,7 @@ class TestDomainFromURL(unittest.TestCase):
 
 
 class TestTransformer(amo.tests.TestCase):
-    fixtures = ['webapps/337141-steamcube']
+    fixtures = fixture('webapp_337141')
 
     def setUp(self):
         self.device = DEVICE_TYPES.keys()[0]

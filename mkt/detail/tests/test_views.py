@@ -16,7 +16,7 @@ from mkt.webapps.models import Webapp
 
 
 class TestPackagedManifest(amo.tests.TestCase):
-    fixtures = ['base/users', 'webapps/337141-steamcube']
+    fixtures = ['base/users'] + fixture('webapp_337141')
 
     def setUp(self):
         self.app = Webapp.objects.get(pk=337141)
