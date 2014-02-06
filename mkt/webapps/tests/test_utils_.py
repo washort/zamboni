@@ -125,7 +125,7 @@ class TestAppSerializer(amo.tests.TestCase):
         self.assertSetEqual(res['categories'], ['cat1', 'cat2'])
 
     def test_content_ratings(self):
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
         self.app.set_content_ratings({
             ratingsbodies.CLASSIND: ratingsbodies.CLASSIND_18,
             ratingsbodies.GENERIC: ratingsbodies.GENERIC_18,
@@ -145,7 +145,7 @@ class TestAppSerializer(amo.tests.TestCase):
              'description': unicode(ratingsbodies.DESC_LAZY) % 18})
 
     def test_content_ratings_by_region(self):
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
         self.app.set_content_ratings({
             ratingsbodies.CLASSIND: ratingsbodies.CLASSIND_18,
             ratingsbodies.GENERIC: ratingsbodies.GENERIC_18,
@@ -162,7 +162,7 @@ class TestAppSerializer(amo.tests.TestCase):
         assert 'br' in res['regions']
 
     def test_content_ratings_regions(self):
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
         res = self.serialize(self.app)
         region_rating_bodies = res['content_ratings']['regions']
         eq_(region_rating_bodies['br'], 'classind')
@@ -186,7 +186,7 @@ class TestAppSerializer(amo.tests.TestCase):
 
     def test_dehydrate_content_rating_old_es(self):
         """Test dehydrate works with old ES mapping."""
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
 
         rating = dehydrate_content_rating(
             [json.dumps({'body': u'CLASSIND',
@@ -197,7 +197,7 @@ class TestAppSerializer(amo.tests.TestCase):
         eq_(rating, {})
 
     def test_filter_iarc_obj_by_region_only(self):
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
 
         region_map = {
             'us': 'esrb',
@@ -212,7 +212,7 @@ class TestAppSerializer(amo.tests.TestCase):
         eq_(_filter_iarc_obj_by_region(region_map, region='DNE'), region_map)
 
     def test_filter_iarc_obj_by_region_and_body(self):
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
 
         classind_rating = {
             'body': u'CLASSIND',

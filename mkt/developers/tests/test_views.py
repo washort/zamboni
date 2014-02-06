@@ -424,13 +424,14 @@ class TestPublicise(amo.tests.TestCase):
     def test_publicise(self, update_name, update_locales,
                        update_cached_manifests, index_webapps,
                        storefront_mock):
-        self.create_switch('iarc')
+        self.create_switch('iarc', db=True)
 
         index_webapps.delay.reset_mock()
         eq_(update_name.call_count, 0)
         eq_(update_locales.call_count, 0)
         eq_(update_cached_manifests.delay.call_count, 0)
         eq_(storefront_mock.call_count, 0)
+        eq_(self.get_webapp().status, amo.STATUS_PUBLIC_WAITING)
 
         res = self.client.post(self.publicise_url)
         eq_(res.status_code, 302)
