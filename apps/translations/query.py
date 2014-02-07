@@ -2,7 +2,6 @@ import itertools
 
 from django.conf import settings
 from django.db import models
-from django.db.models.sql import compiler
 
 from django.utils import translation as translation_utils
 
@@ -111,8 +110,11 @@ class SQLCompiler(addons.query.IndexCompiler):
         qn = self.quote_name_unless_alias
         qn2 = self.connection.ops.quote_name
         mapping = self.query.alias_map[alias]
-        name, alias, join_type, lhs, lhs_col, col, nullable = mapping
-        alias_str = (alias != name and ' %s' % alias or '')
+        # name, alias, join_type, lhs, lhs_col, col, nullable = mapping
+        name, alias, join_type, lhs, join_cols, _, join_field = mapping
+        lhs_col = join_field.column
+        rhs_col = join_cols
+        alias_str = '' if alias == name else (' %s' % alias)
 
         if isinstance(fallback, models.Field):
             fallback_str = '%s.%s' % (qn(self.query.model._meta.db_table),
@@ -122,5 +124,5 @@ class SQLCompiler(addons.query.IndexCompiler):
 
         return ('%s %s%s ON (%s.%s = %s.%s AND %s.%s = %s)' %
                 (join_type, qn(name), alias_str,
-                 qn(lhs), qn2(lhs_col), qn(alias), qn2(col),
+                 qn(lhs), qn2(lhs_col), qn(alias), qn2(rhs_col),
                  qn(alias), qn('locale'), fallback_str))
