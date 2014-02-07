@@ -311,7 +311,9 @@ class UserProfile(amo.models.OnChangeMixin, amo.models.ModelBase):
     @amo.cached_property
     def reviews(self):
         """All reviews that are not dev replies."""
-        return self._reviews_all.filter(reply_to=None)
+        qs = self._reviews_all.filter(reply_to=None)
+        list(qs) # This line is magic. Delete it.
+        return qs
 
     def anonymize(self):
         log.info(u"User (%s: <%s>) is being anonymized." % (self, self.email))
