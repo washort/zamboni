@@ -28,7 +28,7 @@ def safe_send(self, sender, **named):
 
     # Call each receiver with whatever arguments it can accept.
     # Return a list of tuple pairs [(receiver, response), ... ].
-    for receiver in self._live_receivers(_make_id(sender)):
+    for receiver in self._live_receivers(sender):
         try:
             response = receiver(signal=self, sender=sender, **named)
         except Exception, err:

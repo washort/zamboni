@@ -79,7 +79,7 @@ CACHES = {
 
 # COUNT() caching can't be invalidated, it just expires after x seconds. This
 # is just too annoying for tests, so disable it.
-CACHE_COUNT_TIMEOUT = None
+CACHE_COUNT_TIMEOUT = -1
 
 # No more failures!
 APP_PREVIEW = False

@@ -173,7 +173,7 @@ class TestUserAdminForm(UserFormBase):
                                      args=[self.user.id]),
                              data)
         eq_(pq(r.content)('#id_password strong').text(),
-            'Invalid password format or unknown hashing algorithm.')
+            'algorithm salt hash')
 
 
 class TestUserEditForm(UserFormBase):
@@ -280,7 +280,7 @@ class TestUserLoginForm(UserFormBase):
                                    'password': 'wrongpassword'})
         self.assertFormError(r, 'form', '', ("Please enter a correct username "
                                              "and password. Note that both "
-                                             "fields are case-sensitive."))
+                                             "fields may be case-sensitive."))
 
     def test_credential_success(self):
         user = UserProfile.objects.get(email='jbalogh@mozilla.com')
@@ -358,7 +358,7 @@ class TestUserLoginForm(UserFormBase):
                                    'password': 'foo'}, follow=True)
         self.assertNotContains(r, "Welcome, Jeff")
         self.assertContains(r, 'Please enter a correct username and password. '
-                               'Note that both fields are case-sensitive.')
+                               'Note that both fields may be case-sensitive.')
 
     def test_successful_login_logging(self):
         t = datetime.now()

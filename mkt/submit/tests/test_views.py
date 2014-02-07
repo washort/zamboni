@@ -919,7 +919,7 @@ class TestDetails(TestSubmit):
         self._step()
         r = self.client.post(self.url, self.get_dict(support_email='xxx'))
         self.assertFormError(r, 'form_basic', 'support_email',
-                             'Enter a valid e-mail address.')
+                             'Enter a valid email address.')
 
     def test_categories_required(self):
         self._step()

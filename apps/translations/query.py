@@ -27,20 +27,23 @@ def order_by_translation(qs, fieldname):
     model = qs.model
     field = model._meta.get_field(fieldname)
 
-    # (lhs, rhs, lhs_col, rhs_col) => lhs.lhs_col = rhs.rhs_col
+    # connection is a tuple (lhs, table, join_cols)
     connection = (model._meta.db_table, field.rel.to._meta.db_table,
-                  field.column, field.rel.field_name)
+                  field.rel.field_name)
 
     # Doing the manual joins is flying under Django's radar, so we need to make
     # sure the initial alias (the main table) is set up.
     if not qs.query.tables:
         qs.query.get_initial_alias()
 
-    # Force two LEFT JOINs against the translation table.  We'll hook up the
+    # Force two new (reuse is an empty set) LEFT OUTER JOINs against the
+    # translation table, without reusing any aliases. We'll hook up the
     # language fallbacks later.
     qs.query = qs.query.clone(TranslationQuery)
-    t1 = qs.query.join(connection, always_create=True, promote=True)
-    t2 = qs.query.join(connection, always_create=True, promote=True)
+    t1 = qs.query.join(connection, join_field=field,
+                       outer_if_first=True, reuse=set())
+    t2 = qs.query.join(connection, join_field=field,
+                       outer_if_first=True, reuse=set())
     qs.query.translation_aliases = {field: (t1, t2)}
 
     f1, f2 = '%s.`localized_string`' % t1, '%s.`localized_string`' % t2

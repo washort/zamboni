@@ -441,7 +441,8 @@ class BaseCompatFormSet(BaseModelFormSet):
         self.initial = ([{} for _ in qs] +
                         [{'application': a.id} for a in apps])
         self.extra = len(amo.APP_GUIDS) - len(self.forms)
-        self._construct_forms()
+        del self.forms
+        self.forms
 
     def clean(self):
         if any(self.errors):
@@ -896,7 +897,6 @@ class PackagerCompatBaseFormSet(BaseFormSet):
     def __init__(self, *args, **kw):
         super(PackagerCompatBaseFormSet, self).__init__(*args, **kw)
         self.initial = [{'application': a} for a in amo.APP_USAGE]
-        self._construct_forms()
 
     def clean(self):
         if any(self.errors):
