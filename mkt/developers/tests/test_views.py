@@ -131,7 +131,8 @@ class TestAppBreadcrumbs(AppHubTest):
 class TestAppDashboard(AppHubTest):
 
     def test_no_apps(self):
-        Addon.objects.all().delete()
+        for a in Addon.objects.all():
+            a.delete()
         r = self.client.get(self.url)
         eq_(r.status_code, 200)
         eq_(pq(r.content)('#dashboard .item').length, 0)

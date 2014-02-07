@@ -29,7 +29,8 @@ from addons.models import (Addon, AddonCategory, AddonDependency,
                            AddonUpsell, AddonUser, AppSupport, BlacklistedGuid,
                            BlacklistedSlug, Category, Charity, CompatOverride,
                            CompatOverrideRange, FrozenAddon,
-                           IncompatibleVersions, Persona, Preview)
+                           IncompatibleVersions, Persona, Preview,
+                           update_search_index)
 from addons.search import setup_mapping
 from applications.models import Application, AppVersion
 from constants.applications import DEVICE_TYPES
@@ -41,7 +42,7 @@ from market.models import AddonPaymentData, AddonPremium, Price
 from reviews.models import Review
 from translations.models import Translation, TranslationSequence
 from users.models import UserProfile
-from versions.models import ApplicationsVersions, Version
+from versions.models import ApplicationsVersions, delete_versions, Version, update_status
 from versions.compare import version_int
 from mkt.webapps.models import Webapp
 
@@ -673,8 +674,7 @@ class TestAddonModels(amo.tests.TestCase):
 
         f.update(no_restart=True)
         eq_(Addon.objects.get(pk=3615).is_no_restart(), True)
-
-        a.versions.all().delete()
+        delete_versions(a.versions.all())
         a._current_version = None
         eq_(a.is_no_restart(), False)
 
@@ -1135,7 +1135,7 @@ class TestAddonModels(amo.tests.TestCase):
     def test_update_logs(self):
         addon = Addon.objects.get(id=3615)
         set_user(UserProfile.objects.all()[0])
-        addon.versions.all().delete()
+        delete_versions(addon.versions.all())
 
         entries = ActivityLog.objects.all()
         eq_(entries[0].action, amo.LOG.CHANGE_STATUS.id)
@@ -1389,7 +1389,7 @@ class TestAddonModels(amo.tests.TestCase):
 
     def test_lone_version_does_not_inherit_nomination(self):
         a = Addon.objects.get(id=3615)
-        Version.objects.all().delete()
+        delete_versions(Version.objects.all())
         v = Version.objects.create(addon=a, version='1.0')
         eq_(v.nomination, None)
 
@@ -1405,7 +1405,7 @@ class TestAddonModels(amo.tests.TestCase):
     def test_nomination_no_version(self):
         # Check that the on_change method still works if there are no versions.
         a = Addon.objects.get(id=3615)
-        a.versions.all().delete()
+        delete_versions(a.versions.all())
         a.update(status=amo.STATUS_NOMINATED)
 
     def test_nomination_already_set(self):
@@ -1531,7 +1531,7 @@ class TestBackupVersion(amo.tests.TestCase):
         eq_(self.addon.current_version.version, '1.2.2')
 
     def test_no_current_version(self):
-        Version.objects.all().delete()
+        delete_versions(Version.objects.all())
         self.addon.update(_current_version=None)
         eq_(self.addon.backup_version, None)
         eq_(self.addon.current_version, None)

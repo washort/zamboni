@@ -21,7 +21,9 @@ from amo.urlresolvers import reverse
 from stats.models import ClientData
 from tags.models import Tag
 from translations.helpers import truncate
+from files.models import File
 from users.models import UserProfile
+from versions.models import Version
 
 import mkt.regions
 from mkt.api.tests.test_oauth import RestOAuth, RestOAuthClient
@@ -38,7 +40,7 @@ from mkt.search.forms import DEVICE_CHOICES_IDS
 from mkt.search.utils import S
 from mkt.search.views import DEFAULT_SORTING
 from mkt.site.fixtures import fixture
-from mkt.webapps.models import Installed, Webapp, WebappIndexer
+from mkt.webapps.models import Installed, Webapp
 from mkt.webapps.tasks import unindex_webapps
 
 
@@ -133,7 +135,8 @@ class TestApi(RestOAuth, ESTestCase):
 
     def tearDown(self):
         unindex_webapps(list(Webapp.with_deleted.values_list('id', flat=True)))
-        Webapp.objects.all().delete()
+        for app in Webapp.objects.all():
+            app.delete()
         super(TestApi, self).tearDown()
 
     def test_verbs(self):

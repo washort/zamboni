@@ -781,7 +781,8 @@ class TestAddon(BaseOAuth):
 
     def test_my_addons_deleted(self):
         addon = Addon.objects.create(type=amo.ADDON_EXTENSION,
-                                     status=amo.STATUS_DELETED)
+                                     status=amo.STATUS_PUBLIC)
+        addon.update(status=amo.STATUS_DELETED)
         AddonUser.objects.create(addon=addon, user=self.editor.get_profile(),
                                  role=amo.AUTHOR_ROLE_DEV)
         r = client.get('api.addons', self.accepted_consumer, self.token)

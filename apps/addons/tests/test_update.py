@@ -14,7 +14,7 @@ from applications.models import Application, AppVersion
 from files.models import File
 from services import update
 import settings_local
-from versions.models import ApplicationsVersions, Version
+from versions.models import ApplicationsVersions, delete_versions, Version
 
 
 class TestDataValidate(amo.tests.TestCase):
@@ -784,7 +784,7 @@ class TestResponse(amo.tests.TestCase):
         assert rdf.find(data['appID']) > -1
 
     def test_no_updates_at_all(self):
-        self.addon_one.versions.all().delete()
+        delete_versions(self.addon_one.versions.all())
         upd = self.get(self.good_data)
         eq_(upd.get_rdf(), upd.get_no_updates_rdf())
 

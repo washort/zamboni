@@ -14,7 +14,7 @@ from django import forms
 from django.conf import settings
 from django.core.cache import cache
 from django.core.files.storage import default_storage as storage
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, post_save
 from django.forms.fields import Field
 from django.http import SimpleCookie
 from django.test.client import Client
@@ -52,7 +52,7 @@ from files.models import File, Platform
 from lib.es.signals import process, reset
 from market.models import AddonPremium, Price, PriceCurrency
 from translations.models import Translation
-from versions.models import ApplicationsVersions, Version
+from versions.models import ApplicationsVersions, Version, update_status
 from users.models import RequestUser, UserProfile
 
 import mkt
@@ -871,6 +871,14 @@ class ESTestCase(TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        post_save.disconnect(
+            addon_update_search_index,
+            sender=Addon,
+            dispatch_uid='addons.search.index')
+        post_delete.disconnect(
+            update_status,
+            sender=Version,
+            dispatch_uid='version_update_status')
         try:
             if hasattr(cls, '_addons'):
                 Addon.objects.filter(
@@ -881,6 +889,14 @@ class ESTestCase(TestCase):
                                 if a.type != amo.ADDON_WEBAPP])
             amo.SEARCH_ANALYZER_MAP = cls._SEARCH_ANALYZER_MAP
         finally:
+            post_save.connect(
+                addon_update_search_index,
+                sender=Addon,
+                dispatch_uid='addons.search.index')
+            post_delete.connect(
+                update_status,
+                sender=Version,
+                dispatch_uid='version_update_status')
             # Make sure we're calling super's tearDownClass even if something
             # went wrong in the code above, as otherwise we'd run into bug
             # 960598.

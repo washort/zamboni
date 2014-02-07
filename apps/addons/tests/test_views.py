@@ -32,7 +32,7 @@ from stats.models import Contribution
 from translations.helpers import truncate
 from users.helpers import users_list
 from users.models import UserProfile
-from versions.models import Version
+from versions.models import delete_versions, Version
 
 
 def norm(s):
@@ -466,7 +466,7 @@ class TestLicensePage(amo.tests.TestCase):
         eq_(r.status_code, 404)
 
     def test_no_version(self):
-        self.addon.versions.all().delete()
+        delete_versions(self.addon.versions.all())
         url = reverse('addons.license', args=['a3615'])
         r = self.client.get(url)
         eq_(r.status_code, 404)
@@ -727,7 +727,7 @@ class TestDetailPage(amo.tests.TestCase):
     def test_invalid_version(self):
         """Only render details pages for add-ons that have a version."""
         # Wipe all versions.
-        self.addon.versions.all().delete()
+        delete_versions(self.addon.versions.all())
         # Try accessing the details page.
         response = self.client.get(self.url)
         eq_(response.status_code, 404)
