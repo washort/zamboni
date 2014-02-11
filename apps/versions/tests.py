@@ -6,7 +6,6 @@ from django.conf import settings
 from django.core.files.storage import default_storage as storage
 
 import mock
-from nose import SkipTest
 from nose.tools import eq_
 from pyquery import PyQuery
 
@@ -164,8 +163,6 @@ class TestVersion(amo.tests.TestCase):
         assert not self._get_version(amo.STATUS_PUBLIC).is_unreviewed
 
     def test_version_delete(self):
-        #deleting versions is broken
-        raise SkipTest
         version = Version.objects.get(pk=81551)
         version.delete()
 
@@ -200,16 +197,12 @@ class TestVersion(amo.tests.TestCase):
         assert storage_mock.delete.called
 
     def test_version_delete_files(self):
-        #deleting versions is broken
-        raise SkipTest
         version = Version.objects.get(pk=81551)
         eq_(version.files.count(), 1)
         version.delete()
         eq_(version.files.count(), 0)
 
     def test_version_delete_logs(self):
-        #deleting versions is broken
-        raise SkipTest
         user = UserProfile.objects.get(pk=55021)
         amo.set_user(user)
         # The transform don't know bout my users.
@@ -440,8 +433,6 @@ class TestVersion(amo.tests.TestCase):
 
     @mock.patch('addons.models.Addon.invalidate_d2c_versions')
     def test_invalidate_d2c_version_signals_on_delete(self, inv_mock):
-        #deleting versions is broken
-        raise SkipTest
         version = Addon.objects.get(pk=3615).current_version
         version.delete()
         assert inv_mock.called
@@ -803,8 +794,6 @@ class TestExtensionVersionFromUpload(TestVersionFromUpload):
         eq_(version.license_id, self.addon.current_version.license_id)
 
     def test_carry_over_license_no_version(self):
-        #deleting versions is broken
-        raise SkipTest
         self.addon.versions.all().delete()
         version = Version.from_upload(self.upload, self.addon,
                                       [self.platform])
@@ -819,8 +808,6 @@ class TestExtensionVersionFromUpload(TestVersionFromUpload):
         eq_(app.max.version, '3.6.*')
 
     def test_version_number(self):
-        #deleting versions is broken
-        raise SkipTest
         version = Version.from_upload(self.upload, self.addon,
                                       [self.platform])
         eq_(version.version, '0.1')
@@ -908,8 +895,6 @@ class TestSearchVersionFromUpload(TestVersionFromUpload):
     filename = 'search.xml'
 
     def setUp(self):
-        #deleting versions is broken
-        raise SkipTest
         super(TestSearchVersionFromUpload, self).setUp()
         self.addon.versions.all().delete()
         self.addon.update(type=amo.ADDON_SEARCH)

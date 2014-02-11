@@ -531,28 +531,6 @@ def update_status(sender, instance, **kw):
             pass
 
 
-def delete_versions(versions):
-    from addons.models import Addon, update_search_index
-    models.signals.post_save.disconnect(
-        update_search_index,
-        sender=Addon,
-        dispatch_uid='addons.search.index')
-    models.signals.post_delete.disconnect(
-        update_status,
-        sender=Version,
-        dispatch_uid='version_update_status')
-    try:
-        versions.delete()
-    finally:
-        models.signals.post_save.connect(
-            update_search_index,
-            sender=Addon,
-            dispatch_uid='addons.search.index')
-        models.signals.post_delete.connect(
-            update_status,
-            sender=Version,
-            dispatch_uid='version_update_status')
-
 def inherit_nomination(sender, instance, **kw):
     """For new versions pending review, ensure nomination date
     is inherited from last nominated version.

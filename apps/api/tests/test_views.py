@@ -356,7 +356,7 @@ class APITest(TestCase):
         doc = pq(response.content)
         license_url = addon.current_version.license_url()
         eq_(doc('license url').text(), absolutify(license_url))
-        addon.current_version.update(license=None)
+
         license.delete()
         response = self.client.get(api_url)
         doc = pq(response.content)

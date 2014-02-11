@@ -10,7 +10,6 @@ from django.utils.datastructures import SortedDict
 from django.test.utils import override_settings
 
 from mock import Mock, patch
-from nose import SkipTest
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
@@ -1629,8 +1628,6 @@ class TestReview(ReviewBase):
             eq_(td.find('td a').text(), self.editor.display_name)
 
     def generate_deleted_versions(self):
-        #Deleting versions is broken
-        raise SkipTest
         self.addon = Addon.objects.create(type=amo.ADDON_EXTENSION,
                                           name=u'something')
         self.url = reverse('editors.review', args=[self.addon.slug])
@@ -1878,8 +1875,6 @@ class TestReview(ReviewBase):
         """
         Make sure that we still show review history for deleted versions.
         """
-        #Deleting versions is broken
-        raise SkipTest
         # Add a new version to the add-on.
         self.addon_file(u'something', u'0.2', amo.STATUS_PUBLIC,
                         amo.STATUS_UNREVIEWED)

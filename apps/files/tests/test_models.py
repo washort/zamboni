@@ -13,7 +13,6 @@ from django.conf import settings
 
 import mock
 import path
-from nose import SkipTest
 from nose.tools import eq_
 
 import amo
@@ -92,8 +91,6 @@ class TestFile(amo.tests.TestCase, amo.tests.AMOPaths):
                 storage.delete(filename)
 
     def test_delete_by_version(self):
-        #Deleting versions is broken
-        raise SkipTest
         f = File.objects.get(pk=67442)
         version = f.version
         self.check_delete(version, f.file_path)

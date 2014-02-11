@@ -2,7 +2,6 @@ import re
 from datetime import datetime, timedelta
 
 import mock
-from nose import SkipTest
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
@@ -109,8 +108,6 @@ class TestVersion(amo.tests.TestCase):
         eq_(doc('#modal-delete p.warning').length, 0)
 
     def test_delete_version(self):
-        #Deleting versions is broken
-        raise SkipTest
         self.client.post(self.delete_url, self.delete_data)
         assert not Version.objects.filter(pk=81551).exists()
         eq_(ActivityLog.objects.filter(action=amo.LOG.DELETE_VERSION.id)
@@ -123,16 +120,12 @@ class TestVersion(amo.tests.TestCase):
         eq_(res.status_code, 200)
 
     def test_cant_delete_version(self):
-        #Deleting versions is broken
-        raise SkipTest
         self.client.logout()
         res = self.client.post(self.delete_url, self.delete_data)
         eq_(res.status_code, 302)
         assert Version.objects.filter(pk=81551).exists()
 
     def test_version_delete_status_null(self):
-        #Deleting versions is broken
-        raise SkipTest
         res = self.client.post(self.delete_url, self.delete_data)
         eq_(res.status_code, 302)
         eq_(self.addon.versions.count(), 0)
@@ -159,8 +152,6 @@ class TestVersion(amo.tests.TestCase):
         eq_(Addon.objects.get(id=3615).status, amo.STATUS_PUBLIC)
 
     def test_version_delete_status_unreviewd(self):
-        #Deleting versions is broken
-        raise SkipTest
         self._extra_version_and_file(amo.STATUS_BETA)
 
         res = self.client.post(self.delete_url, self.delete_data)

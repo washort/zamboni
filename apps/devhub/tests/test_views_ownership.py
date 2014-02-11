@@ -1,5 +1,4 @@
 """Tests related to the ``devhub.addons.owner`` view."""
-from nose import SkipTest
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 import waffle
@@ -154,8 +153,6 @@ class TestEditLicense(TestOwnership):
         eq_(license.builtin, License.OTHER)
 
     def test_no_version(self):
-        # Deleting versions currently broken
-        raise SkipTest
         # Make sure nothing bad happens if there's no version.
         self.addon.update(_current_version=None)
         Version.objects.all().delete()

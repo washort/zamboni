@@ -1117,8 +1117,7 @@ class TestHome(amo.tests.TestCase):
         eq_(self.get_pq()('#devhub-sidebar #editor-promo').length, 1)
 
     def test_no_editor_promo(self):
-        for a in Addon.objects.all():
-            a.delete()
+        Addon.objects.all().delete()
         # Regular users (non-devs) should not see this promo.
         eq_(self.get_pq()('#devhub-sidebar #editor-promo').length, 0)
 
@@ -1155,8 +1154,7 @@ class TestHome(amo.tests.TestCase):
             eq_('Status: ' + unicode(amo.STATUS_CHOICES[addon.status]),
                 addon_item.find('p').eq(1).text())
 
-        for a in Addon.objects.all():
-            a.delete()
+        Addon.objects.all().delete()
         eq_(self.get_pq()('#my-addons').length, 0)
 
     def test_incomplete_no_new_version(self):

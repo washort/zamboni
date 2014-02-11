@@ -5,7 +5,6 @@ from django.core.urlresolvers import NoReverseMatch
 from django.test.utils import override_settings
 
 import jingo
-from nose import SkipTest
 from nose.tools import eq_
 from mock import Mock, patch
 from pyquery import PyQuery as pq
@@ -201,8 +200,6 @@ class TestVersion(amo.tests.TestCase):
         self.file = File.objects.get(pk=67442)
 
     def test_version_delete_status_null(self):
-        # Versions can't be deleted from addons currently
-        raise SkipTest
         self.version.delete()
         eq_(self.addon.versions.count(), 0)
         eq_(Addon.objects.get(pk=3615).status, amo.STATUS_NULL)
@@ -220,8 +217,6 @@ class TestVersion(amo.tests.TestCase):
         return version_two, file_two
 
     def test_version_delete_status(self):
-        # Versions can't be deleted from addons currently
-        raise SkipTest
         self._extra_version_and_file(amo.STATUS_PUBLIC)
         self.addon.status = amo.STATUS_BETA
         self.addon.save()
@@ -231,8 +226,6 @@ class TestVersion(amo.tests.TestCase):
         eq_(Addon.objects.get(id=3615).status, amo.STATUS_BETA)
 
     def test_version_delete_status_unreviewed(self):
-        # Versions can't be deleted from addons currently
-        raise SkipTest
         self._extra_version_and_file(amo.STATUS_BETA)
 
         self.version.delete()
