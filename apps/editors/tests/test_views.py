@@ -737,6 +737,26 @@ class TestQueueBasics(QueueTest):
             eq_(rows.find('td').eq(1).text(), 'Premium add-on 0.1')
             eq_(rows.find('.ed-sprite-premium').length, 1)
 
+    def test_theme_redirect(self):
+        users = []
+        for x in range(2):
+            user = amo.tests.user_factory()
+            user.set_password('password')
+            user.save()
+            users.append(user)
+
+        self.grant_permission(users[0], 'Personas:Review')
+        self.client.logout()
+        self.login(users[0])
+        res = self.client.get(reverse('editors.home'))
+        self.assertRedirects(res, reverse('editors.themes.home'))
+
+        self.grant_permission(users[1], 'Addons:Review')
+        self.client.logout()
+        self.login(users[1])
+        res = self.client.get(reverse('editors.home'))
+        eq_(res.status_code, 200)
+
 
 class TestPendingQueue(QueueTest):
 
@@ -2099,9 +2119,9 @@ class TestReviewPending(ReviewBase):
 
     def setUp(self):
         super(TestReviewPending, self).setUp()
-        self.addon.update(status=amo.STATUS_PUBLIC)
         self.file = File.objects.create(version=self.version,
                                         status=amo.STATUS_UNREVIEWED)
+        self.addon.update(status=amo.STATUS_PUBLIC)
 
     def pending_dict(self):
         files = list(self.version.files.values_list('id', flat=True))
@@ -2113,8 +2133,8 @@ class TestReviewPending(ReviewBase):
         eq_(list(statuses), [amo.STATUS_UNREVIEWED, amo.STATUS_LITE])
 
         r = self.client.post(self.url, self.pending_dict())
-        self.assertRedirects(r, reverse('editors.queue_pending'))
         eq_(self.get_addon().status, amo.STATUS_PUBLIC)
+        self.assertRedirects(r, reverse('editors.queue_pending'))
 
         statuses = (self.version.files.values_list('status', flat=True)
                     .order_by('status'))

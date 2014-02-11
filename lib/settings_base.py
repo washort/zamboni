@@ -599,7 +599,12 @@ MINIFY_BUNDLES = {
             'css/devhub/refunds.less',
         ),
         'zamboni/editors': (
-            'css/zamboni/editors.css',
+            'css/zamboni/editors.styl',
+        ),
+        'zamboni/themes_review': (
+            'css/zamboni/developers.css',
+            'css/zamboni/editors.styl',
+            'css/zamboni/themes_review.styl',
         ),
         'zamboni/files': (
             'css/lib/syntaxhighlighter/shCoreDefault.css',
@@ -837,6 +842,9 @@ MINIFY_BUNDLES = {
         'zamboni/editors': (
             'js/lib/highcharts.src.js',
             'js/zamboni/editors.js',
+            'js/lib/jquery.hoverIntent.js',  # Used by jquery.zoomBox.
+            'js/lib/jquery.zoomBox.js',  # Used by themes_review.
+            'js/zamboni/themes_review.js',
         ),
         'zamboni/files': (
             'js/lib/diff_match_patch_uncompressed.js',
