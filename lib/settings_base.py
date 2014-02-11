@@ -424,6 +424,7 @@ INSTALLED_APPS = (
     'versions',
     'mkt.webapps',
     'mkt.collections',
+    'mkt.comm',
     'zadmin',
 
     # Third party apps
