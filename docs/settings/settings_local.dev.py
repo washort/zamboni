@@ -1,4 +1,8 @@
-from default.settings import *
+from mkt.settings import *
+
+SITE_URL = "https://localhost:8000"
+STATIC_URL = SITE_URL + '/'
+HOSTNAME='localhost'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

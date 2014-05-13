@@ -1,26 +1,20 @@
 # Install python and compiled modules for project
 class python {
     package {
-        ["python2.6-dev", "python2.6", "libapache2-mod-wsgi", "python-pip",
-         "libxml2-dev", "libxslt1-dev", "libssl-dev", "swig", "git-core"]:
-            ensure => installed;
+        ["python2.7-dev", "python2.7", "libapache2-mod-wsgi", "python-pip",
+         "libxml2-dev", "libxslt1-dev", "libssl-dev", "git-core",
+         "python-twisted", "swig", "python-m2crypto", "libjpeg8-dev",
+         "libpng12-dev", "libffi-dev"]:
+             ensure => installed;
     }
 
-    # Bah. Ubuntu moves at the speed of molasses.
-    # Need the fix for exit statuses: https://github.com/pypa/pip/issues/106
-    exec { "upgrade_pip":
-        command => "sudo easy_install -U pip",
-        require => Package['python-pip']
-    }
-
-    exec { "pip-install-compiled":
-        command => "sudo pip install -v --build=/tmp/pip-build -r $PROJ_DIR/requirements/compiled.txt",
+    exec { "pip-install":
+        command => "pip install --user --download-cache=/tmp/pip-cache --find-links https://pyrepo.addons.mozilla.org --no-deps --exists-action=w -r $PROJ_DIR/requirements/dev.txt",
         # Disable timeout. Pip has its own sensible timeouts.
         timeout => 0,
         logoutput => true,
-        require => [
-            Exec["upgrade_pip"],
-            Package["python2.6", "libxml2-dev", "libxslt1-dev", "libssl-dev", "swig"]
-        ]
+        user => vagrant,
+        require => Package["python2.7", "libxml2-dev", "libxslt1-dev",
+                           "libssl-dev"]
     }
 }
