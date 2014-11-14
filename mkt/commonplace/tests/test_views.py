@@ -107,7 +107,6 @@ class TestCommonplace(BaseCommonPlaceTests):
     @mock.patch('mkt.commonplace.views.fxa_auth_info')
     def test_fireplace_persona_not_included_firefox_accounts(self, mock_fxa):
         mock_fxa.return_value = ('fakestate', 'http://example.com/fakeauthurl')
-        self.create_switch('firefox-accounts', db=True)
         for url in ('/server.html',
                     '/server.html?mcc=blah',
                     '/server.html?mccs=blah',
