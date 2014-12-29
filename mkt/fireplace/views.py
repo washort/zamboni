@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 import mkt.regions
-from mkt.account.views import user_relevant_apps
+from mkt.data.db import store
 from mkt.api.authentication import (RestAnonymousAuthentication,
                                     RestOAuthAuthentication,
                                     RestSharedSecretAuthentication)
@@ -42,9 +42,8 @@ class ConsumerInfoView(CORSMixin, RetrieveAPIView):
             'region': request.REGION.slug,
         }
         if request.user.is_authenticated():
-            data['apps'] = user_relevant_apps(request.user)
+            data['apps'] = store.user_relevant_apps(request.user)
             data['enable_recommendations'] = (
                 request.user.enable_recommendations)
-
         # Return an HttpResponse directly to be as fast as possible.
         return Response(data)

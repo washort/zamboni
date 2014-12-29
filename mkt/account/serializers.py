@@ -5,20 +5,16 @@ from rest_framework import fields, serializers
 import mkt
 from mkt.access import acl
 from mkt.api.serializers import PotatoCaptchaSerializer
-from mkt.users.models import UserProfile
 
 
-class AccountSerializer(serializers.ModelSerializer):
+class AccountSerializer(serializers.Serializer):
+    display_name = fields.CharField()
+    enable_recommendations = fields.BooleanField()
 
-    class Meta:
-        model = UserProfile
-        fields = ['display_name', 'enable_recommendations']
-
-    def validate_display_name(self, attrs, source):
-        """Validate that display_name is not empty"""
-        value = attrs.get(source)
-        if value is None or not value.strip():
-            raise serializers.ValidationError("This field is required")
+    def restore_object(self, attrs, instance=None):
+        if instance is not None:
+            instance.update(**attrs)
+            return instance
         return attrs
 
     def transform_display_name(self, obj, value):
@@ -26,16 +22,30 @@ class AccountSerializer(serializers.ModelSerializer):
         a valid display_name."""
         return obj.name
 
+    def validate_display_name(self, attrs, source):
+        """Validate that display_name is not empty"""
+        value = attrs.get(source)
+        if not (value and value.strip()):
+            raise serializers.ValidationError("This field is required")
+        return attrs
 
-class AccountInfoSerializer(serializers.ModelSerializer):
+    def save_object(self, obj, **kwargs):
+        obj.update(
+            display_name=self.data['display_name'],
+            enable_recommendations=self.data['enable_recommendations'])
+
+
+class AccountInfoSerializer(serializers.Serializer):
     ALLOWED_SOURCES = [mkt.LOGIN_SOURCE_FXA]
 
     source = serializers.CharField(read_only=True)
     verified = serializers.BooleanField(source='is_verified', read_only=True)
 
-    class Meta:
-        model = UserProfile
-        fields = ['source', 'verified']
+    def restore_object(self, attrs, instance=None):
+        if instance is not None:
+            instance.update(**attrs)
+            return instance
+        return attrs
 
     def transform_source(self, obj, value):
         """Return the sources slug instead of the id."""
@@ -134,5 +144,4 @@ class UserSerializer(AccountSerializer):
         read_only=True)
 
     class Meta:
-        model = UserProfile
         fields = ('display_name', 'resource_uri')

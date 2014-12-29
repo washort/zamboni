@@ -63,7 +63,7 @@ class TestAccountInfoSerializer(mkt.site.tests.TestCase):
 
     def test_source_is_read_only(self):
         serializer = AccountInfoSerializer(
-            instance=None,
+            instance=self.account,
             data={'source': mkt.LOGIN_SOURCE_FXA, 'display_name': 'Hey!'},
             partial=True)
         eq_(serializer.is_valid(), True)

@@ -18,17 +18,16 @@ from django_statsd.clients import statsd
 from requests_oauthlib import OAuth2Session
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed, ParseError
-from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     RetrieveAPIView, RetrieveUpdateAPIView)
-from rest_framework.mixins import ListModelMixin
+from rest_framework.generics import (GenericAPIView, RetrieveAPIView,
+                                     RetrieveUpdateAPIView, UpdateAPIView)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.views import APIView
 
 import mkt
 from lib.metrics import record_action
-from mkt.users.models import UserProfile
 from mkt.users.views import browserid_authenticate
 
 from mkt.account.serializers import (AccountSerializer, FeedbackSerializer,
@@ -40,66 +39,41 @@ from mkt.api.authentication import (RestAnonymousAuthentication,
                                     RestSharedSecretAuthentication)
 from mkt.api.authorization import AllowSelf, AllowOwner
 from mkt.api.base import CORSMixin, MarketplaceView
-from mkt.constants.apps import INSTALL_TYPE_USER
+from mkt.data.db import store
 from mkt.site.mail import send_mail_jinja
 from mkt.site.utils import log_cef
 from mkt.webapps.serializers import SimpleAppSerializer
-from mkt.webapps.models import Installed, Webapp
 
 
 log = commonware.log.getLogger('z.account')
 
 
-def user_relevant_apps(user):
-    return {
-        'developed': list(user.addonuser_set.filter(
-            role=mkt.AUTHOR_ROLE_OWNER).values_list('addon_id', flat=True)),
-        'installed': list(user.installed_set.values_list(
-            'addon_id', flat=True)),
-        'purchased': list(user.purchase_ids()),
-    }
-
-
-class MineMixin(object):
-    def get_object(self, queryset=None):
-        pk = self.kwargs.get('pk')
-        if pk == 'mine':
-            self.kwargs['pk'] = self.request.user.pk
-        return super(MineMixin, self).get_object(queryset)
-
-
-class InstalledViewSet(CORSMixin, MarketplaceView, ListModelMixin,
-                       GenericViewSet):
+class InstalledViewSet(CORSMixin, MarketplaceView, GenericViewSet):
     cors_allowed_methods = ['get']
     serializer_class = SimpleAppSerializer
     permission_classes = [AllowSelf]
     authentication_classes = [RestOAuthAuthentication,
                               RestSharedSecretAuthentication]
 
-    def get_queryset(self):
-        return Webapp.objects.no_cache().filter(
-            installed__user=self.request.user,
-            installed__install_type=INSTALL_TYPE_USER).order_by(
-                '-installed__created')
+    def list(self, request, *args, **kwargs):
+        page = self.paginate_queryset(store.apps_installed_for(
+            self.request.user))
+        return Response(self.get_pagination_serializer(page).data)
 
     def remove_app(self, request, **kwargs):
         self.cors_allowed_methods = ['post']
         try:
-            to_remove = Webapp.objects.get(pk=request.DATA['app'])
+            app = request.DATA['app']
         except (KeyError, MultiValueDictKeyError):
             raise ParseError(detail='`app` was not provided.')
-        except Webapp.DoesNotExist:
-            raise ParseError(detail='`app` does not exist.')
         try:
-            installed = request.user.installed_set.get(
-                install_type=INSTALL_TYPE_USER, addon_id=to_remove.pk)
-            installed.delete()
-        except Installed.DoesNotExist:
+            store.uninstall_app(request.user, app)
+        except store.DoesNotExist:
             raise ParseError(detail='`app` is not installed or not removable.')
         return Response(status=status.HTTP_202_ACCEPTED)
 
 
-class CreateAPIViewWithoutModel(MarketplaceView, CreateAPIView):
+class CreateAPIViewWithoutModel(MarketplaceView, GenericAPIView):
     """
     A base class for APIs that need to support a create-like action, but
     without being tied to a Django Model.
@@ -118,7 +92,7 @@ class CreateAPIViewWithoutModel(MarketplaceView, CreateAPIView):
     def response_error(self, request, serializer):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.DATA)
         if serializer.is_valid():
             data = self.create_action(request, serializer)
@@ -126,24 +100,31 @@ class CreateAPIViewWithoutModel(MarketplaceView, CreateAPIView):
         return self.response_error(request, serializer)
 
 
-class AccountView(MineMixin, CORSMixin, RetrieveUpdateAPIView):
+def mine_or_pk(view):
+    pk = view.kwargs.get('pk')
+    if pk == 'mine':
+        return view.request.user.pk
+    else:
+        return pk
+
+
+class AccountView(CORSMixin, RetrieveUpdateAPIView):
     authentication_classes = [RestOAuthAuthentication,
                               RestSharedSecretAuthentication]
     cors_allowed_methods = ['get', 'patch', 'put']
-    model = UserProfile
     permission_classes = (AllowOwner,)
     serializer_class = AccountSerializer
 
+    def get_serializer_context(self):
+        ctx = super(AccountView, self).get_serializer_context()
+        ctx['store'] = store
+        return ctx
 
-class AnonymousUserMixin(object):
-    def get_object(self, *args, **kwargs):
-        try:
-            user = super(AnonymousUserMixin, self).get_object(*args, **kwargs)
-        except http.Http404:
-            # The base get_object() will raise Http404 instead of DoesNotExist.
-            # Treat no object as an anonymous user (source: unknown).
-            user = UserProfile(is_verified=False)
-        return user
+    def get_object(self):
+        pk = mine_or_pk(self)
+        a = store.get_account(pk=pk)
+        self.check_object_permissions(self.request, a)
+        return a
 
 
 class FeedbackView(CORSMixin, CreateAPIViewWithoutModel):
@@ -194,17 +175,16 @@ def find_or_create_user(email, fxa_uid):
 
     def find_user(**kwargs):
         try:
-            return UserProfile.objects.get(**kwargs)
-        except UserProfile.DoesNotExist:
+            return store.get_account(**kwargs)
+        except store.DoesNotExist:
             return None
-
-    profile = find_user(fxa_uid=fxa_uid) or find_user(email=email)
+    profile = find_user(uid=fxa_uid) or find_user(email=email)
     if profile:
         created = False
         profile.update(fxa_uid=fxa_uid, email=email)
     else:
         created = True
-        profile = UserProfile.objects.create(
+        profile = store.create_account(
             fxa_uid=fxa_uid,
             email=email,
             source=mkt.LOGIN_SOURCE_FXA,
@@ -245,7 +225,7 @@ class FxALoginView(CORSMixin, CreateAPIViewWithoutModel):
 
         auth_response = serializer.data['auth_response']
         fxa_authorization = fxa_authorize(session, secret, auth_response)
-
+        print "!!", fxa_authorization
         if 'user' in fxa_authorization:
             email = fxa_authorization['email']
             fxa_uid = fxa_authorization['user']
@@ -265,6 +245,7 @@ class FxALoginView(CORSMixin, CreateAPIViewWithoutModel):
             raise AuthenticationFailed('No profile.')
 
         request.user = profile
+        # XXX not friendly
         request.groups = profile.groups.all()
         # Remember whether the user has logged in to highlight the register or
         # sign in nav button. 31536000 == one year.
@@ -289,7 +270,7 @@ class FxALoginView(CORSMixin, CreateAPIViewWithoutModel):
         data.update(permissions.data)
 
         # Add ids of installed/purchased/developed apps.
-        data['apps'] = user_relevant_apps(profile)
+        data['apps'] = store.user_relevant_apps(profile)
 
         return data
 
@@ -336,12 +317,12 @@ class LoginView(CORSMixin, CreateAPIViewWithoutModel):
         data.update(permissions.data)
 
         # Add ids of installed/purchased/developed apps.
-        data['apps'] = user_relevant_apps(profile)
+        data['apps'] = store.user_relevant_apps(profile)
 
         return data
 
 
-class LogoutView(CORSMixin, DestroyAPIView):
+class LogoutView(CORSMixin, GenericAPIView):
     authentication_classes = [RestOAuthAuthentication,
                               RestSharedSecretAuthentication]
     permission_classes = (IsAuthenticated,)
@@ -381,11 +362,16 @@ class NewsletterView(CORSMixin, CreateAPIViewWithoutModel):
                          lang=lang, optin='Y', trigger_welcome='Y')
 
 
-class PermissionsView(CORSMixin, MineMixin, RetrieveAPIView):
+class PermissionsView(CORSMixin, RetrieveAPIView):
 
     authentication_classes = [RestOAuthAuthentication,
                               RestSharedSecretAuthentication]
     cors_allowed_methods = ['get']
     permission_classes = (AllowSelf,)
-    model = UserProfile
     serializer_class = PermissionsSerializer
+
+    def get_object(self):
+        pk = mine_or_pk(self)
+        a = store.get_account(pk=pk)
+        self.check_object_permissions(self.request, a)
+        return a
