@@ -16,10 +16,10 @@ import mkt.feed.constants as feed
 import mkt.regions
 from mkt.api.tests.test_oauth import RestOAuth
 from mkt.constants import applications
+from mkt.data.es import get_es_feed_query
 from mkt.feed.models import (FeedApp, FeedBrand, FeedCollection, FeedItem,
                              FeedShelf)
 from mkt.feed.tests.test_models import FeedAppMixin, FeedTestMixin
-from mkt.feed.views import FeedView
 from mkt.fireplace.tests.test_views import assert_fireplace_app
 from mkt.operators.models import OperatorPermission
 from mkt.site.fixtures import fixture
@@ -1805,23 +1805,22 @@ class TestFeedViewQueries(BaseTestFeedItemViewSet, TestCase):
     fixtures = BaseTestFeedItemViewSet.fixtures + FeedTestMixin.fixtures
 
     def setUp(self):
-        self.fv = FeedView()
         self.sq = Search()
 
     def test_region_default(self):
         """Region default to RoW."""
-        sq = self.fv.get_es_feed_query(self.sq).to_dict()
+        sq = get_es_feed_query(self.sq).to_dict()
         eq_(sq['query']['function_score']['filter']['bool']['must'][0]['term']
               ['region'], 1)
 
     def test_region(self):
         """With region only."""
-        sq = self.fv.get_es_feed_query(self.sq, region=2).to_dict()
+        sq = get_es_feed_query(self.sq, region=2).to_dict()
         eq_(sq['query']['function_score']['filter']['bool']['must'][0]['term']
               ['region'], 2)
 
     def test_carrier_with_region(self):
-        sq = self.fv.get_es_feed_query(self.sq, region=2, carrier=1).to_dict()
+        sq = get_es_feed_query(self.sq, region=2, carrier=1).to_dict()
         # Test filter.
         ok_({'term': {'region': 2}}
             in sq['query']['function_score']['filter']['bool']['should'])
@@ -1840,14 +1839,14 @@ class TestFeedViewQueries(BaseTestFeedItemViewSet, TestCase):
             in sq['query']['function_score']['functions'])
 
     def test_carrier_default_region(self):
-        sq = self.fv.get_es_feed_query(self.sq, carrier=1).to_dict()
+        sq = get_es_feed_query(self.sq, carrier=1).to_dict()
         # Test filter.
         ok_({'term': {'region': 1}}
             in sq['query']['function_score']['filter']['bool']['should'])
 
     def test_order(self):
         """Order script scoring."""
-        sq = self.fv.get_es_feed_query(self.sq).to_dict()
+        sq = get_es_feed_query(self.sq).to_dict()
         ok_({'term': {'region': 1}}
             in sq['query']['function_score']['functions'][0]
             ['filter']['bool']['must'])
@@ -1861,7 +1860,7 @@ class TestFeedViewQueries(BaseTestFeedItemViewSet, TestCase):
     def test_element_query(self):
         feed_item = self.feed_item_factory()
         item = feed_item.get_indexer().extract_document(None, obj=feed_item)
-        sq = self.fv.get_es_feed_element_query(self.sq, [item]).to_dict()
+        sq = get_es_feed_element_query(self.sq, [item]).to_dict()
         ok_({'bool': {'must': [{'term': {'id': feed_item.app_id}},
                                {'term': {'item_type': 'app'}}]}}
             in sq['query']['filtered']['filter']['bool']['should'])

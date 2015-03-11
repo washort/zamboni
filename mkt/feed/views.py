@@ -9,8 +9,6 @@ from django.views.decorators.cache import cache_control
 import commonware
 from django_statsd.clients import statsd
 from elasticsearch_dsl import filter as es_filter
-from elasticsearch_dsl import function as es_function
-from elasticsearch_dsl import query, Search
 from PIL import Image
 from rest_framework import generics, response, status, viewsets
 from rest_framework.exceptions import ParseError, PermissionDenied
@@ -30,13 +28,12 @@ from mkt.api.base import CORSMixin, MarketplaceView, SlugOrIdMixin
 from mkt.api.paginator import ESPaginator
 from mkt.constants.carriers import CARRIER_MAP
 from mkt.constants.regions import REGIONS_DICT
+from mkt.data.es import store
 from mkt.developers.tasks import pngcrush_image
-from mkt.feed.indexers import FeedItemIndexer
 from mkt.operators.models import OperatorPermission
 from mkt.search.filters import (DeviceTypeFilter, ProfileFilter,
                                 PublicAppsFilter, RegionFilter)
 from mkt.site.utils import HttpResponseSendFile
-from mkt.webapps.indexers import WebappIndexer
 from mkt.webapps.models import Webapp
 
 from .authorization import FeedAuthorization
@@ -590,14 +587,6 @@ class BaseFeedESView(CORSMixin, APIView):
         }
         super(BaseFeedESView, self).__init__(*args, **kw)
 
-    def get_feed_element_index(self):
-        """Return a list of index to query all at once."""
-        return [
-            settings.ES_INDEXES['mkt_feed_app'],
-            settings.ES_INDEXES['mkt_feed_brand'],
-            settings.ES_INDEXES['mkt_feed_collection'],
-            settings.ES_INDEXES['mkt_feed_shelf']
-        ]
 
     def get_app_ids(self, feed_element):
         """Get a single feed element's app IDs."""
@@ -612,22 +601,6 @@ class BaseFeedESView(CORSMixin, APIView):
             app_ids += self.get_app_ids(elm)
         return app_ids
 
-    def get_apps(self, request, app_ids):
-        """
-        Takes a list of app_ids. Gets the apps, including filters.
-        Returns an app_map for serializer context.
-        """
-        sq = WebappIndexer.search()
-        if request.QUERY_PARAMS.get('filtering', '1') == '1':
-            # With filtering (default).
-            for backend in self.filter_backends:
-                sq = backend().filter_queryset(request, sq, self)
-        sq = WebappIndexer.filter_by_apps(app_ids, sq)
-
-        # Store the apps to attach to feed elements later.
-        with statsd.timer('mkt.feed.views.apps_query'):
-            apps = sq.execute().hits
-        return dict((app.id, app) for app in apps)
 
     def filter_feed_items(self, request, feed_items):
         """
@@ -700,29 +673,18 @@ class FeedElementSearchView(BaseFeedESView):
 
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q')
-
-        # Make search.
-        queries = [
-            query.Q('match', slug=self._phrase(q)),  # Slug.
-            query.Q('match', type=self._phrase(q)),  # Type.
-            query.Q('match', search_names=self._phrase(q)),  # Name.
-            query.Q('prefix', carrier=q),  # Shelf carrier.
-            query.Q('term', region=q)  # Shelf region.
-        ]
-        sq = query.Bool(should=queries)
-
-        # Search.
+        feed_elements = store.search_feed(q)
         res = {'apps': [], 'brands': [], 'collections': [], 'shelves': []}
-        es = Search(using=FeedItemIndexer.get_es(),
-                    index=self.get_feed_element_index())
-        feed_elements = es.query(sq).execute().hits
         if not feed_elements:
             return response.Response(res, status=status.HTTP_404_NOT_FOUND)
 
         # Deserialize.
-        ctx = {'app_map': self.get_apps(request,
-                                        self.get_app_ids_all(feed_elements)),
-               'request': request}
+        ctx = {
+            'app_map': store.fetch_app_map(
+                request, self.get_app_ids_all(feed_elements),
+                self.filter_backends),
+            'request': request
+        }
         for feed_element in feed_elements:
             item_type = feed_element.item_type
             serializer = self.SERIALIZERS[item_type]
@@ -744,72 +706,6 @@ class FeedView(MarketplaceView, BaseFeedESView, generics.GenericAPIView):
     cors_allowed_methods = ('get',)
     paginator_class = ESPaginator
     permission_classes = []
-
-    def get_es_feed_query(self, sq, region=mkt.regions.RESTOFWORLD.id,
-                          carrier=None, original_region=None):
-        """
-        Build ES query for feed.
-        Must match region.
-        Orders by FeedItem.order.
-        Boosted operator shelf matching region + carrier.
-        Boosted operator shelf matching original_region + carrier.
-
-        region -- region ID (integer)
-        carrier -- carrier ID (integer)
-        original_region -- region from before we were falling back,
-            to keep the original shelf atop the RoW feed.
-        """
-        region_filter = es_filter.Term(region=region)
-        shelf_filter = es_filter.Term(item_type=feed.FEED_TYPE_SHELF)
-
-        ordering_fn = es_function.FieldValueFactor(
-            field='order', modifier='reciprocal',
-            filter=es_filter.Bool(must=[region_filter],
-                                  must_not=[shelf_filter]))
-        boost_fn = es_function.BoostFactor(value=10000.0,
-                                           filter=shelf_filter)
-
-        if carrier is None:
-            # If no carrier, just match the region and exclude shelves.
-            return sq.query('function_score',
-                            functions=[ordering_fn],
-                            filter=es_filter.Bool(
-                                must=[region_filter],
-                                must_not=[shelf_filter]
-                            ))
-
-        # Must match region.
-        # But also include the original region if we falling back to RoW.
-        # The only original region feed item that will be included is a shelf
-        # else we wouldn't be falling back in the first place.
-        region_filters = [region_filter]
-        if original_region:
-            region_filters.append(es_filter.Term(region=original_region))
-
-        return sq.query(
-            'function_score',
-            functions=[boost_fn, ordering_fn],
-            filter=es_filter.Bool(
-                should=region_filters,
-                # Filter out shelves that don't match the carrier.
-                must_not=[es_filter.Bool(
-                    must=[shelf_filter],
-                    must_not=[es_filter.Term(carrier=carrier)])])
-        )
-
-    def get_es_feed_element_query(self, sq, feed_items):
-        """
-        From a list of FeedItems with normalized feed element IDs,
-        return an ES query that fetches the feed elements for each feed item.
-        """
-        filters = []
-        for feed_item in feed_items:
-            item_type = feed_item['item_type']
-            filters.append(es_filter.Bool(
-                must=[es_filter.Term(id=feed_item[item_type]),
-                      es_filter.Term(item_type=item_type)]))
-
-        return sq.filter(es_filter.Bool(should=filters))[0:len(feed_items)]
 
     def _check_empty_feed(self, items, rest_of_world):
         """
@@ -838,8 +734,6 @@ class FeedView(MarketplaceView, BaseFeedESView, generics.GenericAPIView):
 
     def _get(self, request, rest_of_world=False, original_region=None,
              *args, **kwargs):
-        es = FeedItemIndexer.get_es()
-
         # Parse region.
         if rest_of_world:
             region = mkt.regions.RESTOFWORLD.id
@@ -850,14 +744,10 @@ class FeedView(MarketplaceView, BaseFeedESView, generics.GenericAPIView):
         q = request.QUERY_PARAMS
         if q.get('carrier') and q['carrier'] in mkt.carriers.CARRIER_MAP:
             carrier = mkt.carriers.CARRIER_MAP[q['carrier']].id
-
-        # Fetch FeedItems.
-        sq = self.get_es_feed_query(FeedItemIndexer.search(using=es),
-                                    region=region, carrier=carrier,
-                                    original_region=original_region)
         # The paginator triggers the ES request.
         with statsd.timer('mkt.feed.view.feed_query'):
-            feed_items = self.paginate_queryset(sq)
+            qs = store.feed_get(region, carrier, original_region)
+            feed_items = self.paginate_queryset(qs)
         feed_ok = self._check_empty_feed(feed_items, rest_of_world)
         if feed_ok != 1:
             return self._handle_empty_feed(feed_ok, region, request, args,
@@ -877,10 +767,8 @@ class FeedView(MarketplaceView, BaseFeedESView, generics.GenericAPIView):
 
         # Fetch feed elements to attach to FeedItems later.
         apps = []
-        sq = self.get_es_feed_element_query(
-            Search(using=es, index=self.get_feed_element_index()), feed_items)
-        with statsd.timer('mkt.feed.view.feed_element_query'):
-            feed_elements = sq.execute().hits
+        feed_elements = store.fetch_feed_elements(feed_items)
+
         for feed_elm in feed_elements:
             # Store the feed elements to attach to FeedItems later.
             feed_element_map[feed_elm['item_type']][feed_elm['id']] = feed_elm
@@ -891,7 +779,8 @@ class FeedView(MarketplaceView, BaseFeedESView, generics.GenericAPIView):
         apps = list(set(apps))
 
         # Fetch apps to attach to feed elements later.
-        app_map = self.get_apps(request, apps)
+        app_map = store.fetch_app_map(request, apps,
+                                      self.filter_backends)
 
         # Super serialize.
         with statsd.timer('mkt.feed.view.serialize'):
@@ -938,15 +827,9 @@ class FeedElementGetView(BaseFeedESView):
 
     def get(self, request, item_type, slug, **kwargs):
         item_type = self.ITEM_TYPES[item_type]
-
-        # Hit ES.
-        sq = self.get_feed_element_filter(
-            Search(using=FeedItemIndexer.get_es(),
-                   index=self.INDICES[item_type]),
-            item_type, slug)
         try:
-            feed_element = sq.execute().hits[0]
-        except IndexError:
+            feed_element = store.fetch_single_feed_element(item_type, slug)
+        except store.DoesNotExist:
             return response.Response(status=status.HTTP_404_NOT_FOUND)
 
         # Deserialize.
@@ -970,18 +853,13 @@ class FeedElementListView(BaseFeedESView, MarketplaceView,
     cors_allowed_methods = ('get',)
     paginator_class = ESPaginator
 
-    def get_recent_feed_elements(self, sq):
-        """Matches all sorted by recent."""
-        return sq.sort('-created').query(query.MatchAll())
-
     def get(self, request, item_type, **kwargs):
         item_type = self.ITEM_TYPES[item_type]
 
         # Hit ES.
-        sq = self.get_recent_feed_elements(
-            Search(using=FeedItemIndexer.get_es(),
-                   index=self.INDICES[item_type]))
-        feed_elements = self.paginate_queryset(sq)
+        feed_elements = self.paginate_queryset(
+            store.fetch_recent_feed_elements(
+                self.INDICES[item_type]))
         if not feed_elements:
             return response.Response({'objects': []},
                                      status=status.HTTP_404_NOT_FOUND)
