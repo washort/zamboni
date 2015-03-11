@@ -806,6 +806,9 @@ class Webapp(UUIDModelMixin, OnChangeMixin, ModelBase):
         return AddonUser.objects.filter(addon=self, user=user,
                                         role__in=roles).exists()
 
+    def add_author(self, user, role=mkt.AUTHOR_ROLE_OWNER):
+        return AddonUser.objects.create(addon=self, user=user, role=role)
+
     @property
     def thumbnail_url(self):
         """

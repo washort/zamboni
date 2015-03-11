@@ -141,6 +141,17 @@ class MarketplaceView(object):
       pagination handler. It does tastypie-like offset pagination instead of
       the default page mechanism.
     """
+
+    def maybe_slug(self):
+        slug_or_pk = self.kwargs.get('pk')
+        if slug_or_pk and not slug_or_pk.isdigit():
+            # If the `pk` contains anything other than a digit, it's a `slug`.
+            self.lookup_field = getattr(self, 'slug_field', 'slug')
+            self.kwargs.update({
+                'pk': None,
+                self.lookup_field: self.kwargs['pk']
+            })
+
     def handle_exception(self, exc):
         exc._request = self.request._request
         exc._klass = self.__class__

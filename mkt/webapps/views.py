@@ -17,14 +17,12 @@ from mkt.api.authorization import (AllowAppOwner, AllowReadOnlyIfPublic,
 from mkt.api.base import CORSMixin, MarketplaceView, SlugOrIdMixin
 from mkt.api.exceptions import HttpLegallyUnavailable
 from mkt.api.forms import IconJSONForm
-from mkt.developers import tasks
+from mkt.data.db import store
 from mkt.developers.forms import AppFormMedia, IARCGetAppInfoForm
-from mkt.files.models import FileUpload
 from mkt.regions import get_region
 from mkt.submit.views import PreviewViewSet
-from mkt.tags.models import Tag
 from mkt.translations.query import order_by_translation
-from mkt.webapps.models import AddonUser, get_excluded_in, Webapp
+from mkt.webapps.models import Webapp
 from mkt.webapps.serializers import AppSerializer
 
 
@@ -90,7 +88,29 @@ class BaseFilter(object):
         return order_by_translation(self.model.objects.all(), 'name')
 
 
-class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
+def get_app(view, request, pk=None, slug=None):
+        try:
+            app = store.get_app(pk=pk, slug=slug, region=get_region().id)
+        except store.DoesNotExist:
+            try:
+                app = store.get_app(pk=pk, slug=slug)
+            except store.DoesNotExist:
+                raise Http404()
+            # Owners and reviewers can see apps regardless of region.
+            owner_or_reviewer = AnyOf(AllowAppOwner, AllowReviewerReadOnly)
+            if owner_or_reviewer.has_object_permission(request, view, app):
+                return app
+            data = {}
+            for key in ('name', 'support_email', 'support_url'):
+                value = getattr(app, key)
+                data[key] = unicode(value) if value else ''
+            data['reason'] = 'Not available in your region.'
+            raise HttpLegallyUnavailable(data)
+        view.check_object_permissions(request, app)
+        return app
+
+
+class AppViewSet(CORSMixin, MarketplaceView,
                  viewsets.ModelViewSet):
     serializer_class = AppSerializer
     slug_field = 'app_slug'
@@ -101,31 +121,10 @@ class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
                               RestSharedSecretAuthentication,
                               RestAnonymousAuthentication]
 
-    def get_queryset(self):
-        return Webapp.objects.all().exclude(
-            id__in=get_excluded_in(get_region().id))
-
-    def get_base_queryset(self):
-        return Webapp.objects.all()
-
     def get_object(self, queryset=None):
-        try:
-            app = super(AppViewSet, self).get_object()
-        except Http404:
-            app = super(AppViewSet, self).get_object(self.get_base_queryset())
-            # Owners and reviewers can see apps regardless of region.
-            owner_or_reviewer = AnyOf(AllowAppOwner, AllowReviewerReadOnly)
-            if owner_or_reviewer.has_object_permission(self.request, self,
-                                                       app):
-                return app
-            data = {}
-            for key in ('name', 'support_email', 'support_url'):
-                value = getattr(app, key)
-                data[key] = unicode(value) if value else ''
-            data['reason'] = 'Not available in your region.'
-            raise HttpLegallyUnavailable(data)
-        self.check_object_permissions(self.request, app)
-        return app
+        self.maybe_slug()
+        return get_app(self, self.request, pk=self.kwargs.get('pk'),
+                       slug=self.kwargs.get('app_slug'))
 
     def create(self, request, *args, **kwargs):
         uuid = request.DATA.get('upload', '')
@@ -139,8 +138,8 @@ class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
                 'No upload or manifest specified.')
 
         try:
-            upload = FileUpload.objects.get(uuid=uuid)
-        except FileUpload.DoesNotExist:
+            upload = store.get_upload(uuid)
+        except store.DoesNotExist:
             raise exceptions.ParseError('No upload found.')
         if not upload.valid:
             raise exceptions.ParseError('Upload not valid.')
@@ -153,9 +152,8 @@ class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
             raise exceptions.PermissionDenied('You do not own that app.')
 
         # Create app, user and fetch the icon.
-        obj = Webapp.from_upload(upload, is_packaged=is_packaged)
-        AddonUser(addon=obj, user=request.user).save()
-        tasks.fetch_icon.delay(obj, obj.latest_version.all_files[0])
+        obj = store.create_app_from_upload(upload, is_packaged=is_packaged)
+        obj.add_author(request.user)
         record_action('app-submitted', request, {'app-id': obj.pk})
 
         log.info('App created: %s' % obj.pk)
@@ -180,8 +178,7 @@ class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
             log.info('Anonymous listing not allowed')
             raise exceptions.PermissionDenied('Anonymous listing not allowed.')
 
-        self.object_list = self.filter_queryset(self.get_queryset().filter(
-            authors=request.user))
+        self.object_list = store.apps_created_by(request.user)
         page = self.paginate_queryset(self.object_list)
         serializer = self.get_pagination_serializer(page)
         return response.Response(serializer.data)
@@ -192,6 +189,7 @@ class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
     @action()
     def content_ratings(self, request, *args, **kwargs):
         app = self.get_object()
+        # XXX
         form = IARCGetAppInfoForm(data=request.DATA, app=app)
 
         if form.is_valid():
@@ -223,14 +221,13 @@ class AppViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
         if not form.is_valid():
             return Response(data_form.errors,
                             status=status.HTTP_400_BAD_REQUEST)
-
+        # XXX
         form.save(app)
         return Response(status=status.HTTP_200_OK)
 
 
-class PrivacyPolicyViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
+class PrivacyPolicyViewSet(CORSMixin, MarketplaceView,
                            viewsets.GenericViewSet):
-    queryset = Webapp.objects.all()
     cors_allowed_methods = ('get',)
     permission_classes = [AnyOf(AllowAppOwner, AllowReviewerReadOnly,
                                 AllowReadOnlyIfPublic)]
@@ -238,6 +235,11 @@ class PrivacyPolicyViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
     authentication_classes = [RestOAuthAuthentication,
                               RestSharedSecretAuthentication,
                               RestAnonymousAuthentication]
+
+    def get_object(self, queryset=None):
+        self.maybe_slug()
+        return get_app(self, self.request, pk=self.kwargs.get('pk'),
+                       slug=self.kwargs.get('app_slug'))
 
     def retrieve(self, request, *args, **kwargs):
         app = self.get_object()
@@ -248,7 +250,7 @@ class PrivacyPolicyViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
 
 class AppTagViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
                     viewsets.GenericViewSet):
-    queryset = Webapp.objects.all()
+
     cors_allowed_methods = ('delete',)
     permission_classes = [AnyOf(AllowAppOwner,
                                 GroupPermission('Apps', 'Edit'))]
@@ -257,10 +259,15 @@ class AppTagViewSet(CORSMixin, SlugOrIdMixin, MarketplaceView,
                               RestSharedSecretAuthentication,
                               RestAnonymousAuthentication]
 
+    def get_object(self, queryset=None):
+        self.maybe_slug()
+        return get_app(self, self.request, pk=self.kwargs.get('pk'),
+                       slug=self.kwargs.get('app_slug'))
+
     def destroy(self, request, pk, tag_text, **kwargs):
         if tag_text == 'tarako':
             app = self.get_object()
-            Tag(tag_text=tag_text).remove_tag(app)
+            store.remove_tag(app, tag_text)
             return response.Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return response.Response(status=status.HTTP_403_FORBIDDEN)
