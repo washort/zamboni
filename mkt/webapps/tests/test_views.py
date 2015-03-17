@@ -2,6 +2,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.urlresolvers import reverse
 from django.test.client import RequestFactory
 
+import mock
 from nose.tools import eq_, ok_
 
 import mkt.site.tests
@@ -12,17 +13,23 @@ from mkt.developers.models import (AddonPaymentAccount, PaymentAccount,
                                    SolitudeSeller)
 from mkt.site.fixtures import fixture
 from mkt.site.tests import user_factory
+from mkt.data.memory import MemoryStore, MemoryWebapp
 from mkt.tags.models import Tag
 from mkt.webapps.models import Webapp
 from mkt.webapps.serializers import (AppFeaturesSerializer, AppSerializer,
                                      SimpleAppSerializer)
+from mkt.webapps import views
+
+
+def make_store(**kw):
+    return MemoryStore({337141: MemoryWebapp()})
 
 
 class TestAppFeaturesSerializer(BaseOAuth):
-    fixtures = fixture('webapp_337141')
 
-    def setUp(self):
-        self.features = Webapp.objects.get(pk=337141).latest_version.features
+    @mock.patch.object(views, 'store', new_callable=make_store)
+    def setUp(self, patched_store=None):
+        self.features = views.store.get_app(337141)._features
         self.request = RequestFactory().get('/')
         self.request.user = AnonymousUser()
 
@@ -46,10 +53,10 @@ class TestAppFeaturesSerializer(BaseOAuth):
 
 
 class TestSimpleAppSerializer(mkt.site.tests.TestCase):
-    fixtures = fixture('webapp_337141')
 
-    def setUp(self):
-        self.webapp = Webapp.objects.get(pk=337141)
+    @mock.patch.object(views, 'store', new_callable=make_store)
+    def setUp(self, patched_store=None):
+        self.webapp = views.store.get_app(337141)
         self.request = RequestFactory().get('/')
         self.request.user = AnonymousUser()
 

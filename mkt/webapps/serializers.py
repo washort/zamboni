@@ -41,9 +41,12 @@ def http_error(errorclass, reason, extra_data=None):
     return response.Response(r)
 
 
-class AppFeaturesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AppFeatures
+class AppFeaturesSerializer(serializers.Serializer):
+    def restore_object(self, attrs, instance=None):
+        if instance is not None:
+            instance.update(**attrs)
+            return instance
+        return attrs
 
     def to_native(self, obj):
         ret = super(AppFeaturesSerializer, self).to_native(obj)
@@ -59,7 +62,7 @@ class RegionSerializer(serializers.Serializer):
     adolescent = serializers.BooleanField()
 
 
-class AppSerializer(serializers.ModelSerializer):
+class AppSerializer(serializers.Serializer):
     app_type = serializers.ChoiceField(
         choices=mkt.ADDON_WEBAPP_TYPES_LOOKUP.items(), read_only=True)
     author = serializers.CharField(source='developer_name', read_only=True)
@@ -99,8 +102,7 @@ class AppSerializer(serializers.ModelSerializer):
                                  source='all_previews')
     price = SemiSerializerMethodField('get_price')
     price_locale = serializers.SerializerMethodField('get_price_locale')
-    privacy_policy = LargeTextField(view_name='app-privacy-policy-detail',
-                                    required=False)
+    privacy_policy = SemiSerializerMethodField('get_privacy_policy')
     public_stats = serializers.BooleanField(read_only=True)
     ratings = serializers.SerializerMethodField('get_ratings_aggregates')
     regions = RegionSerializer(read_only=True, source='get_regions', many=True)
@@ -116,14 +118,11 @@ class AppSerializer(serializers.ModelSerializer):
         'get_supported_locales')
     tags = serializers.SerializerMethodField('get_tags')
     upsell = serializers.SerializerMethodField('get_upsell')
-    upsold = serializers.HyperlinkedRelatedField(
-        view_name='app-detail', source='upsold.free',
-        required=False, queryset=Webapp.objects.all())
+    upsold = serializers.SerializerMethodField('get_upsold')
     user = serializers.SerializerMethodField('get_user_info')
     versions = serializers.SerializerMethodField('get_versions')
 
     class Meta:
-        model = Webapp
         fields = [
             'app_type', 'author', 'banner_message', 'banner_regions',
             'categories', 'content_ratings', 'created', 'current_version',
@@ -137,6 +136,12 @@ class AppSerializer(serializers.ModelSerializer):
             'support_url', 'supported_locales', 'tags', 'upsell', 'upsold',
             'user', 'versions'
         ]
+
+    def restore_object(self, attrs, instance=None):
+        if instance is not None:
+            instance.update(**attrs)
+            return instance
+        return attrs
 
     def _get_region_id(self):
         request = self.context.get('request')
@@ -205,6 +210,10 @@ class AppSerializer(serializers.ModelSerializer):
             return app.get_price_locale(region=self._get_region_id())
         return None
 
+    def get_privacy_policy(self, app):
+        return reverse('app-privacy-policy-detail',
+                       kwargs={'pk': app.pk})
+
     def get_ratings_aggregates(self, app):
         return {'average': app.average_rating,
                 'count': app.total_reviews}
@@ -217,7 +226,7 @@ class AppSerializer(serializers.ModelSerializer):
             return []
 
     def get_tags(self, app):
-        return [t.tag_text for t in app.tags.all()]
+        return [t.tag_text for t in app.get_tags()]
 
     def get_upsell(self, app):
         upsell = False
@@ -237,6 +246,11 @@ class AppSerializer(serializers.ModelSerializer):
         else:
             return False
 
+    def get_upsold(self, app):
+        if app.upsold:
+            return reverse('app-detail', kwargs={'pk': app.upsold.free_id})
+        return None
+
     def get_user_info(self, app):
         request = self.context.get('request')
         if request and request.user.is_authenticated():
@@ -254,7 +268,7 @@ class AppSerializer(serializers.ModelSerializer):
         # (.no_transforms() is ignored, defeating the purpose), and we can't
         # use .values() / .values_list() because those aren't cached :(
         return dict((v.version, reverse('version-detail', kwargs={'pk': v.pk}))
-                    for v in app.versions.all().no_transforms())
+                    for v in app.get_all_versions())
 
     def validate_categories(self, attrs, source):
         if not attrs.get('categories'):
@@ -307,12 +321,7 @@ class AppSerializer(serializers.ModelSerializer):
             current_upsell.delete()
 
     def save_price(self, obj, price):
-        premium = obj.premium
-        if not premium:
-            premium = AddonPremium()
-            premium.addon = obj
-        premium.price = Price.objects.active().get(price=price)
-        premium.save()
+        obj.update_price(price)
 
     def validate_device_types(self, attrs, source):
         if attrs.get('device_types') is None:

@@ -7,8 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import fields, serializers
 from rest_framework.compat import smart_text
 
-from mkt.translations.utils import to_language
-
 
 class MultiSlugChoiceField(fields.WritableField):
     """
@@ -105,10 +103,7 @@ class TranslationSerializerField(fields.WritableField):
             self.requested_language = request.GET['lang']
 
     def fetch_all_translations(self, obj, source, field):
-        translations = field.__class__.objects.filter(
-            id=field.id, localized_string__isnull=False)
-        return dict((to_language(trans.locale), unicode(trans))
-                    for trans in translations) if translations else None
+        return field.fetch_all_translations()
 
     def fetch_single_translation(self, obj, source, field):
         return unicode(field) if field else None

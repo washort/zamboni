@@ -207,6 +207,12 @@ class PurifiedTranslation(Translation):
         return bleach.clean(linkified, tags=self.allowed_tags,
                             attributes=self.allowed_attributes)
 
+    def fetch_all_translations(self):
+        translations = self.__class__.objects.filter(
+            id=self.id, localized_string__isnull=False)
+        return dict((utils.to_language(trans.locale), unicode(trans))
+                    for trans in translations) if translations else None
+
 
 class LinkifiedTranslation(PurifiedTranslation):
     """Run the string through bleach to get a linkified version."""

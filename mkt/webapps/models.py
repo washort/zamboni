@@ -1809,6 +1809,9 @@ class Webapp(UUIDModelMixin, OnChangeMixin, ModelBase):
 
         return get_cached_minifest(self, force=force)
 
+    def get_tags(self):
+        return self.tags.all()
+
     def sign_if_packaged(self, version_pk=None, reviewer=False):
         if not self.is_packaged:
             return
@@ -2224,6 +2227,18 @@ class Webapp(UUIDModelMixin, OnChangeMixin, ModelBase):
         """Most recent content rating modified time or None if not rated."""
         if self.is_rated():
             return self.content_ratings.order_by('-modified')[0].modified
+
+    def get_all_versions(self):
+        return self.versions.all().no_transforms()
+
+    def update_price(self, price):
+        premium = self.premium
+        if not premium:
+            premium = AddonPremium()
+            premium.addon = self
+        premium.price = Price.objects.active().get(price=price)
+        premium.save()
+
 
 
 class AddonUpsell(ModelBase):
@@ -2650,22 +2665,7 @@ models.signals.post_delete.connect(iarc_cleanup, sender=Webapp,
                                    dispatch_uid='webapps_iarc_cleanup')
 
 
-# The AppFeatures table is created with dynamic fields based on
-# mkt.constants.features, which requires some setup work before we call `type`.
-class AppFeatures(ModelBase, DynamicBoolFieldsMixin):
-    """
-    A dynamically generated model that contains a set of boolean values
-    stating if an app requires a particular feature.
-    """
-    version = models.OneToOneField(Version, related_name='features')
-    field_source = APP_FEATURES
-
-    class Meta:
-        db_table = 'addons_features'
-
-    def __unicode__(self):
-        return u'Version: %s: %s' % (self.version.id, self.to_signature())
-
+class AppFeaturesBase(object):
     def set_flags(self, signature):
         """
         Sets flags given the signature.
@@ -2713,6 +2713,23 @@ class AppFeatures(ModelBase, DynamicBoolFieldsMixin):
         field_names = [self.field_source[key[4:].upper()]['name']
                        for key in keys]
         return sorted(field_names)
+
+
+# The AppFeatures table is created with dynamic fields based on
+# mkt.constants.features, which requires some setup work before we call `type`.
+class AppFeatures(ModelBase, AppFeaturesBase, DynamicBoolFieldsMixin):
+    """
+    A dynamically generated model that contains a set of boolean values
+    stating if an app requires a particular feature.
+    """
+    version = models.OneToOneField(Version, related_name='features')
+    field_source = APP_FEATURES
+
+    class Meta:
+        db_table = 'addons_features'
+
+    def __unicode__(self):
+        return u'Version: %s: %s' % (self.version.id, self.to_signature())
 
 
 # Add a dynamic field to `AppFeatures` model for each buchet feature.
