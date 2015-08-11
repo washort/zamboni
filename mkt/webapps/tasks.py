@@ -48,21 +48,21 @@ task_log = logging.getLogger('z.task')
 
 @task
 @use_master
-def version_changed(addon_id, **kw):
-    update_last_updated(addon_id)
+def version_changed(webapp_id, **kw):
+    update_last_updated(webapp_id)
 
 
-def update_last_updated(addon_id):
+def update_last_updated(webapp_id):
     qs = Webapp._last_updated_queries()
-    if not Webapp.objects.filter(pk=addon_id).exists():
+    if not Webapp.objects.filter(pk=webapp_id).exists():
         task_log.info(
-            '[1@None] Updating last updated for %s failed, no addon found'
-            % addon_id)
+            '[1@None] Updating last updated for %s failed, no webapp found'
+            % webapp_id)
         return
 
-    task_log.info('[1@None] Updating last updated for %s.' % addon_id)
+    task_log.info('[1@None] Updating last updated for %s.' % webapp_id)
 
-    res = (qs.filter(pk=addon_id)
+    res = (qs.filter(pk=webapp_id)
              .using('default')
              .values_list('id', 'last_updated'))
     if res:
@@ -123,7 +123,7 @@ def update_manifests(ids, **kw):
 
 def notify_developers_of_failure(app, error_message, has_link=False):
     if (app.status not in mkt.WEBAPPS_APPROVED_STATUSES or
-            RereviewQueue.objects.filter(addon=app).exists()):
+            RereviewQueue.objects.filter(webapp=app).exists()):
         # If the app isn't public, or has already been reviewed, we don't
         # want to send the mail.
         return
@@ -488,7 +488,7 @@ def dump_user_installs(ids, **kw):
         zone = pytz.timezone(settings.TIME_ZONE)
         for install in user.installed_set.all():
             try:
-                app = install.addon
+                app = install.webapp
             except Webapp.DoesNotExist:
                 continue
 
@@ -635,35 +635,236 @@ def delete_logs(items, **kw):
 
 @task
 @set_task_user
-def find_abuse_escalations(addon_id, **kw):
+def find_abuse_escalations(webapp_id, **kw):
     weekago = datetime.date.today() - datetime.timedelta(days=7)
     add_to_queue = True
 
-    for abuse in AbuseReport.recent_high_abuse_reports(1, weekago, addon_id):
-        if EscalationQueue.objects.filter(addon=abuse.addon).exists():
+    for abuse in AbuseReport.recent_high_abuse_reports(1, weekago, webapp_id):
+        if EscalationQueue.objects.filter(webapp=abuse.webapp).exists():
             # App is already in the queue, no need to re-add it.
             task_log.info(u'[app:%s] High abuse reports, but already '
-                          u'escalated' % abuse.addon)
+                          u'escalated' % abuse.webapp)
             add_to_queue = False
 
         # We have an abuse report... has it been detected and dealt with?
         logs = (AppLog.objects.filter(
             activity_log__action=mkt.LOG.ESCALATED_HIGH_ABUSE.id,
-            addon=abuse.addon).order_by('-created'))
+            webapp=abuse.webapp).order_by('-created'))
         if logs:
             abuse_since_log = AbuseReport.recent_high_abuse_reports(
-                1, logs[0].created, addon_id)
+                1, logs[0].created, webapp_id)
             # If no abuse reports have happened since the last logged abuse
             # report, do not add to queue.
             if not abuse_since_log:
                 task_log.info(u'[app:%s] High abuse reports, but none since '
-                              u'last escalation' % abuse.addon)
+                              u'last escalation' % abuse.webapp)
                 continue
 
         # If we haven't bailed out yet, escalate this app.
         msg = u'High number of abuse reports detected'
         if add_to_queue:
+<<<<<<< b2bbe4e452562a6ace455f7d624a11c2f21ffb17
             EscalationQueue.objects.create(addon=abuse.addon)
         mkt.log(mkt.LOG.ESCALATED_HIGH_ABUSE, abuse.addon,
                 abuse.addon.current_version, details={'comments': msg})
         task_log.info(u'[app:%s] %s' % (abuse.addon, msg))
+=======
+            EscalationQueue.objects.create(webapp=abuse.webapp)
+        mkt.log(mkt.LOG.ESCALATED_HIGH_ABUSE, abuse.webapp,
+                abuse.webapp.current_version, details={'comments': msg})
+        task_log.info(u'[app:%s] %s' % (abuse.webapp, msg))
+
+
+@task
+@use_master
+def populate_is_offline(ids, **kw):
+    for webapp in Webapp.objects.filter(pk__in=ids).iterator():
+        if webapp.guess_is_offline():
+            webapp.update(is_offline=True)
+
+
+@task
+@use_master
+def adjust_categories(ids, **kw):
+    NEW_APP_CATEGORIES = {
+        425986: ['weather'],
+        444314: ['travel', 'weather'],
+        445008: ['travel', 'weather'],
+        450602: ['weather'],
+        455256: ['weather'],
+        455660: ['travel', 'weather'],
+        459364: ['weather'],
+        461279: ['social', 'weather'],
+        461371: ['lifestyle', 'weather'],
+        462257: ['utilities', 'weather'],
+        463108: ['weather'],
+        466698: ['utilities', 'weather'],
+        468173: ['weather'],
+        470946: ['travel', 'weather'],
+        482869: ['utilities', 'weather'],
+        482961: ['weather'],
+        496946: ['weather'],
+        499699: ['weather'],
+        501553: ['weather'],
+        501581: ['lifestyle', 'weather'],
+        501583: ['social', 'weather'],
+        502171: ['weather', 'photo-video'],
+        502173: ['weather', 'photo-video'],
+        502685: ['weather'],
+        503765: ['weather'],
+        505437: ['weather'],
+        506317: ['weather'],
+        506543: ['weather'],
+        506553: ['weather'],
+        506623: ['weather', 'travel'],
+        507091: ['weather'],
+        507139: ['weather'],
+        509150: ['weather'],
+        510118: ['weather', 'utilities'],
+        510334: ['weather', 'travel'],
+        510726: ['weather'],
+        511364: ['weather', 'utilities'],
+        424184: ['food-drink', 'health-fitness'],
+        439994: ['food-drink'],
+        442842: ['maps-navigation', 'food-drink'],
+        444056: ['lifestyle', 'food-drink'],
+        444070: ['lifestyle', 'food-drink'],
+        444222: ['food-drink', 'health-fitness'],
+        444694: ['lifestyle', 'food-drink'],
+        454558: ['food-drink', 'travel'],
+        455620: ['food-drink', 'entertainment'],
+        459304: ['food-drink', 'health-fitness'],
+        465445: ['shopping', 'food-drink'],
+        465700: ['food-drink', 'books-comics'],
+        467828: ['food-drink', 'education'],
+        469104: ['food-drink'],
+        470145: ['food-drink', 'health-fitness'],
+        471349: ['lifestyle', 'food-drink'],
+        476155: ['lifestyle', 'food-drink'],
+        477015: ['food-drink', 'travel'],
+        497282: ['food-drink', 'health-fitness'],
+        500359: ['food-drink', 'books-comics'],
+        501249: ['food-drink'],
+        501573: ['food-drink', 'entertainment'],
+        504143: ['health-fitness', 'food-drink'],
+        506111: ['health-fitness', 'food-drink'],
+        506691: ['health-fitness', 'food-drink'],
+        507921: ['books-comics', 'food-drink'],
+        508211: ['food-drink', 'lifestyle'],
+        508215: ['food-drink', 'lifestyle'],
+        508990: ['food-drink', 'games'],
+        506369: ['books-comics', 'humor'],
+        509746: ['entertainment', 'humor'],
+        509848: ['entertainment', 'humor'],
+        511390: ['entertainment', 'humor'],
+        511504: ['entertainment', 'humor'],
+        488424: ['internet', 'reference'],
+        489052: ['social', 'internet'],
+        499644: ['internet', 'utilities'],
+        500651: ['reference', 'internet'],
+        505043: ['utilities', 'internet'],
+        505407: ['utilities', 'internet'],
+        505949: ['internet', 'reference'],
+        508828: ['utilities', 'internet'],
+        508830: ['utilities', 'internet'],
+        509160: ['productivity', 'internet'],
+        509606: ['productivity', 'internet'],
+        509722: ['productivity', 'internet'],
+        510114: ['news', 'internet'],
+        364752: ['games', 'kids'],
+        364941: ['games', 'kids'],
+        449560: ['entertainment', 'kids'],
+        466557: ['education', 'kids'],
+        466811: ['photo-video', 'kids'],
+        473532: ['education', 'kids'],
+        473620: ['education', 'kids'],
+        473865: ['education', 'kids'],
+        500527: ['games', 'kids'],
+        502263: ['photo-video', 'kids'],
+        507497: ['education', 'kids'],
+        508089: ['education', 'kids'],
+        508229: ['education', 'kids'],
+        508239: ['education', 'kids'],
+        508247: ['education', 'kids'],
+        509404: ['education', 'kids'],
+        509464: ['education', 'kids'],
+        509468: ['education', 'kids'],
+        509470: ['education', 'kids'],
+        509472: ['education', 'kids'],
+        509474: ['education', 'kids'],
+        509476: ['education', 'kids'],
+        509478: ['education', 'kids'],
+        509484: ['education', 'kids'],
+        509486: ['education', 'kids'],
+        509488: ['education', 'kids'],
+        509490: ['education', 'kids'],
+        509492: ['education', 'kids'],
+        509494: ['education', 'kids'],
+        509496: ['education', 'kids'],
+        509498: ['education', 'kids'],
+        509500: ['education', 'kids'],
+        509502: ['education', 'kids'],
+        509504: ['education', 'kids'],
+        509508: ['education', 'kids'],
+        509512: ['education', 'kids'],
+        509538: ['education', 'kids'],
+        509540: ['education', 'kids'],
+        511502: ['games', 'kids'],
+        367693: ['utilities', 'science-tech'],
+        424272: ['science-tech', 'news'],
+        460891: ['science-tech', 'news'],
+        468278: ['science-tech', 'education'],
+        468406: ['science-tech', 'education'],
+        469765: ['science-tech', 'productivity'],
+        480750: ['science-tech', 'education'],
+        502187: ['science-tech', 'education'],
+        504637: ['science-tech', 'reference'],
+        506187: ['science-tech', 'utilities'],
+        508672: ['news', 'science-tech'],
+        510050: ['science-tech', 'education'],
+        511370: ['science-tech', 'reference'],
+        511376: ['science-tech', 'games'],
+        512174: ['education', 'science-tech'],
+        512194: ['utilities', 'science-tech'],
+        377564: ['lifestyle', 'personalization'],
+        451302: ['entertainment', 'personalization'],
+        452888: ['personalization', 'photo-video'],
+        466637: ['personalization', 'photo-video'],
+        477186: ['photo-video', 'personalization'],
+        477304: ['photo-video', 'personalization'],
+        477314: ['photo-video', 'personalization'],
+        480489: ['photo-video', 'personalization'],
+        480495: ['photo-video', 'personalization'],
+        481512: ['photo-video', 'personalization'],
+        482162: ['music', 'personalization'],
+        488892: ['social', 'personalization'],
+        500037: ['entertainment', 'personalization'],
+        500041: ['entertainment', 'personalization'],
+        506495: ['personalization', 'music'],
+        506581: ['entertainment', 'personalization'],
+    }
+
+    # Adjust apps whose categories have changed.
+    for chunk in chunked(ids, 100):
+        for app in Webapp.objects.filter(pk__in=chunk):
+            save = False
+            for k, v in CATEGORY_REDIRECTS.items():
+                if k in app.categories:
+                    save = True
+                    app.categories.remove(k)
+                    app.categories.append(v)
+            if save:
+                task_log.info(u'[app:{0}] Adjusted categories: {1}'
+                              .format(app, app.categories))
+                app.save()
+    # Add apps to new categories.
+    for pk, categories in NEW_APP_CATEGORIES.items():
+        try:
+            app = Webapp.objects.get(pk=pk)
+        except Webapp.DoesNotExist:
+            continue
+        app.categories = categories
+        app.save()
+        task_log.info(u'[app:{0}] Updated app categories: {1}'
+                      .format(app, categories))
+>>>>>>> 正名
