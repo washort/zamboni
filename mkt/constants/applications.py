@@ -58,3 +58,5 @@ def get_device(request):
 
 def get_device_id(request):
     return getattr(get_device(request), 'id', None)
+
+HOMESCREEN = 'homescreen'

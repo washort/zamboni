@@ -259,6 +259,7 @@ def status(request, addon_id, addon):
         'addon': addon,
         'appeal_form': appeal_form,
         'is_tarako': addon.tags.filter(tag_text=QUEUE_TARAKO).exists(),
+        'is_homescreen': addon.tags.filter(tag_text=mkt.HOMESCREEN).exists(),
         'tarako_review': addon.additionalreview_set
                               .latest_for_queue(QUEUE_TARAKO),
         'publish_form': publish_form,

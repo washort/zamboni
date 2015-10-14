@@ -637,6 +637,8 @@ class Webapp(UUIDModelMixin, OnChangeMixin, ModelBase):
             addon.manifest_url = upload.name
             addon.app_domain = addon.domain_from_url(addon.manifest_url)
         addon.save()
+        if data.get('role') == 'homescreen':
+            addon.tags.create(tag_text=mkt.HOMESCREEN)
         Version.from_upload(upload, addon)
 
         mkt.log(mkt.LOG.CREATE_ADDON, addon)
