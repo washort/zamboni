@@ -29,6 +29,7 @@ from mkt.reviewers.models import AdditionalReview, RereviewQueue
 from mkt.site.storage_utils import (copy_stored_file, local_storage,
                                     private_storage)
 from mkt.site.utils import app_factory, slugify, version_factory
+from mkt.tags.models import Tag
 from mkt.users.models import UserProfile
 from mkt.users.utils import create_user
 from mkt.webapps.models import AddonUser, AppManifest, Preview, Webapp
@@ -364,6 +365,9 @@ def generate_apps_from_specs(orig_specs, specdir, repeats=0, prefix=''):
         if spec.get('manifest_file'):
             spec['manifest_file'] = os.path.join(specdir,
                                                  spec['manifest_file'])
+        if spec.get('icon'):
+            spec['icon'] = os.path.join(specdir,
+                                        spec['icon'])
         spec['name'] = '%s%s' % (prefix, spec.get('name', appname))
         spec['categories'] = spec.get('categories', [cat_slug])
         apps.append(generate_app_from_spec(**spec))
@@ -381,6 +385,7 @@ def generate_app_from_spec(name, categories, type, status, num_previews=1,
                            default_locale='en-US', rereview=False,
                            special_regions={}, inapp_id=None,
                            inapp_secret=None, popularity=0, tarako=False,
+                           icon=None, tags=(),
                            **spec):
     status = STATUS_CHOICES_API_LOOKUP[status]
     names = generate_localized_names(name, locale_names)
@@ -392,7 +397,10 @@ def generate_app_from_spec(name, categories, type, status, num_previews=1,
         app = generate_packaged_app(
             names, type, categories, developer_name,
             default_locale=default_locale, status=status, **spec)
-    generate_icon(app)
+    if icon:
+        save_icon(app, open(icon).read())
+    else:
+        generate_icon(app)
     if not preview_files:
         generate_previews(app, num_previews)
     if video_files:
@@ -444,6 +452,8 @@ def generate_app_from_spec(name, categories, type, status, num_previews=1,
     for optField in ('support_url', 'homepage', 'is_offline'):
         if optField in spec:
             setattr(app, optField, spec[optField])
+    for t in tags:
+        Tag(tag_text=t).save_tag(app)
     # Status has to be updated at the end because STATUS_DELETED apps can't
     # be saved.
     app.status = status
