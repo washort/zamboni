@@ -1,0 +1,575 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-02 10:00-0700\n"
+"PO-Revision-Date: 2015-10-06 13:16+0000\n"
+"Last-Translator: Aleksandra Uzelac <auzelac91@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pontoon\n"
+"X-POOTLE-MTIME: 1438120945.0\n"
+
+#: media/js/common/upload-base.js:61
+msgid "The filetype you uploaded isn't recognized."
+msgstr "Тип датотеке коју сте поставили није препозната."
+
+#: media/js/common/upload-base.js:83
+msgid "You cancelled the upload."
+msgstr "Отказали сте отпремање."
+
+#: media/js/common/upload-image.js:98
+msgid "Images must be either PNG or JPG."
+msgstr "Слике морају бити PNG или JPG формата."
+
+#: media/js/common/upload-image.js:102
+msgid "Videos must be in WebM."
+msgstr "Видео снимци морају бити у WebM формату."
+
+#: media/js/common/upload-image.js:129 media/js/common/upload-packaged-app.js:34
+msgid "There was a problem contacting the server."
+msgstr "Дошло је до проблема при контактирању сервера."
+
+#: media/js/common/upload-packaged-app.js:52
+msgid "Select a file..."
+msgstr "Изаберите датотеку..."
+
+#: media/js/common/upload-packaged-app.js:53
+msgid "Your packaged app should end with <code>.zip</code>."
+msgstr "Ваша упакована апликација се мора завршавати са <code>.zip</code>."
+
+#. L10n: {0} is the percent of the file that has been uploaded.
+#: media/js/common/upload-packaged-app.js:89
+msgid "{0}% complete"
+msgstr "{0}% завршено"
+
+#. L10n: "{bytes uploaded} of {total filesize}".
+#: media/js/common/upload-packaged-app.js:92
+msgid "{0} of {1}"
+msgstr "{0} од {1}"
+
+#: media/js/common/upload-packaged-app.js:120
+msgid "Cancel"
+msgstr "Откажи"
+
+#: media/js/common/upload-packaged-app.js:142
+msgid "Uploading {0}"
+msgstr "Отпремам {0}"
+
+#: media/js/common/upload-packaged-app.js:164
+msgid "Error with {0}"
+msgstr "Грешка са {0}"
+
+#: media/js/common/upload-packaged-app.js:169 media/js/devreg/devhub.js:203
+msgid "Your app failed validation with {0} error."
+msgid_plural "Your app failed validation with {0} errors."
+msgstr[0] "Ваша апликација није прошла проверу због {0} грешке."
+msgstr[1] "Ваша апликација није прошла проверу због {0} грешке."
+msgstr[2] "Ваша апликација није прошла проверу због {0} грешака."
+
+#: media/js/common/upload-packaged-app.js:184
+msgid "&hellip;and {0} more"
+msgid_plural "&hellip;and {0} more"
+msgstr[0] "&hellip;и још {0}"
+msgstr[1] "&hellip;и још {0}"
+msgstr[2] "&hellip;и још {0}"
+
+#: media/js/common/upload-packaged-app.js:199 media/js/common/upload-packaged-app.js:325 media/js/devreg/devhub.js:165
+msgid "See full validation report"
+msgstr "Погледајте потпуни извештај прегледа"
+
+#: media/js/common/upload-packaged-app.js:211
+msgid "Validating {0}"
+msgstr "Проверавам {0}"
+
+#. L10n: first argument is an HTTP status code
+#: media/js/common/upload-packaged-app.js:247
+msgid "Received an empty response from the server; status: {0}"
+msgstr "Добијен је празан одговор од сервера; статус: {0}"
+
+#: media/js/common/upload-packaged-app.js:257
+msgid "Unexpected server error while validating."
+msgstr "Неочекивана грешка на серверу током провере."
+
+#: media/js/common/upload-packaged-app.js:294
+msgid "Finished validating {0}"
+msgstr "Провера завршена {0}"
+
+#: media/js/common/upload-packaged-app.js:300
+msgid "Your app passed validation with no errors and {0} warning."
+msgid_plural "Your app passed validation with no errors and {0} warnings."
+msgstr[0] "Ваша апликацијa је прошла проверу без грешака и са {0} упозорењем."
+msgstr[1] "Ваша апликацијa је прошла проверу без грешака и са {0} упозорења."
+msgstr[2] "Ваша апликацијa је прошла проверу без грешака и са {0} упозорења."
+
+#: media/js/common/upload-packaged-app.js:305
+msgid "Your app passed validation with no errors or warnings."
+msgstr "Ваша апликација је прошла проверу без грешака или упозорења."
+
+#: media/js/devreg/apps.js:84
+msgid "The manifest could not be found at the given location."
+msgstr "Манифест није нађен на изабраној локацији."
+
+#: media/js/devreg/apps.js:87
+msgid "App host could not be reached."
+msgstr "Хост апликације није доступан."
+
+#: media/js/devreg/apps.js:90
+msgid "App manifest is unparsable."
+msgstr "Манифест апликације се не може упоредити."
+
+#: media/js/devreg/apps.js:93
+msgid "App manifest is invalid."
+msgstr "Манифест апликације је неисправан."
+
+#: media/js/devreg/apps.js:96
+msgid "App is already installed."
+msgstr "Апликација је већ инсталирана."
+
+#: media/js/devreg/apps.js:100
+msgid "Internal server error."
+msgstr "Серверска грешка."
+
+#: media/js/devreg/apps.js:103
+msgid "Internal server error on app installation."
+msgstr "Серверска грешка током инсталације апликације."
+
+#: media/js/devreg/apps.js:106
+msgid "Install failed. Please try again later."
+msgstr "Инсталација је неуспешна. Покушајте касније."
+
+#: media/js/devreg/devhub.js:208
+msgid "Your app failed validation with {0} error and {1} message(s)."
+msgid_plural "Your app failed validation with {0} errors and {1} message(s)."
+msgstr[0] "Ваша апликацијa није прошла проверу - {0} грешка и {1} порука."
+msgstr[1] "Ваша апликацијa није прошла проверу - {0} грешке и {1} порука."
+msgstr[2] "Ваша апликацијa није прошла проверу - {0} грешака и {1} порука."
+
+#: media/js/devreg/devhub.js:222
+msgid "Your app passed validation with no errors and {0} message."
+msgid_plural "Your app passed validation with no errors and {0} messages."
+msgstr[0] "Ваша апликацијa је прошла проверу без грешака и {0} поруком."
+msgstr[1] "Ваша апликацијa је прошла проверу без грешака и {0} поруке."
+msgstr[2] "Ваша апликацијa је прошла проверу без грешака и {0} порука."
+
+#: media/js/devreg/devhub.js:227
+msgid "Your app passed validation with no errors or messages."
+msgstr "Ваша апликацијa је прошла проверу без грешака или порука."
+
+#: media/js/devreg/devhub.js:442
+msgid "Changes Saved"
+msgstr "Измене сачуване"
+
+#: media/js/devreg/devhub.js:458
+msgid "Enter a new team member's email address"
+msgstr "Унесите адресу е-поште новог члана тима"
+
+#: media/js/devreg/devhub.js:471
+msgid "Manifest refreshed"
+msgstr "Манифест освежен"
+
+#: media/js/devreg/devhub.js:476
+msgid "Could not refresh manifest. Try again later."
+msgstr "Не можемо да освежимо манифест. Покушајте поново касније."
+
+#: media/js/devreg/devhub.js:657
+msgid "There was an error uploading your file."
+msgstr "Дошло је до грешке приликом отпремања датотеке."
+
+#: media/js/devreg/devhub.js:1140
+msgid "Image changes being processed"
+msgstr "Измене на слици се обрађују"
+
+#: media/js/devreg/ecosystem.js:26
+msgid "This video requires a browser with support for open video "
+msgstr "Овај видео захтева прегледач који подржава отворене видео снимке "
+
+#: media/js/devreg/ecosystem.js:27
+msgid "or the <a href=\"http://www.adobe.com/go/getflashplayer\">Adobe "
+msgstr "или <a href=\"http://www.adobe.com/go/getflashplayer\">Adobe "
+
+#: media/js/devreg/ecosystem.js:28
+msgid "Flash Player</a>."
+msgstr "Flash Player</a>."
+
+#: media/js/devreg/in_app_products.js:281
+msgid "Enabled"
+msgstr "Омогућено"
+
+#: media/js/devreg/in_app_products.js:283
+msgid "Disabled"
+msgstr "Онемогућено"
+
+#: media/js/devreg/init.js:35
+msgid "This feature is temporarily disabled while we perform website maintenance. Please check back a little later."
+msgstr "Ова могућност је привремено онемогућена док обављамо одржавања сајта. Молимо пробајте мало касније."
+
+#: media/js/devreg/l10n.js:45
+msgid "Remove this localization"
+msgstr "Уклони ову локализацију"
+
+#: media/js/devreg/login.js:126
+msgid "Persona login failed. Maybe you don't have an account under that email address?"
+msgstr "Пријава путем Persona система је неуспешна. Можда немате налог под том адресом е-поште?"
+
+#: media/js/devreg/login.js:131
+msgid "Persona login failed. A server error was encountered."
+msgstr "Пријава путем Persona система је неуспешна. Дошло је до грешке на серверу."
+
+#: media/js/devreg/lookup-tool.js:39
+msgid "Status successfully changed to \"{0}\""
+msgstr "Статус успешно промењен у \"{0}\""
+
+#: media/js/devreg/lookup-tool.js:44
+msgid "Could not change status to \"{0}\""
+msgstr "Немогуће променити статус у \"{0}\""
+
+#: media/js/devreg/lookup-tool.js:70
+msgid "Group membership \"{0}\" added"
+msgstr "Групно чланство \"{0}\" додато"
+
+#: media/js/devreg/lookup-tool.js:84
+msgid "Could not add group \"{0}\""
+msgstr "Не могу додати групу \"{0}\""
+
+#: media/js/devreg/lookup-tool.js:108
+msgid "Group membership \"{0}\" removed"
+msgstr "Групно чланство \"{0}\" уклоњено"
+
+#: media/js/devreg/lookup-tool.js:114
+msgid "Could not remove group \"{0}\""
+msgstr "Не могу уклонити групу \"{0}\""
+
+#: media/js/devreg/lookup-tool.js:183
+msgid "Show All Results"
+msgstr "Прикажи све резултате"
+
+#: media/js/devreg/lookup-tool.js:186
+msgid "Over {0} results found, consider refining your search."
+msgstr "Преко {0} резултата је нађено, покушајте да дефинишете претрагу."
+
+#: media/js/devreg/manifest.js:47
+msgid "Requested Permissions:"
+msgstr "Неопходне дозволе:"
+
+#: media/js/devreg/manifest.js:55
+msgid "Certified"
+msgstr "Сертификовано"
+
+#: media/js/devreg/manifest.js:58
+msgid "Privileged"
+msgstr "Овлашћено"
+
+#: media/js/devreg/manifest.js:61
+msgid "Unprivileged"
+msgstr "Неовлашћено"
+
+#: media/js/devreg/manifest.js:67
+msgid "No reason given"
+msgstr "Није дат разлог"
+
+#: media/js/devreg/overlay.js:41
+msgid "OK"
+msgstr "У реду"
+
+#: media/js/devreg/payments-enroll.js:9
+msgid "Spanish Banking Code"
+msgstr "Код банке Шпаније"
+
+#: media/js/devreg/payments-enroll.js:11
+msgid "Irish Sort Code"
+msgstr "Код банке Ирске"
+
+#: media/js/devreg/payments-enroll.js:13
+msgid "Belgian Sort Code"
+msgstr "Код банке Белгије"
+
+#: media/js/devreg/payments-enroll.js:15
+msgid "Spanish/French/Italian/Dutch Banking Code"
+msgstr "Код банке Шпаније/Француске/Италије/Холандије"
+
+#: media/js/devreg/payments-enroll.js:17
+msgid "Dutch/US Sort Code"
+msgstr "Код банке Холандије/САД"
+
+#: media/js/devreg/payments-enroll.js:19
+msgid "Canadian Transit Number/German Routing Code"
+msgstr "Транзитни број Канаде/Рутинг код Немачке"
+
+#: media/js/devreg/payments-enroll.js:21
+msgid "Korean Bank and Branch/Indonesian Bank Code"
+msgstr "Банка Кореје и код филијале/Индонезијске банке"
+
+#: media/js/devreg/payments-enroll.js:23
+msgid "Greek HEBIC/Indonesian Bank Code"
+msgstr "HEBIC Грчке/Код банке Индонезије"
+
+#: media/js/devreg/payments-enroll.js:25
+msgid "UK/Irish Sort Code or NZ Account Prefix or Australian BSB Code"
+msgstr "Код банке Уједињеног Краљевства/Ирске или префикс новозеландског налога или Аустралијски BSB код"
+
+#: media/js/devreg/payments-enroll.js:27
+msgid "Austrian/Swiss Bank Code"
+msgstr "Код банке Аустрије/Швајцарске"
+
+#: media/js/devreg/payments-enroll.js:29
+msgid "Danish/Swiss Bank Code"
+msgstr "Код банке Данске/Швајцарске"
+
+#: media/js/devreg/payments-enroll.js:31
+msgid "Swiss/Iraqi Bank Code"
+msgstr "Код банке Швајцарске/Ирака"
+
+#: media/js/devreg/payments-enroll.js:33
+msgid "Iraqi Bank Code"
+msgstr "Код банке Ирака"
+
+#. L10n: {0} is the name of a bank detected from the bank account code.
+#: media/js/devreg/payments-enroll.js:136
+msgid "Detected: {0}"
+msgstr "Откривено: {0}"
+
+#. L10n: This sentence introduces a list of applications.
+#: media/js/devreg/payments-manage.js:32
+msgid "Deleting payment account \"{0}\" will remove the payment account from the following apps. Applications without a payment account will no longer be available for sale."
+msgid_plural "Deleting payment account \"{0}\" will remove the payment account from the following app. Applications without a payment account will no longer be available for sale."
+msgstr[0] "Брисањем налога за плаћање \"{0}\", оно ће бити уклоњено са следећих апликација. Апликације без платног налога више неће бити доступне за продају."
+msgstr[1] "Брисањем налога за плаћање \"{0}\", оно ће бити уклоњено са следеће апликације. Апликације без платног налога више неће бити доступне за продају."
+msgstr[2] "Брисањем налога за плаћање \"{0}\", оно ће бити уклоњено са следеће апликације. Апликације без платног налога више неће бити доступне за продају."
+
+#: media/js/devreg/payments-manage.js:45
+msgid "{appName} payment accounts:"
+msgstr "{appName} налози за плаћање:"
+
+#: media/js/devreg/payments-manage.js:112 media/js/devreg/payments-manage.js:175 media/js/devreg/validator.js:191 media/js/devreg/validator.js:437 media/js/devreg/validator.js:456
+#: media/js/devreg/reviewers/buttons.js:85 media/js/devreg/reviewers/buttons.js:94
+msgid "Error"
+msgstr "Грешка"
+
+#: media/js/devreg/payments-manage.js:113 media/js/devreg/payments-manage.js:176
+msgid "There was a problem contacting the payment server."
+msgstr "Дошло је до грешке приликом контактирања сервера за плаћање."
+
+#: media/js/devreg/payments-manage.js:143
+msgid "Authentication error"
+msgstr "Грешка током аутентификације"
+
+#: media/js/devreg/payments-manage.js:199
+msgid "You do not currently have any payment accounts."
+msgstr "Тренутно немате ни један налог за плаћање."
+
+#: media/js/devreg/suggestions.js:66
+msgid "Search themes for <b>{0}</b>"
+msgstr "Претражи теме за <b>{0}</b>"
+
+#: media/js/devreg/suggestions.js:68
+msgid "Search apps for <b>{0}</b>"
+msgstr "Претражи апликације за <b>{0}</b>"
+
+#: media/js/devreg/suggestions.js:70
+msgid "Search add-ons for <b>{0}</b>"
+msgstr "Претражи додатке за <b>{0}</b>"
+
+#. L10n: {0} is the number of characters left.
+#: media/js/devreg/utils.js:89
+msgid "{0} character left."
+msgid_plural "{0} characters left."
+msgstr[0] "{0} преостао карактер."
+msgstr[1] "{0} преостала карактера."
+msgstr[2] "{0} преосталих карактера."
+
+#: media/js/devreg/validator.js:71
+msgid "All tests passed successfully."
+msgstr "Сви тестови су успешно завршени."
+
+#: media/js/devreg/validator.js:74 media/js/devreg/validator.js:356
+msgid "These tests were not run."
+msgstr "Ови тестови нису покренути."
+
+#: media/js/devreg/validator.js:117 media/js/devreg/validator.js:130
+msgid "Tests"
+msgstr "Тестови"
+
+#: media/js/devreg/validator.js:192
+msgid "Warning"
+msgstr "Упозорење"
+
+#: media/js/devreg/validator.js:279
+msgid "Compatibility Tests"
+msgstr "Тестови компатибилности"
+
+#: media/js/devreg/validator.js:327
+msgid "App failed validation."
+msgstr "Апликација није прошла проверу."
+
+#: media/js/devreg/validator.js:329
+msgid "App passed validation."
+msgstr "Апликација је прошла проверу."
+
+#: media/js/devreg/validator.js:359
+msgid "{0} error"
+msgid_plural "{0} errors"
+msgstr[0] "{0} грешка"
+msgstr[1] "{0} грешке"
+msgstr[2] "{0} грешака"
+
+#: media/js/devreg/validator.js:361
+msgid "{0} warning"
+msgid_plural "{0} warnings"
+msgstr[0] "{0} упозорење"
+msgstr[1] "{0} упозорења"
+msgstr[2] "{0} упозорења"
+
+#: media/js/devreg/validator.js:439
+msgid "Validation task could not complete or completed with errors"
+msgstr "Задатак провере није могао бити завршен или је завршен са грешкама"
+
+#: media/js/devreg/validator.js:457
+msgid "Internal server error"
+msgstr "Грешка на серверу"
+
+#: media/js/devreg/reviewers/buttons.js:38
+msgid "Purchasing"
+msgstr "Купујем"
+
+#: media/js/devreg/reviewers/buttons.js:44
+msgid "Purchased"
+msgstr "Купљено"
+
+#: media/js/devreg/reviewers/buttons.js:70
+msgid "Launch"
+msgstr "Покрени"
+
+#: media/js/devreg/reviewers/editors.js:138
+msgid "{name} was viewing this page first."
+msgstr "{name} је први прегледавао ову страницу."
+
+#: media/js/devreg/reviewers/editors.js:188
+msgid "Receipt checked by app."
+msgstr "Потврда проверена од стране апликације."
+
+#: media/js/devreg/reviewers/editors.js:190
+msgid "Receipt was not checked by app."
+msgstr "Потврда није проверена од стране апликације."
+
+#: media/js/devreg/reviewers/editors.js:241
+msgid "{name} was viewing this app first."
+msgstr "{name} је први гледао ову апликацију."
+
+#: media/js/devreg/reviewers/editors.js:252
+msgid "Loading&hellip;"
+msgstr "Учитавам&hellip;"
+
+#: media/js/devreg/reviewers/editors.js:257
+msgid "Version Notes"
+msgstr "Белешке о верзији"
+
+#: media/js/devreg/reviewers/editors.js:262
+msgid "Notes for Reviewers"
+msgstr "Белешке за рецензенте"
+
+#: media/js/devreg/reviewers/editors.js:267
+msgid "No version notes found"
+msgstr "Није нађена ни једна белешка о верзији"
+
+#: media/js/devreg/reviewers/editors.js:292
+msgid "Select an application first"
+msgstr "Прво изаберите апликацију"
+
+#: media/js/devreg/reviewers/editors.js:356
+msgid "Error loading translation"
+msgstr "Грешка при учитавању превода"
+
+#: media/js/devreg/reviewers/expandable.js:15
+msgid "more..."
+msgstr "још..."
+
+#: media/js/devreg/reviewers/expandable.js:18
+msgid "less..."
+msgstr "мање..."
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:7
+msgid "Keep review / Remove flags"
+msgstr "Задржи рецензију / Уклони заставице"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:8
+msgid "Delete review"
+msgstr "Обриши рецензију"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:9
+msgid "Skip for now"
+msgstr "Прескочи за сада"
+
+#: media/js/devreg/reviewers/payments.js:69
+msgid "Payment failed. Try again later."
+msgstr "Плаћање неуспешно. Покушајте касније."
+
+#: media/js/devreg/reviewers/reviewers.js:97
+msgid "Packaged App"
+msgstr "Упакована апликација"
+
+#: media/js/devreg/reviewers/reviewers.js:101
+msgid "Privileged App"
+msgstr "Овлашћена апликација"
+
+#: media/js/devreg/reviewers/reviewers.js:104
+msgid "More Information Requested"
+msgstr "Захтева се више информација"
+
+#: media/js/devreg/reviewers/reviewers.js:107
+msgid "Contains Editor Comment"
+msgstr "Садржи коментар уредника"
+
+#: media/js/devreg/reviewers/reviewers.js:111
+msgid "Premium App"
+msgstr "Премијум апликација"
+
+#: media/js/devreg/reviewers/reviewers.js:114
+msgid "Escalated"
+msgstr "Ескалирано"
+
+#: media/js/devreg/reviewers/reviewers.js:122
+msgid "Free"
+msgstr "Бесплатно"
+
+#: media/js/devreg/reviewers/reviewers.js:219
+msgid "Any"
+msgstr "Било коју"
+
+#: media/js/devreg/reviewers/reviewers.js:246 media/js/devreg/reviewers/reviewers.js:297
+msgid "Approved app: {app}"
+msgstr "Одобрена апликација: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:249 media/js/devreg/reviewers/reviewers.js:300
+msgid "Rejected app: {app}"
+msgstr "Одбијена апликација: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:255
+msgid "Error approving app: {app}"
+msgstr "Грешка приликом одобравања апликације: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:256
+msgid "Error rejecting app: {app}"
+msgstr "Грешка приликом одбијања апликације: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:307
+msgid "Error passing app: {app}"
+msgstr "Грешка при пролажењу апликације: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:308
+msgid "Error failing app: {app}"
+msgstr "Error failing апликација: {app}"
+
+#: media/js/devreg/reviewers/reviewers_commbadge.js:66
+msgid "Sorry! We had an error fetching the review history. Please try logging in again.<p>"
+msgstr "Извињавамо се! Имали смо грешку при преузимању историје прегледа. Покушајте поново да се пријавите.<p>"
+
+#. L10n: {0} is author of note, {1} is a datetime. (e.g., "by Kevin on Feburary 18th 2014 12:12 pm").
+#: media/js/devreg/reviewers/reviewers_commbadge.js:86
+msgid "By {0} on {1}"
+msgstr "По {0} на {1}"

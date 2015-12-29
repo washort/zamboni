@@ -1,0 +1,556 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-12 10:27-0700\n"
+"PO-Revision-Date: 2015-10-12 02:30+0000\n"
+"Last-Translator: r4k0nb4k0n <chj6097@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1444617050.0\n"
+
+#: media/js/common/upload-base.js:61
+msgid "The filetype you uploaded isn't recognized."
+msgstr "업로드한 파일 형식을 인식할 수 없습니다."
+
+#: media/js/common/upload-base.js:83
+msgid "You cancelled the upload."
+msgstr "업로드를 취소했습니다."
+
+#: media/js/common/upload-image.js:98
+msgid "Images must be either PNG or JPG."
+msgstr "이미지는 PNG나 JPG를 써야 합니다."
+
+#: media/js/common/upload-image.js:102
+msgid "Videos must be in WebM."
+msgstr "동영상은 WebM으로 된 것만 사용 가능합니다."
+
+#: media/js/common/upload-image.js:129 media/js/common/upload-packaged-app.js:34
+msgid "There was a problem contacting the server."
+msgstr "서버와 연결 도중 문제가 발생했습니다."
+
+#: media/js/common/upload-packaged-app.js:52
+msgid "Select a file..."
+msgstr "파일을 선택하세요..."
+
+#: media/js/common/upload-packaged-app.js:53
+msgid "Your packaged app should end with <code>.zip</code>."
+msgstr "패키징 앱은 <code>.zip</code> 파일이어야 합니다."
+
+#. L10n: {0} is the percent of the file that has been uploaded.
+#: media/js/common/upload-packaged-app.js:89
+msgid "{0}% complete"
+msgstr "{0}% 완료됨"
+
+#. L10n: "{bytes uploaded} of {total filesize}".
+#: media/js/common/upload-packaged-app.js:92
+msgid "{0} of {1}"
+msgstr "{0} / {1}"
+
+#: media/js/common/upload-packaged-app.js:120
+msgid "Cancel"
+msgstr "취소"
+
+#: media/js/common/upload-packaged-app.js:142
+msgid "Uploading {0}"
+msgstr "{0} 업로드 중"
+
+#: media/js/common/upload-packaged-app.js:164
+msgid "Error with {0}"
+msgstr "오류 {0}개"
+
+#: media/js/common/upload-packaged-app.js:169 media/js/devreg/devhub.js:203
+msgid "Your app failed validation with {0} error."
+msgid_plural "Your app failed validation with {0} errors."
+msgstr[0] "{0}개의 오류로 인해 앱 검사 시험을 통과하지 못했습니다."
+
+#: media/js/common/upload-packaged-app.js:184
+msgid "&hellip;and {0} more"
+msgid_plural "&hellip;and {0} more"
+msgstr[0] "&hellip;추가 오류 {0}개"
+
+#: media/js/common/upload-packaged-app.js:199 media/js/common/upload-packaged-app.js:325 media/js/devreg/devhub.js:165
+msgid "See full validation report"
+msgstr "전체 검사 보고서 보기"
+
+#: media/js/common/upload-packaged-app.js:211
+msgid "Validating {0}"
+msgstr "{0} 검사중"
+
+#. L10n: first argument is an HTTP status code
+#: media/js/common/upload-packaged-app.js:247
+msgid "Received an empty response from the server; status: {0}"
+msgstr "서버로부터 공백의 응답을 받았습니다; 상태: {0}"
+
+#: media/js/common/upload-packaged-app.js:257
+msgid "Unexpected server error while validating."
+msgstr "검사 도중 예상치 못한 오류가 발생했습니다."
+
+#: media/js/common/upload-packaged-app.js:294
+msgid "Finished validating {0}"
+msgstr "{0} 검사 완료"
+
+#: media/js/common/upload-packaged-app.js:300
+msgid "Your app passed validation with no errors and {0} warning."
+msgid_plural "Your app passed validation with no errors and {0} warnings."
+msgstr[0] "앱이 오류 없이 경고 {0}개와 함께 유효성 검사를 통과했습니다."
+
+#: media/js/common/upload-packaged-app.js:305
+msgid "Your app passed validation with no errors or warnings."
+msgstr "앱이 아무런 오류나 경고 없이 유효성 검사를 통과했습니다."
+
+#: media/js/devreg/apps.js:84
+msgid "The manifest could not be found at the given location."
+msgstr "앱 정보 설정 파일을 주어진 위치에서 찾을 수 없습니다."
+
+#: media/js/devreg/apps.js:87
+msgid "App host could not be reached."
+msgstr "앱 호스트에 연결할 수 없습니다."
+
+#: media/js/devreg/apps.js:90
+msgid "App manifest is unparsable."
+msgstr "앱 정보 설정 파일을 분석할 수 없습니다."
+
+#: media/js/devreg/apps.js:93
+msgid "App manifest is invalid."
+msgstr "앱 정보 설정 파일이 잘못되었습니다."
+
+#: media/js/devreg/apps.js:96
+msgid "App is already installed."
+msgstr "이미 설치된 앱입니다."
+
+#: media/js/devreg/apps.js:100
+msgid "Internal server error."
+msgstr "내부 서버 오류가 발생했습니다."
+
+#: media/js/devreg/apps.js:103
+msgid "Internal server error on app installation."
+msgstr "앱 설치중 내부 서버 오류가 발생했습니다."
+
+#: media/js/devreg/apps.js:106
+msgid "Install failed. Please try again later."
+msgstr "설치를 할 수 없습니다. 나중에 다시 시도해 주세요."
+
+#: media/js/devreg/devhub.js:208
+msgid "Your app failed validation with {0} error and {1} message(s)."
+msgid_plural "Your app failed validation with {0} errors and {1} message(s)."
+msgstr[0] "앱이 {0}개의 오류와 {1}개의 메세지로 인해 유효성 검사를 통과하지 못했습니다."
+
+#: media/js/devreg/devhub.js:222
+msgid "Your app passed validation with no errors and {0} message."
+msgid_plural "Your app passed validation with no errors and {0} messages."
+msgstr[0] "앱이 오류 없이 메시지 {0}개와 함께 유효성 검사를 통과했습니다."
+
+#: media/js/devreg/devhub.js:227
+msgid "Your app passed validation with no errors or messages."
+msgstr "앱이 아무런 오류나 메시지 없이 유효성 검사를 통과했습니다."
+
+#: media/js/devreg/devhub.js:442
+msgid "Changes Saved"
+msgstr "변경 사항이 저장되었습니다"
+
+#: media/js/devreg/devhub.js:458
+msgid "Enter a new team member's email address"
+msgstr "새 팀 멤버의 이메일 주소를 입력하세요"
+
+#: media/js/devreg/devhub.js:471
+msgid "Manifest refreshed"
+msgstr ""
+
+#: media/js/devreg/devhub.js:476
+msgid "Could not refresh manifest. Try again later."
+msgstr ""
+
+#: media/js/devreg/devhub.js:657
+msgid "There was an error uploading your file."
+msgstr "파일을 업로드하는 과정에서 오류가 발생했습니다."
+
+#: media/js/devreg/devhub.js:1140
+msgid "Image changes being processed"
+msgstr "이미지 변경이 처리되었습니다"
+
+#: media/js/devreg/ecosystem.js:26
+msgid "This video requires a browser with support for open video "
+msgstr "이 동영상을 재생하려면 오픈 비디오나 "
+
+#: media/js/devreg/ecosystem.js:27
+msgid "or the <a href=\"http://www.adobe.com/go/getflashplayer\">Adobe "
+msgstr "<a href=\"http://www.adobe.com/go/getflashplayer\">Adobe "
+
+#: media/js/devreg/ecosystem.js:28
+msgid "Flash Player</a>."
+msgstr "Flash Player</a>를 지원하는 브라우저가 필요합니다."
+
+#: media/js/devreg/in_app_products.js:281
+msgid "Enabled"
+msgstr "활성화됨"
+
+#: media/js/devreg/in_app_products.js:283
+msgid "Disabled"
+msgstr "비활성화됨"
+
+#: media/js/devreg/init.js:35
+msgid "This feature is temporarily disabled while we perform website maintenance. Please check back a little later."
+msgstr "이 기능은 웹사이트 점검으로 인해 잠시 사용할 수 없습니다. 잠시 후 다시 사용해 주세요."
+
+#: media/js/devreg/l10n.js:45
+msgid "Remove this localization"
+msgstr "이 번역 삭제"
+
+#: media/js/devreg/login.js:126
+msgid "Persona login failed. Maybe you don't have an account under that email address?"
+msgstr "Persona 로그인 실패입니다. 아마도 이메일 주소에 대한 계정이 없지 않나요?"
+
+#: media/js/devreg/login.js:131
+msgid "Persona login failed. A server error was encountered."
+msgstr "페르소나 로그인이 실패했습니다. 서버에 오류가 발생했습니다."
+
+#: media/js/devreg/lookup-tool.js:39
+msgid "Status successfully changed to \"{0}\""
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:44
+msgid "Could not change status to \"{0}\""
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:70
+msgid "Group membership \"{0}\" added"
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:84
+msgid "Could not add group \"{0}\""
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:108
+msgid "Group membership \"{0}\" removed"
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:114
+msgid "Could not remove group \"{0}\""
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:183
+msgid "Show All Results"
+msgstr "모든 결과 표시"
+
+#: media/js/devreg/lookup-tool.js:186
+msgid "Over {0} results found, consider refining your search."
+msgstr "{0}개 이상의 결과가 발견되어 검색 결과를 간추렸습니다."
+
+#: media/js/devreg/manifest.js:47
+msgid "Requested Permissions:"
+msgstr "요청된 권한:"
+
+#: media/js/devreg/manifest.js:55
+msgid "Certified"
+msgstr "인증됨"
+
+#: media/js/devreg/manifest.js:58
+msgid "Privileged"
+msgstr "권한 있음"
+
+#: media/js/devreg/manifest.js:61
+msgid "Unprivileged"
+msgstr "권한 없음"
+
+#: media/js/devreg/manifest.js:67
+msgid "No reason given"
+msgstr "사유 없음"
+
+#: media/js/devreg/overlay.js:41
+msgid "OK"
+msgstr "확인"
+
+#: media/js/devreg/payments-enroll.js:9
+msgid "Spanish Banking Code"
+msgstr "스페인 Banking Code"
+
+#: media/js/devreg/payments-enroll.js:11
+msgid "Irish Sort Code"
+msgstr "아일랜드 은행 Sort Code"
+
+#: media/js/devreg/payments-enroll.js:13
+msgid "Belgian Sort Code"
+msgstr "벨기에 은행 Sort Code"
+
+#: media/js/devreg/payments-enroll.js:15
+msgid "Spanish/French/Italian/Dutch Banking Code"
+msgstr "스페인/프랑스/이탈리아/네덜란드 Banking Code"
+
+#: media/js/devreg/payments-enroll.js:17
+msgid "Dutch/US Sort Code"
+msgstr "네덜란드/미국 은행 Sort Code"
+
+#: media/js/devreg/payments-enroll.js:19
+msgid "Canadian Transit Number/German Routing Code"
+msgstr "캐나다 은행 Transit Number/독일 은행 Routing Code"
+
+#: media/js/devreg/payments-enroll.js:21
+msgid "Korean Bank and Branch/Indonesian Bank Code"
+msgstr "한국 은행 지점코드/인도네시아 은행 코드"
+
+#: media/js/devreg/payments-enroll.js:23
+msgid "Greek HEBIC/Indonesian Bank Code"
+msgstr "그리스 은행 HEBIC/인도네시아 은행 Bank Code"
+
+#: media/js/devreg/payments-enroll.js:25
+msgid "UK/Irish Sort Code or NZ Account Prefix or Australian BSB Code"
+msgstr "영국/아일랜드 은행 Sort Code 또는 뉴질랜드 은행 Account Prefix 또는 호주 은행 BSB Code"
+
+#: media/js/devreg/payments-enroll.js:27
+msgid "Austrian/Swiss Bank Code"
+msgstr "오스트리아/스위스 은행 Bank Code"
+
+#: media/js/devreg/payments-enroll.js:29
+msgid "Danish/Swiss Bank Code"
+msgstr "덴마크/스위스 은행 Bank Code"
+
+#: media/js/devreg/payments-enroll.js:31
+msgid "Swiss/Iraqi Bank Code"
+msgstr "스위스/이라크 은행 Bank Code"
+
+#: media/js/devreg/payments-enroll.js:33
+msgid "Iraqi Bank Code"
+msgstr "이라크 은행 Bank Code"
+
+#. L10n: {0} is the name of a bank detected from the bank account code.
+#: media/js/devreg/payments-enroll.js:136
+msgid "Detected: {0}"
+msgstr "은행 인식: {0}"
+
+#. L10n: This sentence introduces a list of applications.
+#: media/js/devreg/payments-manage.js:32
+msgid "Deleting payment account \"{0}\" will remove the payment account from the following apps. Applications without a payment account will no longer be available for sale."
+msgid_plural "Deleting payment account \"{0}\" will remove the payment account from the following app. Applications without a payment account will no longer be available for sale."
+msgstr[0] ""
+
+#: media/js/devreg/payments-manage.js:45
+msgid "{appName} payment accounts:"
+msgstr ""
+
+#: media/js/devreg/payments-manage.js:112 media/js/devreg/payments-manage.js:175 media/js/devreg/validator.js:191 media/js/devreg/validator.js:437 media/js/devreg/validator.js:456
+#: media/js/devreg/reviewers/buttons.js:85 media/js/devreg/reviewers/buttons.js:94
+msgid "Error"
+msgstr "오류"
+
+#: media/js/devreg/payments-manage.js:113 media/js/devreg/payments-manage.js:176
+msgid "There was a problem contacting the payment server."
+msgstr "결제 서버로 접속하는 과정에서 문제가 발생했습니다."
+
+#: media/js/devreg/payments-manage.js:143
+msgid "Authentication error"
+msgstr "인증 오류"
+
+#: media/js/devreg/payments-manage.js:199
+msgid "You do not currently have any payment accounts."
+msgstr "현재 결제 가능 계좌를 가지고 있지 않습니다."
+
+#: media/js/devreg/suggestions.js:66
+msgid "Search themes for <b>{0}</b>"
+msgstr "<b>{0}</b>의 테마 검색"
+
+#: media/js/devreg/suggestions.js:68
+msgid "Search apps for <b>{0}</b>"
+msgstr "<b>{0}</b> 앱 검색"
+
+#: media/js/devreg/suggestions.js:70
+msgid "Search add-ons for <b>{0}</b>"
+msgstr "<b>{0}</b> 부가 기능 검색"
+
+#. L10n: {0} is the number of characters left.
+#: media/js/devreg/utils.js:89
+msgid "{0} character left."
+msgid_plural "{0} characters left."
+msgstr[0] "{0}자 남았습니다."
+
+#: media/js/devreg/validator.js:71
+msgid "All tests passed successfully."
+msgstr "모든 테스트에 통과했습니다."
+
+#: media/js/devreg/validator.js:74 media/js/devreg/validator.js:356
+msgid "These tests were not run."
+msgstr "이 테스트는 실행되지 않았습니다."
+
+#: media/js/devreg/validator.js:117 media/js/devreg/validator.js:130
+msgid "Tests"
+msgstr "검사"
+
+#: media/js/devreg/validator.js:192
+msgid "Warning"
+msgstr "경고"
+
+#: media/js/devreg/validator.js:279
+msgid "Compatibility Tests"
+msgstr "호환성 검사"
+
+#: media/js/devreg/validator.js:327
+msgid "App failed validation."
+msgstr "앱이 검사를 통과하지 못했습니다."
+
+#: media/js/devreg/validator.js:329
+msgid "App passed validation."
+msgstr "앱이 검사를 통과했습니다."
+
+#: media/js/devreg/validator.js:359
+msgid "{0} error"
+msgid_plural "{0} errors"
+msgstr[0] "오류 {0}개"
+
+#: media/js/devreg/validator.js:361
+msgid "{0} warning"
+msgid_plural "{0} warnings"
+msgstr[0] "경고 {0}개"
+
+#: media/js/devreg/validator.js:439
+msgid "Validation task could not complete or completed with errors"
+msgstr "검사 작업이 오류로 인해 완료되지 못했습니다"
+
+#: media/js/devreg/validator.js:457
+msgid "Internal server error"
+msgstr "내부 서버 오류"
+
+#: media/js/devreg/reviewers/buttons.js:38
+msgid "Purchasing"
+msgstr "구입하는 중"
+
+#: media/js/devreg/reviewers/buttons.js:44
+msgid "Purchased"
+msgstr "구입했습니다"
+
+#: media/js/devreg/reviewers/buttons.js:70
+msgid "Launch"
+msgstr "실행하기"
+
+#: media/js/devreg/reviewers/editors.js:138
+msgid "{name} was viewing this page first."
+msgstr "{name}님이 먼저 이 페이지를 살펴보셨습니다."
+
+#: media/js/devreg/reviewers/editors.js:188
+msgid "Receipt checked by app."
+msgstr "앱이 영수증을 확인했습니다."
+
+#: media/js/devreg/reviewers/editors.js:190
+msgid "Receipt was not checked by app."
+msgstr "앱이 영수증을 확인하지 못했습니다."
+
+#: media/js/devreg/reviewers/editors.js:241
+msgid "{name} was viewing this app first."
+msgstr ""
+
+#: media/js/devreg/reviewers/editors.js:252
+msgid "Loading&hellip;"
+msgstr "불러오는 중&hellip;"
+
+#: media/js/devreg/reviewers/editors.js:257
+msgid "Version Notes"
+msgstr "버전 기록서"
+
+#: media/js/devreg/reviewers/editors.js:262
+msgid "Notes for Reviewers"
+msgstr "심사자의 메모"
+
+#: media/js/devreg/reviewers/editors.js:267
+msgid "No version notes found"
+msgstr "버전 기록서가 없습니다"
+
+#: media/js/devreg/reviewers/editors.js:292
+msgid "Select an application first"
+msgstr "먼저 애플리케이션을 선택하세요"
+
+#: media/js/devreg/reviewers/editors.js:356
+msgid "Error loading translation"
+msgstr "번역 결과를 불러오는 과정에서 오류 발생"
+
+#: media/js/devreg/reviewers/expandable.js:15
+msgid "more..."
+msgstr "자세히..."
+
+#: media/js/devreg/reviewers/expandable.js:18
+msgid "less..."
+msgstr "간략하게..."
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:7
+msgid "Keep review / Remove flags"
+msgstr ""
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:8
+msgid "Delete review"
+msgstr "심사 삭제하기"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:9
+msgid "Skip for now"
+msgstr "넘어가기"
+
+#: media/js/devreg/reviewers/payments.js:69
+msgid "Payment failed. Try again later."
+msgstr "지불에 실패했습니다. 잠시 후 다시 시도해보세요."
+
+#: media/js/devreg/reviewers/reviewers.js:97
+msgid "Packaged App"
+msgstr "패키지형 앱"
+
+#: media/js/devreg/reviewers/reviewers.js:101
+msgid "Privileged App"
+msgstr "특별권한 앱"
+
+#: media/js/devreg/reviewers/reviewers.js:104
+msgid "More Information Requested"
+msgstr "추가 정보 입력 필요"
+
+#: media/js/devreg/reviewers/reviewers.js:107
+msgid "Contains Editor Comment"
+msgstr "편집자 코멘트 있음"
+
+#: media/js/devreg/reviewers/reviewers.js:111
+msgid "Premium App"
+msgstr "유료 앱"
+
+#: media/js/devreg/reviewers/reviewers.js:114
+msgid "Escalated"
+msgstr "승급됨"
+
+#: media/js/devreg/reviewers/reviewers.js:122
+msgid "Free"
+msgstr "무료"
+
+#: media/js/devreg/reviewers/reviewers.js:219
+msgid "Any"
+msgstr "모두"
+
+#: media/js/devreg/reviewers/reviewers.js:246 media/js/devreg/reviewers/reviewers.js:297
+msgid "Approved app: {app}"
+msgstr "승인된 앱: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:249 media/js/devreg/reviewers/reviewers.js:300
+msgid "Rejected app: {app}"
+msgstr "승인 거부된 앱: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:255
+msgid "Error approving app: {app}"
+msgstr "승인 도중 오류가 발생한 앱: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:256
+msgid "Error rejecting app: {app}"
+msgstr "승인 거부 도중 오류가 발생한 앱: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:307
+msgid "Error passing app: {app}"
+msgstr ""
+
+#: media/js/devreg/reviewers/reviewers.js:308
+msgid "Error failing app: {app}"
+msgstr ""
+
+#: media/js/devreg/reviewers/reviewers_commbadge.js:66
+msgid "Sorry! We had an error fetching the review history. Please try logging in again.<p>"
+msgstr ""
+
+#. L10n: {0} is author of note, {1} is a datetime. (e.g., "by Kevin on Feburary 18th 2014 12:12 pm").
+#: media/js/devreg/reviewers/reviewers_commbadge.js:86
+msgid "By {0} on {1}"
+msgstr ""

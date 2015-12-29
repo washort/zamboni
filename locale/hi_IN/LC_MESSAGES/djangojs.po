@@ -1,0 +1,567 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-12 10:27-0700\n"
+"PO-Revision-Date: 2015-07-29 21:10+0000\n"
+"Last-Translator: umesh <umeshsnwl@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hi_IN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.0\n"
+"X-POOTLE-MTIME: 1438204238.0\n"
+
+#: media/js/common/upload-base.js:61
+msgid "The filetype you uploaded isn't recognized."
+msgstr "आपने जो फाइलटाइप अपलोड किया वह मान्य नहीं हैं."
+
+#: media/js/common/upload-base.js:83
+msgid "You cancelled the upload."
+msgstr "आपने अपलोड रद्द किया."
+
+#: media/js/common/upload-image.js:98
+msgid "Images must be either PNG or JPG."
+msgstr "चित्रा .PNG या .JPG होना चाहिए."
+
+#: media/js/common/upload-image.js:102
+msgid "Videos must be in WebM."
+msgstr "वीडियोस WebM में होना चाहिए."
+
+#: media/js/common/upload-image.js:129 media/js/common/upload-packaged-app.js:34
+msgid "There was a problem contacting the server."
+msgstr "सर्वर से संपर्क करने में त्रुटि थी."
+
+#: media/js/common/upload-packaged-app.js:52
+msgid "Select a file..."
+msgstr "एक फ़ाइल चुनें..."
+
+#: media/js/common/upload-packaged-app.js:53
+msgid "Your packaged app should end with <code>.zip</code>."
+msgstr "आपका पैक किया हुआ एप्प <code>.zip</code> से खतम होना चाइए."
+
+#. L10n: {0} is the percent of the file that has been uploaded.
+#: media/js/common/upload-packaged-app.js:89
+msgid "{0}% complete"
+msgstr "{0}% खतम"
+
+#. L10n: "{bytes uploaded} of {total filesize}".
+#: media/js/common/upload-packaged-app.js:92
+msgid "{0} of {1}"
+msgstr "{1} में से {0}"
+
+#: media/js/common/upload-packaged-app.js:120
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: media/js/common/upload-packaged-app.js:142
+msgid "Uploading {0}"
+msgstr "अपलोड हो रहा है {0}"
+
+#: media/js/common/upload-packaged-app.js:164
+msgid "Error with {0}"
+msgstr "{0} के साथ त्रुटि"
+
+#: media/js/common/upload-packaged-app.js:169 media/js/devreg/devhub.js:203
+msgid "Your app failed validation with {0} error."
+msgid_plural "Your app failed validation with {0} errors."
+msgstr[0] "आपका एप्प {0} त्रुटि के साथ मान्यकरण असफल रहा."
+msgstr[1] "आपका एप्प {0} त्रुटियों के साथ मान्यकरण असफल रहा."
+
+#: media/js/common/upload-packaged-app.js:184
+msgid "&hellip;and {0} more"
+msgid_plural "&hellip;and {0} more"
+msgstr[0] "&hellip;और {0} ज्यादा"
+msgstr[1] "&hellip;और {0} ज्यादा"
+
+#: media/js/common/upload-packaged-app.js:199 media/js/common/upload-packaged-app.js:325 media/js/devreg/devhub.js:165
+msgid "See full validation report"
+msgstr "पूर्ण मान्यकरण रिपोर्ट देखे"
+
+#: media/js/common/upload-packaged-app.js:211
+msgid "Validating {0}"
+msgstr "मान्य कर रहा है {0}"
+
+#. L10n: first argument is an HTTP status code
+#: media/js/common/upload-packaged-app.js:247
+msgid "Received an empty response from the server; status: {0}"
+msgstr "सर्वर से एक खाली उत्तर मिली; स्थति: {0}"
+
+#: media/js/common/upload-packaged-app.js:257
+msgid "Unexpected server error while validating."
+msgstr "मान्य करते समय अप्रत्याशित त्रुटि."
+
+#: media/js/common/upload-packaged-app.js:294
+msgid "Finished validating {0}"
+msgstr "मान्य क्रिया समाप्त {0}"
+
+#: media/js/common/upload-packaged-app.js:300
+msgid "Your app passed validation with no errors and {0} warning."
+msgid_plural "Your app passed validation with no errors and {0} warnings."
+msgstr[0] "आपका एप्प शुन्य त्रुटियों और {0} चेतावनी के साथ मान्यकरण सफल रहा."
+msgstr[1] "आपका एप्प शुन्य त्रुटियों और {0} चेतावनियों के साथ मान्यकरण सफल रहा."
+
+#: media/js/common/upload-packaged-app.js:305
+msgid "Your app passed validation with no errors or warnings."
+msgstr "आपकी एप्प बिना किसी त्रुटियों या चेतावनी के पास हो गयी."
+
+#: media/js/devreg/apps.js:84
+msgid "The manifest could not be found at the given location."
+msgstr "मेनिफ़ेस्ट आपके दिए गए स्थान पर नहीं पाया जा सका."
+
+#: media/js/devreg/apps.js:87
+msgid "App host could not be reached."
+msgstr "एप्प मेजबान पहुंचा नहीं जा सका."
+
+#: media/js/devreg/apps.js:90
+msgid "App manifest is unparsable."
+msgstr "एप्प मेनिफ़ेस्ट उंपार्सेबल हैं."
+
+#: media/js/devreg/apps.js:93
+msgid "App manifest is invalid."
+msgstr "एप्प मेनिफ़ेस्ट अमान्य हैं."
+
+#: media/js/devreg/apps.js:96
+msgid "App is already installed."
+msgstr "एप्प पहले से स्थापित है."
+
+#: media/js/devreg/apps.js:100
+msgid "Internal server error."
+msgstr "आंतरिक सर्वर त्रुटि."
+
+#: media/js/devreg/apps.js:103
+msgid "Internal server error on app installation."
+msgstr "एप्प स्थापना पर आंतरिक सर्वर त्रुटि."
+
+#: media/js/devreg/apps.js:106
+msgid "Install failed. Please try again later."
+msgstr "स्थापना विफल रहा. बाद में पुन: प्रयास करें."
+
+#: media/js/devreg/devhub.js:208
+msgid "Your app failed validation with {0} error and {1} message(s)."
+msgid_plural "Your app failed validation with {0} errors and {1} message(s)."
+msgstr[0] "आपका एप्प {0} त्रुटि और {1} सन्देश के साथ मान्यकरण असफल रहा."
+msgstr[1] "आपका एप्प {0} त्रुटियों और {1} संदेशो के साथ मान्यकरण असफल रहा."
+
+#: media/js/devreg/devhub.js:222
+msgid "Your app passed validation with no errors and {0} message."
+msgid_plural "Your app passed validation with no errors and {0} messages."
+msgstr[0] "आपका एप्प शुन्य त्रुटियों और {0} सन्देश के साथ मान्यकरण पारित किया."
+msgstr[1] "आपका एप्प शुन्य त्रुटियों और {0} संदेशो के साथ मान्यकरण पारित किया."
+
+#: media/js/devreg/devhub.js:227
+msgid "Your app passed validation with no errors or messages."
+msgstr "आपका एप्प बिना कोई त्रुटि या सन्देश के मान्यकरण सफल रहा."
+
+#: media/js/devreg/devhub.js:442
+msgid "Changes Saved"
+msgstr "परिवर्तन सहेजे गए"
+
+#: media/js/devreg/devhub.js:458
+msgid "Enter a new team member's email address"
+msgstr "एक नई टीम के सदस्य का ईमेल पता दर्ज करें"
+
+#: media/js/devreg/devhub.js:471
+msgid "Manifest refreshed"
+msgstr "मेनिफेस्ट ताज़ा कर दिया गया "
+
+#: media/js/devreg/devhub.js:476
+msgid "Could not refresh manifest. Try again later."
+msgstr "प्रकट ताज़ा नहीं कर सका. बाद में पुन: प्रयास करें."
+
+#: media/js/devreg/devhub.js:657
+msgid "There was an error uploading your file."
+msgstr "आपकी फ़ाइल अपलोड करने में त्रुटि हुई."
+
+#: media/js/devreg/devhub.js:1140
+msgid "Image changes being processed"
+msgstr "छवि परिवर्तन संसाधित किया जा रहा हैं"
+
+#: media/js/devreg/ecosystem.js:26
+msgid "This video requires a browser with support for open video "
+msgstr "इस्स चित्र के लिए एक ब्राउज़र चाहिए जिसमे खुला चित्र चलने का समर्थन हो "
+
+#: media/js/devreg/ecosystem.js:27
+msgid "or the <a href=\"http://www.adobe.com/go/getflashplayer\">Adobe "
+msgstr "या <a href=\"http://www.adobe.com/go/getflashplayer\">Adobe"
+
+#: media/js/devreg/ecosystem.js:28
+msgid "Flash Player</a>."
+msgstr "फ़्लैश प्लेयर</a>."
+
+#: media/js/devreg/in_app_products.js:281
+msgid "Enabled"
+msgstr "सक्षम"
+
+#: media/js/devreg/in_app_products.js:283
+msgid "Disabled"
+msgstr "निर्योग्य"
+
+#: media/js/devreg/init.js:35
+msgid "This feature is temporarily disabled while we perform website maintenance. Please check back a little later."
+msgstr "यह सुविधा अस्थायी रुप से अक्षम है जबतक की हम वेबसाइट रखरखाव कर रहे हैं। कृपया कुछ देर पुनः जाँचे करें।"
+
+#: media/js/devreg/l10n.js:45
+msgid "Remove this localization"
+msgstr "इस स्थानीयकरण को निकालें"
+
+#: media/js/devreg/login.js:126
+msgid "Persona login failed. Maybe you don't have an account under that email address?"
+msgstr "व्यक्तित्व लॉगिन विफल । हो सकता है कि आपके पास उस ईमेल पते के तहत एक खाता नहीं हो?"
+
+#: media/js/devreg/login.js:131
+msgid "Persona login failed. A server error was encountered."
+msgstr "व्यक्तित्व लॉगिन विफल रहा. एक सर्वर त्रुटि पाया गया."
+
+#: media/js/devreg/lookup-tool.js:39
+msgid "Status successfully changed to \"{0}\""
+msgstr "स्थिति को \"{0}\" में सफलतापूर्वक बदला गया"
+
+#: media/js/devreg/lookup-tool.js:44
+msgid "Could not change status to \"{0}\""
+msgstr "स्थिति को \"{0}\" में बदला नहीं जा सका"
+
+#: media/js/devreg/lookup-tool.js:70
+msgid "Group membership \"{0}\" added"
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:84
+msgid "Could not add group \"{0}\""
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:108
+msgid "Group membership \"{0}\" removed"
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:114
+msgid "Could not remove group \"{0}\""
+msgstr ""
+
+#: media/js/devreg/lookup-tool.js:183
+msgid "Show All Results"
+msgstr "सभी परिणाम दिखाए"
+
+#: media/js/devreg/lookup-tool.js:186
+msgid "Over {0} results found, consider refining your search."
+msgstr "{0} परिणाम प्राप्त, अपनी खोज को परिष्कृत करने पर विचार करें।"
+
+#: media/js/devreg/manifest.js:47
+msgid "Requested Permissions:"
+msgstr "अनुरोधित अनुमतियाँ:"
+
+#: media/js/devreg/manifest.js:55
+msgid "Certified"
+msgstr "प्रमाणित"
+
+#: media/js/devreg/manifest.js:58
+msgid "Privileged"
+msgstr "विशेषाधिकृत"
+
+#: media/js/devreg/manifest.js:61
+msgid "Unprivileged"
+msgstr "अप्राधिकृत"
+
+#: media/js/devreg/manifest.js:67
+msgid "No reason given"
+msgstr "कोई कारण नहीं दिया गया"
+
+#: media/js/devreg/overlay.js:41
+msgid "OK"
+msgstr "ठीक"
+
+#: media/js/devreg/payments-enroll.js:9
+msgid "Spanish Banking Code"
+msgstr "स्पेनिश बैंकिंग कोड"
+
+#: media/js/devreg/payments-enroll.js:11
+msgid "Irish Sort Code"
+msgstr "आयरिश सॉर्ट कोड़े"
+
+#: media/js/devreg/payments-enroll.js:13
+msgid "Belgian Sort Code"
+msgstr "बेल्जियम सॉर्ट कोड़े"
+
+#: media/js/devreg/payments-enroll.js:15
+msgid "Spanish/French/Italian/Dutch Banking Code"
+msgstr "स्पेनिश/फ्रेंच/इटालियन/दुत्च बैंकिंग कोड़"
+
+#: media/js/devreg/payments-enroll.js:17
+msgid "Dutch/US Sort Code"
+msgstr "दुत्च/यूएस/सॉर्ट कोड़"
+
+#: media/js/devreg/payments-enroll.js:19
+msgid "Canadian Transit Number/German Routing Code"
+msgstr "कैनेडियन ट्रांसिट अंक/ जर्मन रौटिंग कोड़े"
+
+#: media/js/devreg/payments-enroll.js:21
+msgid "Korean Bank and Branch/Indonesian Bank Code"
+msgstr "कोरियन बैंक और ब्रांच/इंडोनेसाइ बैंक कोड़"
+
+#: media/js/devreg/payments-enroll.js:23
+msgid "Greek HEBIC/Indonesian Bank Code"
+msgstr "ग्रीक HEBIC/इंडोनेशियाई बैंक कोड"
+
+#: media/js/devreg/payments-enroll.js:25
+msgid "UK/Irish Sort Code or NZ Account Prefix or Australian BSB Code"
+msgstr "UK/आयरिश शॉर्ट कोड या NZ अकाउंट प्रीफिक्स या ऑस्ट्रेलियाई BSB कोड"
+
+#: media/js/devreg/payments-enroll.js:27
+msgid "Austrian/Swiss Bank Code"
+msgstr "ऑस्ट्रियाई/स्विस बैंक कोड"
+
+#: media/js/devreg/payments-enroll.js:29
+msgid "Danish/Swiss Bank Code"
+msgstr "डेनिश/स्विस बैंक कोड"
+
+#: media/js/devreg/payments-enroll.js:31
+msgid "Swiss/Iraqi Bank Code"
+msgstr "स्विस/इराकी बैंक कोड"
+
+#: media/js/devreg/payments-enroll.js:33
+msgid "Iraqi Bank Code"
+msgstr "इराकी बैंक कोड"
+
+#. L10n: {0} is the name of a bank detected from the bank account code.
+#: media/js/devreg/payments-enroll.js:136
+msgid "Detected: {0}"
+msgstr "Detected: {0}"
+
+#. L10n: This sentence introduces a list of applications.
+#: media/js/devreg/payments-manage.js:32
+msgid "Deleting payment account \"{0}\" will remove the payment account from the following apps. Applications without a payment account will no longer be available for sale."
+msgid_plural "Deleting payment account \"{0}\" will remove the payment account from the following app. Applications without a payment account will no longer be available for sale."
+msgstr[0] ""
+"भुगतान खाता हटाने \"{0}\" निम्नलिखित क्षुधा से भुगतान खाते को हटा देगा. एक भुगतान खाते के बिना आवेदन नहीं रह बिक्री के लिए उपलब्ध हो जाएगा. भुगतान खाता हटाने \"{0}\" निम्नलिखित क्षुधा से भुगतान खाते को हटा देगा. एक भुगतान "
+"खाते के बिना आवेदन नहीं रह बिक्री के लिए उपलब्ध हो जाएगा."
+msgstr[1] ""
+
+#: media/js/devreg/payments-manage.js:45
+msgid "{appName} payment accounts:"
+msgstr "{appName} भुगतान खातें:"
+
+#: media/js/devreg/payments-manage.js:112 media/js/devreg/payments-manage.js:175 media/js/devreg/validator.js:191 media/js/devreg/validator.js:437 media/js/devreg/validator.js:456
+#: media/js/devreg/reviewers/buttons.js:85 media/js/devreg/reviewers/buttons.js:94
+msgid "Error"
+msgstr "त्रुटि"
+
+#: media/js/devreg/payments-manage.js:113 media/js/devreg/payments-manage.js:176
+msgid "There was a problem contacting the payment server."
+msgstr "भुगतान सर्वर से संपर्क करने में समस्या."
+
+#: media/js/devreg/payments-manage.js:143
+msgid "Authentication error"
+msgstr "प्रमाणीकरण त्रुटि"
+
+#: media/js/devreg/payments-manage.js:199
+msgid "You do not currently have any payment accounts."
+msgstr "आपका वर्तमान में कोई भी भुगतान खाता नहीं है."
+
+#: media/js/devreg/suggestions.js:66
+msgid "Search themes for <b>{0}</b>"
+msgstr "<b>{0}</b> के लिए थीम्स खोजें"
+
+#: media/js/devreg/suggestions.js:68
+msgid "Search apps for <b>{0}</b>"
+msgstr "<b>{0}</b> के लिए एप्प्स खोजें"
+
+#: media/js/devreg/suggestions.js:70
+msgid "Search add-ons for <b>{0}</b>"
+msgstr "<b>{0}</b> के लिए ऐड-ओंस खोजें"
+
+#. L10n: {0} is the number of characters left.
+#: media/js/devreg/utils.js:89
+msgid "{0} character left."
+msgid_plural "{0} characters left."
+msgstr[0] "{0} अक्षर छोड़ दिया है."
+msgstr[1] "{0} अक्षर छोड़ दिया है."
+
+#: media/js/devreg/validator.js:71
+msgid "All tests passed successfully."
+msgstr "सभी परीक्षण सफलतापूर्वक पारित कर दिए गए."
+
+#: media/js/devreg/validator.js:74 media/js/devreg/validator.js:356
+msgid "These tests were not run."
+msgstr "इन परीक्षणों को नहीं चलाया गया."
+
+#: media/js/devreg/validator.js:117 media/js/devreg/validator.js:130
+msgid "Tests"
+msgstr "परीक्षण"
+
+#: media/js/devreg/validator.js:192
+msgid "Warning"
+msgstr "चेतावनी"
+
+#: media/js/devreg/validator.js:279
+msgid "Compatibility Tests"
+msgstr "अनुकूलता परीक्षण"
+
+#: media/js/devreg/validator.js:327
+msgid "App failed validation."
+msgstr "एप्प सत्यापन विफल."
+
+#: media/js/devreg/validator.js:329
+msgid "App passed validation."
+msgstr "एप्प सत्यापन पारित."
+
+#: media/js/devreg/validator.js:359
+msgid "{0} error"
+msgid_plural "{0} errors"
+msgstr[0] "{0} त्रुटि"
+msgstr[1] "{0} त्रुटियों"
+
+#: media/js/devreg/validator.js:361
+msgid "{0} warning"
+msgid_plural "{0} warnings"
+msgstr[0] "{0} चेतावनी "
+msgstr[1] "{0} चेतावनी"
+
+#: media/js/devreg/validator.js:439
+msgid "Validation task could not complete or completed with errors"
+msgstr "मान्यकरण कार्य पूर्ण न हो सका या त्रुटियों के साथ पूर्ण हुआ"
+
+#: media/js/devreg/validator.js:457
+msgid "Internal server error"
+msgstr "आंतरिक सर्वर त्रुटि"
+
+#: media/js/devreg/reviewers/buttons.js:38
+msgid "Purchasing"
+msgstr "खरीद"
+
+#: media/js/devreg/reviewers/buttons.js:44
+msgid "Purchased"
+msgstr "खरीदी"
+
+#: media/js/devreg/reviewers/buttons.js:70
+msgid "Launch"
+msgstr "प्रमोचन"
+
+#: media/js/devreg/reviewers/editors.js:138
+msgid "{name} was viewing this page first."
+msgstr "{name} इस पेज को पहले देख रहे थे."
+
+#: media/js/devreg/reviewers/editors.js:188
+msgid "Receipt checked by app."
+msgstr "एप्प द्वारा रसीद की जाँच की गयी."
+
+#: media/js/devreg/reviewers/editors.js:190
+msgid "Receipt was not checked by app."
+msgstr "एप्प द्वारा रसीद की जाँच नहीं की गयी."
+
+#: media/js/devreg/reviewers/editors.js:241
+msgid "{name} was viewing this app first."
+msgstr "{name} इस एप्प को सबसे पहले देख रहे थे।"
+
+#: media/js/devreg/reviewers/editors.js:252
+msgid "Loading&hellip;"
+msgstr "लोडिंग&hellip;"
+
+#: media/js/devreg/reviewers/editors.js:257
+msgid "Version Notes"
+msgstr "संस्करण टिप्पणियाँ"
+
+#: media/js/devreg/reviewers/editors.js:262
+msgid "Notes for Reviewers"
+msgstr "समीक्षकों के लिए टिप्पणियाँ"
+
+#: media/js/devreg/reviewers/editors.js:267
+msgid "No version notes found"
+msgstr "संस्करण टिप्पणियाँ नहीं मिली"
+
+#: media/js/devreg/reviewers/editors.js:292
+msgid "Select an application first"
+msgstr "पहले एक एप्लीकेशन का चयन करें"
+
+#: media/js/devreg/reviewers/editors.js:356
+msgid "Error loading translation"
+msgstr "अनुवाद लोड करने में त्रुटि"
+
+#: media/js/devreg/reviewers/expandable.js:15
+msgid "more..."
+msgstr "अधिक..."
+
+#: media/js/devreg/reviewers/expandable.js:18
+msgid "less..."
+msgstr "कम..."
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:7
+msgid "Keep review / Remove flags"
+msgstr "समीक्षा रखें / झंडे हटायें"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:8
+msgid "Delete review"
+msgstr "समीक्षा हटायें"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:9
+msgid "Skip for now"
+msgstr "अभी के लिए छोड़ें"
+
+#: media/js/devreg/reviewers/payments.js:69
+msgid "Payment failed. Try again later."
+msgstr "भुगतान विफल. बाद में पुन: प्रयास करें."
+
+#: media/js/devreg/reviewers/reviewers.js:97
+msgid "Packaged App"
+msgstr "पैकेज्ड एप्प"
+
+#: media/js/devreg/reviewers/reviewers.js:101
+msgid "Privileged App"
+msgstr "विशेषाधिकृत ऐप"
+
+#: media/js/devreg/reviewers/reviewers.js:104
+msgid "More Information Requested"
+msgstr "अधिक जानकारी का अनुरोध"
+
+#: media/js/devreg/reviewers/reviewers.js:107
+msgid "Contains Editor Comment"
+msgstr "संपादक टिप्पणी शामिल हैं"
+
+#: media/js/devreg/reviewers/reviewers.js:111
+msgid "Premium App"
+msgstr "प्रीमियम ऐप"
+
+#: media/js/devreg/reviewers/reviewers.js:114
+msgid "Escalated"
+msgstr "परिवर्धित"
+
+#: media/js/devreg/reviewers/reviewers.js:122
+msgid "Free"
+msgstr "निःशुल्क"
+
+#: media/js/devreg/reviewers/reviewers.js:219
+msgid "Any"
+msgstr "कोई"
+
+#: media/js/devreg/reviewers/reviewers.js:246 media/js/devreg/reviewers/reviewers.js:297
+msgid "Approved app: {app}"
+msgstr "स्वीकृत एप्लिकेशन: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:249 media/js/devreg/reviewers/reviewers.js:300
+msgid "Rejected app: {app}"
+msgstr "अस्वीकृत एप्लीकेशन: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:255
+msgid "Error approving app: {app}"
+msgstr "एप्लीकेशन स्वीकृत करने में त्रुटि: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:256
+msgid "Error rejecting app: {app}"
+msgstr "एप्लीकेशन अस्वीकृत करने में त्रुटि: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:307
+msgid "Error passing app: {app}"
+msgstr "एप्प पारित करने में त्रुटि: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:308
+msgid "Error failing app: {app}"
+msgstr "एप्प असफल करने में त्रुटि: {app}"
+
+#: media/js/devreg/reviewers/reviewers_commbadge.js:66
+msgid "Sorry! We had an error fetching the review history. Please try logging in again.<p>"
+msgstr "क्षमा करें! हमें समीक्षा इतिहास लाने में त्रुटि थी. कृपया पुनः प्रवेश करने का प्रयास करें.<P>"
+
+#. L10n: {0} is author of note, {1} is a datetime. (e.g., "by Kevin on Feburary 18th 2014 12:12 pm").
+#: media/js/devreg/reviewers/reviewers_commbadge.js:86
+msgid "By {0} on {1}"
+msgstr "{0} द्वारा {1} पर"

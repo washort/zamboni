@@ -1,0 +1,557 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-02 10:00-0700\n"
+"PO-Revision-Date: 2014-10-15 02:07+0000\n"
+"Last-Translator: marsf <chimantaea_mirabilis@yahoo.co.jp>\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pontoon\n"
+"X-POOTLE-MTIME: 1413338949.0\n"
+
+#: media/js/common/upload-base.js:61
+msgid "The filetype you uploaded isn't recognized."
+msgstr "アップロードされたファイルの種類を認識できません。"
+
+#: media/js/common/upload-base.js:83
+msgid "You cancelled the upload."
+msgstr "アップロードはキャンセルされました。"
+
+#: media/js/common/upload-image.js:98
+msgid "Images must be either PNG or JPG."
+msgstr "画像は PNG か JPEG 形式でなければなりません。"
+
+#: media/js/common/upload-image.js:102
+msgid "Videos must be in WebM."
+msgstr "動画は WebM 形式でなければなりません。"
+
+#: media/js/common/upload-image.js:129 media/js/common/upload-packaged-app.js:34
+msgid "There was a problem contacting the server."
+msgstr "サーバへの接続中に問題が発生しました。"
+
+#: media/js/common/upload-packaged-app.js:52
+msgid "Select a file..."
+msgstr "ファイルを選択..."
+
+#: media/js/common/upload-packaged-app.js:53
+msgid "Your packaged app should end with <code>.zip</code>."
+msgstr "パッケージ型アプリのファイル拡張子は <code>.zip</code> でなければなりません。"
+
+#. L10n: {0} is the percent of the file that has been uploaded.
+#: media/js/common/upload-packaged-app.js:89
+msgid "{0}% complete"
+msgstr "{0}% 完了"
+
+#. L10n: "{bytes uploaded} of {total filesize}".
+#: media/js/common/upload-packaged-app.js:92
+msgid "{0} of {1}"
+msgstr "{0} / {1}"
+
+#: media/js/common/upload-packaged-app.js:120
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: media/js/common/upload-packaged-app.js:142
+msgid "Uploading {0}"
+msgstr "{0} をアップロードしています"
+
+#: media/js/common/upload-packaged-app.js:164
+msgid "Error with {0}"
+msgstr "{0} にエラーがありました"
+
+#: media/js/common/upload-packaged-app.js:169 media/js/devreg/devhub.js:203
+msgid "Your app failed validation with {0} error."
+msgid_plural "Your app failed validation with {0} errors."
+msgstr[0] "アプリは検証に失敗しました。{0} 個のエラーがあります。"
+
+#: media/js/common/upload-packaged-app.js:184
+msgid "&hellip;and {0} more"
+msgid_plural "&hellip;and {0} more"
+msgstr[0] "... その他 {0} 個"
+
+#: media/js/common/upload-packaged-app.js:199 media/js/common/upload-packaged-app.js:325 media/js/devreg/devhub.js:165
+msgid "See full validation report"
+msgstr "検証レポートの詳細を見る"
+
+#: media/js/common/upload-packaged-app.js:211
+msgid "Validating {0}"
+msgstr "{0} を検証しています"
+
+#. L10n: first argument is an HTTP status code
+#: media/js/common/upload-packaged-app.js:247
+msgid "Received an empty response from the server; status: {0}"
+msgstr "サーバから空の応答が返りました。ステータス: {0}"
+
+#: media/js/common/upload-packaged-app.js:257
+msgid "Unexpected server error while validating."
+msgstr "検証中に予期せぬサーバエラーが発生しました。"
+
+#: media/js/common/upload-packaged-app.js:294
+msgid "Finished validating {0}"
+msgstr "{0} の検証が完了しました"
+
+#: media/js/common/upload-packaged-app.js:300
+msgid "Your app passed validation with no errors and {0} warning."
+msgid_plural "Your app passed validation with no errors and {0} warnings."
+msgstr[0] "アプリは検証に合格しました。エラーなし、{0} 個の警告があります。"
+
+#: media/js/common/upload-packaged-app.js:305
+msgid "Your app passed validation with no errors or warnings."
+msgstr "アプリは検証に合格しました。エラーや警告はありません。"
+
+#: media/js/devreg/apps.js:84
+msgid "The manifest could not be found at the given location."
+msgstr "指定された場所にマニフェストが見つかりませんでした。"
+
+#: media/js/devreg/apps.js:87
+msgid "App host could not be reached."
+msgstr "アプリのサーバへ接続できませんでした。"
+
+#: media/js/devreg/apps.js:90
+msgid "App manifest is unparsable."
+msgstr "アプリマニフェストを解析できません。"
+
+#: media/js/devreg/apps.js:93
+msgid "App manifest is invalid."
+msgstr "アプリマニフェストが不正な形式です。"
+
+#: media/js/devreg/apps.js:96
+msgid "App is already installed."
+msgstr "アプリはすでにインストールされています。"
+
+#: media/js/devreg/apps.js:100
+msgid "Internal server error."
+msgstr "内部サーバエラー"
+
+#: media/js/devreg/apps.js:103
+msgid "Internal server error on app installation."
+msgstr "アプリのインストール中に内部サーバエラーが発生しました。"
+
+#: media/js/devreg/apps.js:106
+msgid "Install failed. Please try again later."
+msgstr "インストールに失敗しました。また後で試してください。"
+
+#: media/js/devreg/devhub.js:208
+msgid "Your app failed validation with {0} error and {1} message(s)."
+msgid_plural "Your app failed validation with {0} errors and {1} message(s)."
+msgstr[0] "アプリは検証に失敗しました。{0} 個のエラーと {1} 個のメッセージがあります。"
+
+#: media/js/devreg/devhub.js:222
+msgid "Your app passed validation with no errors and {0} message."
+msgid_plural "Your app passed validation with no errors and {0} messages."
+msgstr[0] "アプリは検証に合格しました。エラーなし、{0} 個のメッセージがあります。"
+
+#: media/js/devreg/devhub.js:227
+msgid "Your app passed validation with no errors or messages."
+msgstr "アプリは検証に合格しました。エラーやメッセージはありません。"
+
+#: media/js/devreg/devhub.js:442
+msgid "Changes Saved"
+msgstr "変更が保存されました"
+
+#: media/js/devreg/devhub.js:458
+msgid "Enter a new team member's email address"
+msgstr "新しいチームメンバーのメールアドレスを入力してください"
+
+#: media/js/devreg/devhub.js:471
+msgid "Manifest refreshed"
+msgstr "マニフェストが更新されました"
+
+#: media/js/devreg/devhub.js:476
+msgid "Could not refresh manifest. Try again later."
+msgstr "マニフェストを更新できませんでした。また後で試してください。"
+
+#: media/js/devreg/devhub.js:657
+msgid "There was an error uploading your file."
+msgstr "ファイルのアップロード中にエラーが発生しました。"
+
+#: media/js/devreg/devhub.js:1140
+msgid "Image changes being processed"
+msgstr "画像の変換処理を行っています"
+
+#: media/js/devreg/ecosystem.js:26
+msgid "This video requires a browser with support for open video "
+msgstr "この動画を再生するには、オープンな動画形式に対応しているブラウザか "
+
+#: media/js/devreg/ecosystem.js:27
+msgid "or the <a href=\"http://www.adobe.com/go/getflashplayer\">Adobe "
+msgstr "<a href=\"http://get.adobe.com/jp/flashplayer/\">Adobe "
+
+#: media/js/devreg/ecosystem.js:28
+msgid "Flash Player</a>."
+msgstr "Flash Player</a> が必要です。"
+
+#: media/js/devreg/in_app_products.js:281
+msgid "Enabled"
+msgstr "有効"
+
+#: media/js/devreg/in_app_products.js:283
+msgid "Disabled"
+msgstr "無効"
+
+#: media/js/devreg/init.js:35
+msgid "This feature is temporarily disabled while we perform website maintenance. Please check back a little later."
+msgstr "この機能はサイトメンテナンスのため一時的に無効になっています。また後で試してください。"
+
+#: media/js/devreg/l10n.js:45
+msgid "Remove this localization"
+msgstr "このローカライズを削除"
+
+#: media/js/devreg/login.js:126
+msgid "Persona login failed. Maybe you don't have an account under that email address?"
+msgstr "Persona のログインに失敗しました。このメールアドレスのアカウントをお持ちですか？"
+
+#: media/js/devreg/login.js:131
+msgid "Persona login failed. A server error was encountered."
+msgstr "Persona のログインに失敗しました。サーバエラーが発生しました。"
+
+#: media/js/devreg/lookup-tool.js:39
+msgid "Status successfully changed to \"{0}\""
+msgstr "ステータスが「{0}」へ変更されました"
+
+#: media/js/devreg/lookup-tool.js:44
+msgid "Could not change status to \"{0}\""
+msgstr "ステータスを「{0}」へ変更できませんでした"
+
+#: media/js/devreg/lookup-tool.js:70
+msgid "Group membership \"{0}\" added"
+msgstr "グループメンバー「{0}」が追加されました"
+
+#: media/js/devreg/lookup-tool.js:84
+msgid "Could not add group \"{0}\""
+msgstr "グループ「{0}」を追加できませんでした"
+
+#: media/js/devreg/lookup-tool.js:108
+msgid "Group membership \"{0}\" removed"
+msgstr "グループメンバー「{0}」が削除されました"
+
+#: media/js/devreg/lookup-tool.js:114
+msgid "Could not remove group \"{0}\""
+msgstr "グループ「{0}」を削除できませんでした"
+
+#: media/js/devreg/lookup-tool.js:183
+msgid "Show All Results"
+msgstr "すべての結果を表示"
+
+#: media/js/devreg/lookup-tool.js:186
+msgid "Over {0} results found, consider refining your search."
+msgstr "{0} 件以上の結果があります。検索条件を見直してみてください。"
+
+#: media/js/devreg/manifest.js:47
+msgid "Requested Permissions:"
+msgstr "必要とされる許可設定:"
+
+#: media/js/devreg/manifest.js:55
+msgid "Certified"
+msgstr "認定"
+
+#: media/js/devreg/manifest.js:58
+msgid "Privileged"
+msgstr "特権"
+
+#: media/js/devreg/manifest.js:61
+msgid "Unprivileged"
+msgstr "非特権"
+
+#: media/js/devreg/manifest.js:67
+msgid "No reason given"
+msgstr "理由が書かれていません"
+
+#: media/js/devreg/overlay.js:41
+msgid "OK"
+msgstr "OK"
+
+#: media/js/devreg/payments-enroll.js:9
+msgid "Spanish Banking Code"
+msgstr "スペインの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:11
+msgid "Irish Sort Code"
+msgstr "アイルランドの Sort Code"
+
+#: media/js/devreg/payments-enroll.js:13
+msgid "Belgian Sort Code"
+msgstr "ベルギーの Sort Code"
+
+#: media/js/devreg/payments-enroll.js:15
+msgid "Spanish/French/Italian/Dutch Banking Code"
+msgstr "スペイン、フランス、イタリアもしくはオランダの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:17
+msgid "Dutch/US Sort Code"
+msgstr "オランダもしくはアメリカの Sort Code"
+
+#: media/js/devreg/payments-enroll.js:19
+msgid "Canadian Transit Number/German Routing Code"
+msgstr "カナダの Transit Number、もしくはドイツの Routing Code"
+
+#: media/js/devreg/payments-enroll.js:21
+msgid "Korean Bank and Branch/Indonesian Bank Code"
+msgstr "韓国の銀行・支店コード、もしくはインドネシアの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:23
+msgid "Greek HEBIC/Indonesian Bank Code"
+msgstr "ギリシャの HEBIC、もしくはインドネシアの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:25
+msgid "UK/Irish Sort Code or NZ Account Prefix or Australian BSB Code"
+msgstr "イギリス、アイルランドの Sort Code、ニュージーランドの Account Prefix、もしくはオーストラリアの BSB Code"
+
+#: media/js/devreg/payments-enroll.js:27
+msgid "Austrian/Swiss Bank Code"
+msgstr "オーストリアもしくはスイスの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:29
+msgid "Danish/Swiss Bank Code"
+msgstr "デンマークもしくはスイスの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:31
+msgid "Swiss/Iraqi Bank Code"
+msgstr "スイスもしくはイラクの銀行コード"
+
+#: media/js/devreg/payments-enroll.js:33
+msgid "Iraqi Bank Code"
+msgstr "イラクの銀行コード"
+
+#. L10n: {0} is the name of a bank detected from the bank account code.
+#: media/js/devreg/payments-enroll.js:136
+msgid "Detected: {0}"
+msgstr "判別結果: {0}"
+
+#. L10n: This sentence introduces a list of applications.
+#: media/js/devreg/payments-manage.js:32
+msgid "Deleting payment account \"{0}\" will remove the payment account from the following apps. Applications without a payment account will no longer be available for sale."
+msgid_plural "Deleting payment account \"{0}\" will remove the payment account from the following app. Applications without a payment account will no longer be available for sale."
+msgstr[0] "決済用アカウント「{0}」を削除すると、以下のアプリから決済用アカウントが削除されます。決済用アカウントが設定されていないアプリケーションは販売中止となります。"
+
+#: media/js/devreg/payments-manage.js:45
+msgid "{appName} payment accounts:"
+msgstr "{appName} の決済用アカウント:"
+
+#: media/js/devreg/payments-manage.js:112 media/js/devreg/payments-manage.js:175 media/js/devreg/validator.js:191 media/js/devreg/validator.js:437 media/js/devreg/validator.js:456
+#: media/js/devreg/reviewers/buttons.js:85 media/js/devreg/reviewers/buttons.js:94
+msgid "Error"
+msgstr "エラー"
+
+#: media/js/devreg/payments-manage.js:113 media/js/devreg/payments-manage.js:176
+msgid "There was a problem contacting the payment server."
+msgstr "決済サーバへの接続中に問題が発生しました。"
+
+#: media/js/devreg/payments-manage.js:143
+msgid "Authentication error"
+msgstr "認証エラー"
+
+#: media/js/devreg/payments-manage.js:199
+msgid "You do not currently have any payment accounts."
+msgstr "あなたはまだ決済用アカウントを設定していません。"
+
+#: media/js/devreg/suggestions.js:66
+msgid "Search themes for <b>{0}</b>"
+msgstr "<b>{0}</b> 用テーマを検索"
+
+#: media/js/devreg/suggestions.js:68
+msgid "Search apps for <b>{0}</b>"
+msgstr "<b>{0}</b> 用アプリを検索"
+
+#: media/js/devreg/suggestions.js:70
+msgid "Search add-ons for <b>{0}</b>"
+msgstr "<b>{0}</b> 用アドオンを検索"
+
+#. L10n: {0} is the number of characters left.
+#: media/js/devreg/utils.js:89
+msgid "{0} character left."
+msgid_plural "{0} characters left."
+msgstr[0] "残り {0} 文字です。"
+
+#: media/js/devreg/validator.js:71
+msgid "All tests passed successfully."
+msgstr "すべてのテストに合格しました。"
+
+#: media/js/devreg/validator.js:74 media/js/devreg/validator.js:356
+msgid "These tests were not run."
+msgstr "これらのテストは実行されませんでした。"
+
+#: media/js/devreg/validator.js:117 media/js/devreg/validator.js:130
+msgid "Tests"
+msgstr "テスト"
+
+#: media/js/devreg/validator.js:192
+msgid "Warning"
+msgstr "警告"
+
+#: media/js/devreg/validator.js:279
+msgid "Compatibility Tests"
+msgstr "互換性テスト"
+
+#: media/js/devreg/validator.js:327
+msgid "App failed validation."
+msgstr "アプリは検証に失敗しました。"
+
+#: media/js/devreg/validator.js:329
+msgid "App passed validation."
+msgstr "アプリは検証に合格しました。"
+
+#: media/js/devreg/validator.js:359
+msgid "{0} error"
+msgid_plural "{0} errors"
+msgstr[0] "{0} 個のエラー"
+
+#: media/js/devreg/validator.js:361
+msgid "{0} warning"
+msgid_plural "{0} warnings"
+msgstr[0] "{0} 個の警告"
+
+#: media/js/devreg/validator.js:439
+msgid "Validation task could not complete or completed with errors"
+msgstr "検証作業を完了できなかったか、エラーを出力して完了しました"
+
+#: media/js/devreg/validator.js:457
+msgid "Internal server error"
+msgstr "内部サーバエラー"
+
+#: media/js/devreg/reviewers/buttons.js:38
+msgid "Purchasing"
+msgstr "購入中"
+
+#: media/js/devreg/reviewers/buttons.js:44
+msgid "Purchased"
+msgstr "購入済み"
+
+#: media/js/devreg/reviewers/buttons.js:70
+msgid "Launch"
+msgstr "起動"
+
+#: media/js/devreg/reviewers/editors.js:138
+msgid "{name} was viewing this page first."
+msgstr "{name} が初めてこのページを見ました。"
+
+#: media/js/devreg/reviewers/editors.js:188
+msgid "Receipt checked by app."
+msgstr "レシートがアプリによって検証されました。"
+
+#: media/js/devreg/reviewers/editors.js:190
+msgid "Receipt was not checked by app."
+msgstr "レシートがアプリによって検証されませんでした。"
+
+#: media/js/devreg/reviewers/editors.js:241
+msgid "{name} was viewing this app first."
+msgstr "{name} が初めてこのアプリを見ました。"
+
+#: media/js/devreg/reviewers/editors.js:252
+msgid "Loading&hellip;"
+msgstr "読み込み中..."
+
+#: media/js/devreg/reviewers/editors.js:257
+msgid "Version Notes"
+msgstr "リリースノート"
+
+#: media/js/devreg/reviewers/editors.js:262
+msgid "Notes for Reviewers"
+msgstr "審査担当者へのメモ"
+
+#: media/js/devreg/reviewers/editors.js:267
+msgid "No version notes found"
+msgstr "リリースノートはありません"
+
+#: media/js/devreg/reviewers/editors.js:292
+msgid "Select an application first"
+msgstr "まずアプリケーションを選択してください"
+
+#: media/js/devreg/reviewers/editors.js:356
+msgid "Error loading translation"
+msgstr "翻訳読み込みエラー"
+
+#: media/js/devreg/reviewers/expandable.js:15
+msgid "more..."
+msgstr "広げる..."
+
+#: media/js/devreg/reviewers/expandable.js:18
+msgid "less..."
+msgstr "たたむ..."
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:7
+msgid "Keep review / Remove flags"
+msgstr "レビューを残す / フラグを削除"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:8
+msgid "Delete review"
+msgstr "レビューを削除"
+
+#: media/js/devreg/reviewers/mobile_review_actions.js:9
+msgid "Skip for now"
+msgstr "今はスキップ"
+
+#: media/js/devreg/reviewers/payments.js:69
+msgid "Payment failed. Try again later."
+msgstr "決済に失敗しました。また後で試してください。"
+
+#: media/js/devreg/reviewers/reviewers.js:97
+msgid "Packaged App"
+msgstr "パッケージ型アプリ"
+
+#: media/js/devreg/reviewers/reviewers.js:101
+msgid "Privileged App"
+msgstr "特権アプリ"
+
+#: media/js/devreg/reviewers/reviewers.js:104
+msgid "More Information Requested"
+msgstr "詳しい情報が求められています"
+
+#: media/js/devreg/reviewers/reviewers.js:107
+msgid "Contains Editor Comment"
+msgstr "エディタのコメントがあります"
+
+#: media/js/devreg/reviewers/reviewers.js:111
+msgid "Premium App"
+msgstr "有料アプリ"
+
+#: media/js/devreg/reviewers/reviewers.js:114
+msgid "Escalated"
+msgstr "上級審査依頼中"
+
+#: media/js/devreg/reviewers/reviewers.js:122
+msgid "Free"
+msgstr "無料"
+
+#: media/js/devreg/reviewers/reviewers.js:219
+msgid "Any"
+msgstr "すべて"
+
+#: media/js/devreg/reviewers/reviewers.js:246 media/js/devreg/reviewers/reviewers.js:297
+msgid "Approved app: {app}"
+msgstr "アプリを承認しました: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:249 media/js/devreg/reviewers/reviewers.js:300
+msgid "Rejected app: {app}"
+msgstr "アプリを却下しました: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:255
+msgid "Error approving app: {app}"
+msgstr "アプリの承認中にエラーが発生しました: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:256
+msgid "Error rejecting app: {app}"
+msgstr "アプリの却下中にエラーが発生しました: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:307
+msgid "Error passing app: {app}"
+msgstr "アプリの合格処理中にエラーが発生しました: {app}"
+
+#: media/js/devreg/reviewers/reviewers.js:308
+msgid "Error failing app: {app}"
+msgstr "アプリの不合格処理中にエラーが発生しました: {app}"
+
+#: media/js/devreg/reviewers/reviewers_commbadge.js:66
+msgid "Sorry! We had an error fetching the review history. Please try logging in again.<p>"
+msgstr "申し訳ありません。審査履歴の取得中に問題が発生しました。再度ログインしてみてください。<p>"
+
+#. L10n: {0} is author of note, {1} is a datetime. (e.g., "by Kevin on Feburary 18th 2014 12:12 pm").
+#: media/js/devreg/reviewers/reviewers_commbadge.js:86
+msgid "By {0} on {1}"
+msgstr "{0} / {1}"
