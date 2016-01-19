@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.urlresolvers import is_valid_path
 from django.http import (HttpRequest, HttpResponsePermanentRedirect,
-                         SimpleCookie)
+                         HttpResponseRedirect, SimpleCookie)
 from django.middleware import common
 from django.utils.cache import (get_max_age, patch_cache_control,
                                 patch_response_headers, patch_vary_headers)
@@ -309,3 +309,13 @@ class CommonMiddleware(common.CommonMiddleware):
     def process_request(self, request):
         with safe_query_string(request):
             return super(CommonMiddleware, self).process_request(request)
+
+
+class TVRedirectMiddleware(object):
+    def process_request(self, request):
+        ua = request.META.get('HTTP_USER_AGENT', '')
+        if ua == 'Mozilla/5.0 (TV; rv:44.0) Gecko/44.0 Firefox/44.0':
+            if request.path_info.strip('/') == '':
+                return HttpResponseRedirect('/tv/')
+        elif request.path_info.startswith('/tv'):
+            return HttpResponseRedirect('/')

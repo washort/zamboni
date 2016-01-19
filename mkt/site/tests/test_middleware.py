@@ -377,3 +377,12 @@ class TestShorter(mkt.site.tests.TestCase):
         accept_check('zh', 'zh-CN')
         with self.settings(LANGUAGE_URL_MAP={'en-us': 'en-US'}):
             accept_check('zh', 'en-US')
+
+
+class TestTVRedirect(mkt.site.tests.TestCase):
+    def test_non_tv(self):
+        self.assert3xx(self.client.get('/tv/'), '/')
+
+    def test_tv(self):
+        ua = 'Mozilla/5.0 (TV; rv:44.0) Gecko/44.0 Firefox/44.0'
+        self.assert3xx(self.client.get('/', HTTP_USER_AGENT=ua), '/tv/')

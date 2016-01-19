@@ -208,6 +208,7 @@ MIDDLEWARE_CLASSES = (
     # a middleware causes a redirect, then other middleware stops processing.
     'mkt.site.middleware.RemoveSlashMiddleware',
     'mkt.site.middleware.CommonMiddleware',
+    'mkt.site.middleware.TVRedirectMiddleware',
     'djangosecure.middleware.SecurityMiddleware',
 )
 # Prevent the browser from guessing the content type.
